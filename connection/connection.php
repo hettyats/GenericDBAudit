@@ -1,14 +1,16 @@
 <?php
 $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';  
 include $path.'/connection/database-config.php';
-$dbh = new PDO('mysql:host=localhost', $dbuser, $password);
+// include $path.'/choose_db.php';
 
 try {
-    $sth = $dbh->query ("SELECT * FROM northwind.products LIMIT 2");
-    // printf ("Number of columns in result set: %d\n<br><br>", $sth->rowCount ());
-    // $count = 0;
-    // while ($rows = $sth->fetch (PDO::FETCH_ASSOC))
-    // printf ("%s Name: %s<br> Price: %s<br> Stock: %s <br><br>\n", $rows["ProductID"], $rows["ProductName"], $rows["UnitPrice"], $rows["UnitsInStock"]);
+    $dbh = new PDO("mysql:host=$host;dbname=$db", $dbuser, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // echo "Connected successfully";
+    $conn = new PDO("sqlsrv:server=$server", $pwd);
+    $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); 
+    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+
 }
     catch (PDOException $e) {
     die("Error connecting to SQL Server");

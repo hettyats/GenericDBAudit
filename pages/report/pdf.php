@@ -78,7 +78,7 @@
                     </dl>
 
                     <hr>
-                    <h3>Observation No. 2: Database Object</h3>
+                    <!-- <h3>Observation No. 2: Database Object</h3>
                     <dl>
                         <dt>Database Dependencies</dt>
                         <dd>
@@ -112,16 +112,16 @@
                         <dd>
                             Delete the database object or fix the database depend object:
                             <ul>
-                                <?php for($i=0;$i<count($dependID);$i++){ ?>
+                                <?php /*for($i=0;$i<count($dependID);$i++){ ?>
                                 <li><?php echo $dependName[$i]." (Object ID: ".$dependID[$i].")"; ?></li>
-                                <?php } ?>
+                                <?php } */?>
                             </ul>
                         </dd>
                         <?php } ?>
-                    </dl>
+                    </dl> -->
 
                     <hr>
-                    <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
+                    <!-- <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
                     <dl>
                         <dt>test</dt>
                         <dd>
@@ -132,7 +132,7 @@
                     <dl>
                         <dt>test</dt>
                         <dd>test</dd>
-                    </dl>
+                    </dl> -->
 
                 </div>
             </div>

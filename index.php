@@ -1,6 +1,6 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
-
+<?php include $path.'/choose_db.php'; ?>
 
 
 <div class="wrapper">
@@ -13,7 +13,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Audit: Northwind
+                Database Audit: <?php $dbName?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
@@ -46,7 +46,7 @@
 
             <!-- DDL ACTIVITY -->
             <div class="row">
-                <div class="col-xs-4">
+                <!-- <div class="col-xs-4">
                     <div class="box box-solid">
                         <div class="box-header">
                             <h3 class="box-title">DDL Activity</h3>
@@ -57,8 +57,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-8">
+                </div> -->
+                <!-- <div class="col-xs-12">
                     <div class="box box-solid">
                         <div class="box-header">
                             <h3 class="box-title">Top 5 Most Recent DDL Activities</h3>
@@ -97,10 +97,10 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-solid">
                         <div class="box-header">
@@ -147,8 +147,8 @@
                                     </tr>
                                     <tr>
                                         <td>Stored Procedure</td>
-                                        <td><?php echo $totalProcedures['TotalProcedure'] ?></td>
                                         <td>
+                                        <td><?php echo $totalProcedures['TotalProcedure'] ?></td>
                                             <a href="/TA2/DBAudit/pages/database-object/db-sprocedures.php" class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
@@ -168,7 +168,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </section>
         <!-- /.content -->
     </div>

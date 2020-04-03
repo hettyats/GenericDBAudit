@@ -13,7 +13,9 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Audit Report
+                Audit Report <?php if ($makerValue == 1) {?>Northwind
+                    <?php } else { ?>BikeStores
+                <?php }?>
             </h1>
             <ol class="breadcrumb">
                 <li><i class="fa fa-dashboard"></i><a href="/TA2/DBAudit/index.php">Home</a></li>
@@ -27,7 +29,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        <i class="fa fa-pie-chart"></i> Database Audit Report: Northwind
+                        <i class="fa fa-pie-chart"></i> Database Audit Report: <?php $dbname ?>
                         <small class="pull-right">Date: <?php echo date('F, j Y'); ?></small>
                     </h2>
                 </div>
@@ -37,15 +39,15 @@
             <div class="row">
                 <div class="col-xs-12">
 
-                    <h3>Observation No. 1: Database Access</h3>
-                    <?php //if(count($outlier)>0){echo $outlier[0];}else{echo "none";} ?>
+                    <h3>Observation Database Access</h3>
+                    <?php if(count($outlier)>0){echo $outlier[0];}else{echo "none";} ?>
                     <dl>
                         <dt>Database Unusual Access</dt>
                         <dd>
                             <?php if(count($outlier)>0){ ?>
                             Unusual database access found on:
                             <ul>
-                                <?php 
+                                <?php
                             foreach ($outlier as &$i){ 
                                 echo "<li>".$accessDate[$i].", which is ".$dbAccess[$i]." times</li>";
                              }}else{
@@ -55,9 +57,9 @@
                             </ul>
                         </dd>
 
-                        <!-- <br>
+                        <br>
                         <dt>Database Failed Access</dt>
-                        <dl>Database failed access on:</dl> -->
+                        <dl>Database failed access on:</dl>
                     </dl>
                     <h4>Recommendation</h4>
                     <dl>
@@ -67,7 +69,7 @@
                         <?php } ?>
                     </dl>
 
-                    <h3>Observation No. 2: Database Object</h3>
+                    <!-- <h3>Observation No. 2: Database Object</h3>
                     <dl>
                         <dt>Database Dependencies</dt>
                         <dd>
@@ -108,8 +110,8 @@
                         </dd>
                         <?php } ?>
                     </dl>
-                    
-                    <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
+                     -->
+                    <!-- <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
                     <dl>
                         <dt>Most DDL Activity</dt>
                         <dd>
@@ -137,30 +139,30 @@
                         <dd></dd>
                         <dt>Syntax Error</dt>
                         <dd></dd>
-                    </dl>
+                    </dl> -->
 
-                    <h3>Observation No. 5: Database User</h3>
+                    <h3>Observation Database User</h3>
                     <dl>
                         <dt>Inactive User</dt>
                         <dd>
                         </dd>
                     </dl>
-                    <h4>Recommendation</h4>
+                    <!-- <h4>Recommendation</h4>
                     <dl>
                         <dt>Inactive User</dt>
                         <dd></dd>
-                    </dl>
+                    </dl> -->
 
                 </div>
             </div>
 
-            <div class="row no-print">
+            <!-- <div class="row no-print">
                 <div class="col-xs-12">
                     <a href="pdf.php" target="_blank" class="btn btn-primary pull-right" style="margin-right: 5px;">
                         <i class="fa fa-download"></i> Print Report
                     </a>
                 </div>
-            </div>
+            </div> -->
 
         </section>
         <!-- /.content -->
