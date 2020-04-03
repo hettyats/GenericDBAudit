@@ -25,7 +25,7 @@ if(isset($_POST['search']))
     
     $maker = mysqli_real_escape_string($_POST['selected_text']); // get the selected text
     $bool=true;
-    echo $makerValue;
+    echo $makerValue; 
 }
  ?>
 <!-- </div> -->
