@@ -18,7 +18,6 @@
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
                 <li><a href="/TA2/DBAudit/pages/database-user/user-list.php">Database User</a></li>
                 <li class='active'>Database Privileges</a></li>
-
             </ol>
         </section>
 
@@ -33,25 +32,23 @@
                         <div class="box-body">
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Permission Type</th>
-                                        <th>Number of User</th>
-                                        <th>Number of User Type</th>
-                                        <th>More</th>
-                                    </tr>
+                                  <tr>
+                                      <th>Permission Name</th>
+                                      <th>CLass Description</th>
+                                      <th>Type Permission</th>
+                                      <th>Permission State</th>
+                                  </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
-                                    <tr>
-                                        <td><?php echo $row['PermissionType'] ?></td>
-                                        <td><?php echo $row['User'] ?></td>
-                                        <td><?php echo $row['UserType'] ?></td>
-                                        <td>
-                                            <a href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionType'] ?>" class="text-muted">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                      <tr>
+                                          <td><?php echo $row['PermissionName'] ?></td>
+                                          <td><?php echo $row['class_desc'] ?></td>
+                                          <td><?php echo $row['type'] ?></td>
+                                          <td><?php echo $row['state_desc'] ?></td>
+                                          <td>
+                                          </td>
+                                      </tr
                                     <?php } ?>
                                 </tbody>
                             </table>
