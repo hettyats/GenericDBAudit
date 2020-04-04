@@ -2,7 +2,7 @@
 $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
 include $path . "/pages/report/outlier-function.php";
-include $path.'/choose_db.php';
+//include $path.'/choose_db.php';
 
 
 // Akses basis data MySQL
