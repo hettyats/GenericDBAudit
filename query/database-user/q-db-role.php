@@ -4,12 +4,12 @@ include $path . "/connection/connection.php";
 
 // Database Login Name List Query
 $RoleQuery = '
-SELECT [name]
-      ,[principal_id]
-      ,[type_desc]
-      ,[create_date]
-  FROM [TEST - Roles]
+SELECT principal_id,
+     name,
+     type_desc,
+     type,
+     create_date FROM databaseauditbikestore.sys.database_principals
 ';
-$Role = $dbh->query($RoleQuery);
+$Role = $conn->query($RoleQuery);
 
 ?>

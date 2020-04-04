@@ -7,14 +7,14 @@ include $path . "/connection/connection.php";
 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } 
-  
+  }
+
 if ($makerValue == 1){
-    
+
     $DatabaseAccessQuery = '
     SELECT
         *
-    FROM 
+    FROM
     `general_log`
     ORDER BY event_time DESC
     ';
@@ -24,11 +24,12 @@ if ($makerValue == 1){
     } else {
     $DatabaseAccessQuery = '
     SELECT
-        access_time as [Time],
-        login_name as [Name],
-        program_name as [Program]
+        access_log_id [Id],
+        login_name [Name],
+        program_name as [Program],
+        access_time as [Time]
     FROM databaseauditbikestore.dbo.success_access_log
-    ORDER BY [Time] desc'; 
+    ORDER BY [Time] desc';
 $AccessList = $conn->query($DatabaseAccessQuery);
     }
 ?>

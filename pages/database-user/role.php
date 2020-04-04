@@ -34,26 +34,23 @@
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Role ID</th>
-                                        <th>Role Name</th>
-                                        <th>Status</th>
-                                        <th>Create Date</th>
-                                        <th>More</th>
-                                    </tr>
+                                      <tr>
+                                          <th>Role ID</th>
+                                          <th>Role Name</th>
+                                          <th>Status</th>
+                                          <th>Create Date</th>
+                                          <th>More</th>
+                                      </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $Role->fetch(PDO::FETCH_ASSOC)) {?>
-                                    <tr>
-                                        <td><?php echo $row['principal_id'] ?></td>
-                                        <td><?php echo $row['name'] ?></td>
-                                        <td><?php echo $row['type_desc'] ?></td>
-                                        <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['create_date'])); ?></td>
-                                        <td>
-                                            <a href="" class="text-muted">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                      <tr>
+                                          <td><?php echo $row['principal_id'] ?></td>
+                                          <td><?php echo $row['name'] ?></td>
+                                          <td><?php echo $row['type_desc'] ?></td>
+                                          <td><?php echo $row['type'] ?></td>
+                                          <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['create_date'])); ?></td>
+                                      </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>

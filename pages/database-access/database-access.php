@@ -1,5 +1,5 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; 
+<?php include $path.'/pages/navbars/head.php';
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   } ?>
@@ -23,7 +23,7 @@ if (isset($_GET['id'])) {
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-access/database-access.php">Database Access</a></li> 
+                <li><a href="/TA2/DBAudit/pages/database-access/database-access.php">Database Access</a></li>
                 <li class="active">Database Access List</li>
             </ol>
         </section>
@@ -47,9 +47,10 @@ if (isset($_GET['id'])) {
                                         <th>Command Type</th>
                                         <th>Argument</th>
                                         <?php } else{ ?>
-                                        <th>Access Date</th>
-                                        <th>Login Name</th>
-                                        <th>Program Name</th>
+                                          <th>ID</th>
+                                          <th>Login Name</th>
+                                          <th>Program Name</th>
+                                          <th>Date</th>
                                         <!-- <th>More</th> -->
                                         <?php }?>
                                     </tr>
@@ -62,17 +63,12 @@ if (isset($_GET['id'])) {
                                         <td><?php echo ($row['user_host']);?></td>
                                         <td><?php echo ($row['command_type'])?></td>
                                         <td><?php echo ($row['argument'])?></td>
-                                        <?php } else{ ?>
-                                            <td>
-                                            <?php echo date('jS \of F Y h:i:s A',strtotime($row['Time'])); ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['Name']?>
-                                        </td>
-                                        <td>
-                                            <?php echo $row['Program']?>
-                                        </td>
-                                        <?php }?>
+                                      <?php } else{ ?>
+                                      <td> <?php echo $row['Id']?> </td>
+                                      <td> <?php echo $row['Name']?></td>
+                                      <td> <?php echo $row['Program']?></td>
+                                      <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['Time'])); ?></td>
+                                      <?php }?>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

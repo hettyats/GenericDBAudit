@@ -33,32 +33,25 @@
                         <div class="box-body">
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Principal ID</th>
-                                        <th>Username</th>
-                                        <th>Status</th>
-                                        <th>Last Access Time</th>
-                                        <th>More</th>
+                                  <tr>
+                                    <th>Username</th>
+                                    <th>Principal_id</th>
+                                    <th>Create Date</th>
+                                    <th>Modify Date</th>
+                                    <th>Type Description</th>
+                                    <th>Authentication Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- <?php while ($row = $LoginName->fetch(PDO::FETCH_ASSOC)) {?> -->
-                                    <tr>
-                                        <td><?php echo $row['ID'] ?></td>
-                                        <td><?php echo $row['Name'] ?></td>
-                                        <td><?php echo $row['Status'] ?></td>
-                                        <td>
-                                            <?php 
-                                                if ($row['Month']>0){ echo $row['Month'].' Month Ago';}
-                                                else{ echo "This Month"; } 
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <a href="" class="text-muted">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                  <td><?php echo $row['name'] ?></td>
+                                  <td><?php echo $row['principal_id'] ?></td>
+                                  <td><?php echo $row['create_date'] ?></td>
+                                  <td><?php echo $row['type_desc'] ?></td>
+                                  <td><?php echo $row['modify_date'] ?></td>
+                                  <td><?php echo $row['authentication_type'] ?></td>
+                              </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
