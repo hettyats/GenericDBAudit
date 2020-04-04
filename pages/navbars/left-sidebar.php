@@ -29,13 +29,13 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-access.php"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>"><i
                                 class="fa fa-circle-o"></i>Database Access</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-usage.php"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-usage.php?id=<?php echo $makerValue?>"><i
                                 class="fa fa-circle-o"></i>Account Usage</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-unusual.php"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-unusual.php?id=<?php echo $makerValue?>"><i
                                 class="fa fa-circle-o"></i>Database Unusual Access</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue?>"><i
                                 class="fa fa-circle-o"></i>Database Failed Login</a></li>
 
                 </ul>
@@ -47,16 +47,16 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php"><i class="fa fa-circle-o"></i>                            User List</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/password.php"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>                            User List</a></li>
+                    <li><a href="/TA2/DBAudit/pages/database-user/password.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             User Password Change</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/privilege.php"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             Privileges</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/role.php"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/role.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             Roles</a></li>
                 </ul>
             </li>
-            <li><a href="/TA2/DBAudit/pages/report/report.php"><i class="fa fa-book"></i> <span>Audit Report</span></a>
+            <li><a href="/TA2/DBAudit/pages/report/report.php?id=<?php echo $makerValue?>"><i class="fa fa-book"></i> <span>Audit Report</span></a>
             </li>
         </ul>
         <!-- /.sidebar-menu -->

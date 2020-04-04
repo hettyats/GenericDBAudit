@@ -1,7 +1,10 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 <?php include $path.'/query/database-access-query/q-db-access.php'; ?>
-<?php include $path.'/choose_db.php';?> 
+
 
 <div class="wrapper">
 
