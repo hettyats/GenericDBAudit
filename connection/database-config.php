@@ -1,6 +1,6 @@
 <?php
 
-$server = 'DESKTOP-PP67HMI';
+$server = 'HETTYATS\SQLEXPRESS';
 $database = 'databaseauditbikestore';
 $dbuser = 'root';
 $password = '';

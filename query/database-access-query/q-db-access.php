@@ -10,7 +10,6 @@ if (isset($_GET['id'])) {
   }
 
 if ($makerValue == 1){
-
     $DatabaseAccessQuery = '
     SELECT
         *
@@ -19,8 +18,6 @@ if ($makerValue == 1){
     ORDER BY event_time DESC
     ';
     $AccessList = $dbh->query($DatabaseAccessQuery);
-
-
     } else {
     $DatabaseAccessQuery = '
     SELECT
