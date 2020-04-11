@@ -37,23 +37,17 @@
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Permission State</th>
-                                        <th>Login Name</th>
-                                        <th>Login Type</th>
-                                        <th>Database User Name</th>                                        
-                                        <th>Object Type</th>
-                                        <th>Object Name</th>
+                                      <th>CLass Description</th>
+                                      <th>Type Permission</th>
+                                      <th>Permission State</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
-                                        <td><?php echo $row['State'] ?></td>
-                                        <td><?php echo $row['Login'] ?></td>
-                                        <td><?php echo $row['Type'] ?></td>
-                                        <td><?php echo $row['User'] ?></td>
-                                        <td><?php echo $row['ObjType'] ?></td>
-                                        <td><?php echo $row['Obj'] ?></td>
+                                        <td><?php echo $row['class_desc'] ?></td>
+                                        <td><?php echo $row['type'] ?></td>
+                                        <td><?php echo $row['state_desc'] ?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

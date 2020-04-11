@@ -1,5 +1,8 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 <?php include $path.'/query/database-access-query/q-db-usage.php'; ?>
 
 <div class="wrapper">
@@ -34,10 +37,17 @@
                             <table id="" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                    <?php if ($makerValue == 1) {?>
                                         <th>Id</th>
                                         <th>Username</th>
                                         <th>Logon Time</th>
                                         <th>spid</th>
+                                        <?php } else{ ?>
+                                        <th>Id</th>
+                                        <th>Username</th>
+                                        <th>Logon Time</th>
+                                        <th>spid</th>
+                                        <?php }?>
                                     </tr>
                                 </thead>
                                 <tbody>

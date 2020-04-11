@@ -24,7 +24,7 @@
  *
  * http://api.jqueryui.com/category/ui-core/
  */
-
+$('ul').tree(options);
 
 // $.ui might exist from components with no dependencies, e.g., $.ui.position
 $.ui = $.ui || {};

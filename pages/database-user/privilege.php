@@ -1,5 +1,8 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 
 <?php include $path.'/query/database-user/q-db-privilege.php'; ?>
 <div class="wrapper">
@@ -39,16 +42,28 @@
                                       <th>Permission State</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody method="get">
                                     <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
-                                      <tr>
-                                          <td><?php echo $row['PermissionName'] ?></td>
+                                      <tr  method="POST">
+                                        <?php if ($makerValue == 1) {?>
+
+
+
+                                        <?php } else{ ?>
+                                          <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['class_desc'] ?></td>
                                           <td><?php echo $row['type'] ?></td>
                                           <td><?php echo $row['state_desc'] ?></td>
+
                                           <td>
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>"
+                                                class="text-muted">
+                                                <i class="fa fa-search"></i>
+                                            </a>
                                           </td>
-                                      </tr
+                                          <?php }?>
+                                          
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
@@ -69,4 +84,26 @@
 <!-- ./wrapper -->
 
 <?php include $path.'/pages/navbars/required-scripts.php'; ?>
+
+<!-- SlimScroll -->
+<script src="/TA2/DBAudit/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
+
+<!-- DATA TABLES -->
+<script src="/TA2/DBAudit/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/TA2/DBAudit/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('#Privilege').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
+
 <?php include $path.'/pages/navbars/end.php'; ?>

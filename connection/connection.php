@@ -13,5 +13,5 @@ try {
 
 }
     catch (PDOException $e) {
-    die("Error connecting to SQL Server");
+    die("Connection Failed");
 }

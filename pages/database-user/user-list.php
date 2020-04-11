@@ -1,6 +1,8 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
-
+<?php include $path.'/pages/navbars/head.php';
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 <?php include $path.'/query/database-user/q-db-user.php'; ?>
 
 <div class="wrapper">
@@ -34,23 +36,44 @@
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                   <tr>
+                                  <?php if ($makerValue == 1) {?>
+                                    <th>Username</th>
+                                    <th>Host</th>
+                                    <th>Password</th>
+                                    <th>Default Role</th>
+                                    <th>Password Expired</th>
+                                    <th>Authentication String</th>
+                                    <th>Authentication Type</th>
+                                    <?php } else{ ?>
                                     <th>Username</th>
                                     <th>Principal_id</th>
                                     <th>Create Date</th>
-                                    <th>Modify Date</th>
                                     <th>Type Description</th>
+                                    <th>Modify Date</th>
                                     <th>Authentication Type</th>
+                                    <?php }?>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <?php while ($row = $LoginName->fetch(PDO::FETCH_ASSOC)) {?> -->
+                                    <?php while ($row = $LoginName->fetch(PDO::FETCH_ASSOC)) {?>
                                 <tr>
-                                  <td><?php echo $row['name'] ?></td>
-                                  <td><?php echo $row['principal_id'] ?></td>
-                                  <td><?php echo $row['create_date'] ?></td>
-                                  <td><?php echo $row['type_desc'] ?></td>
-                                  <td><?php echo $row['modify_date'] ?></td>
-                                  <td><?php echo $row['authentication_type'] ?></td>
+                                <?php if ($makerValue == 1) {?>
+                                    <td><?php echo $row['USER'] ?></td>
+                                    <td><?php echo $row['host'] ?></td>
+                                    <td><?php echo $row['PASSWORD'] ?></td>
+                                    <td><?php echo $row['default_role'] ?></td>
+                                    <td><?php echo $row['password_expired'] ?></td>
+                                    <td><?php echo $row['authentication_string'] ?></td>
+                                    <td><?php echo $row['auth_type'] ?></td>
+                                <?php } else{ ?>
+                                    <td><?php echo $row['name'] ?></td>
+                                    <td><?php echo $row['principal_id'] ?></td>
+                                    <td><?php echo $row['create_date'] ?></td>
+                                    <td><?php echo $row['type_desc'] ?></td>
+                                    <td><?php echo $row['modify_date'] ?></td>
+                                    <td><?php echo $row['authentication_type'] ?></td>
+                                    
+                                    <?php }?>
                               </tr>
                                     <?php } ?>
                                 </tbody>
@@ -72,4 +95,25 @@
 <!-- ./wrapper -->
 
 <?php include $path.'/pages/navbars/required-scripts.php'; ?>
+
+<!-- SlimScroll -->
+<script src="/TA2/DBAudit/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
+
+<!-- DATA TABLES -->
+<script src="/TA2/DBAudit/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/TA2/DBAudit/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('#AccessList').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
 <?php include $path.'/pages/navbars/end.php'; ?>

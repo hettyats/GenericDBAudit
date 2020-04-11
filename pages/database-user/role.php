@@ -1,5 +1,8 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 
 <?php include $path.'/query/database-user/q-db-role.php'; ?>
 
@@ -35,11 +38,19 @@
                                 <thead>
                                     <tr>
                                       <tr>
+                                      <?php if ($makerValue == 1) {?>
                                           <th>Role ID</th>
                                           <th>Role Name</th>
                                           <th>Status</th>
+                                          <th>Type</th>
                                           <th>Create Date</th>
-                                          <th>More</th>
+
+                                        <?php } else{ ?>
+                                          <th>Role ID</th>
+                                          <th>Role Name</th>
+                                          <th>Type</th>
+                                          <th>Create Date</th>
+                                          <?php }?>
                                       </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +59,6 @@
                                           <td><?php echo $row['principal_id'] ?></td>
                                           <td><?php echo $row['name'] ?></td>
                                           <td><?php echo $row['type_desc'] ?></td>
-                                          <td><?php echo $row['type'] ?></td>
                                           <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['create_date'])); ?></td>
                                       </tr>
                                     <?php } ?>
@@ -71,4 +81,26 @@
 <!-- ./wrapper -->
 
 <?php include $path.'/pages/navbars/required-scripts.php'; ?>
+
+<!-- SlimScroll -->
+<script src="/TA2/DBAudit/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
+
+<!-- DATA TABLES -->
+<script src="/TA2/DBAudit/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/TA2/DBAudit/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('#AccessList').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
+
 <?php include $path.'/pages/navbars/end.php'; ?>

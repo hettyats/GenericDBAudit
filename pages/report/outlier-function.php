@@ -12,18 +12,20 @@ function variance($list){
     for($i = 0; $i < (count($list)); $i++){
         $sum = $sum + pow($list[$i]-$avg, 2);
     }
-    $var = $sum/(count($list)-1);
-    return $var;
+    $jlist = (count($list) -1);
+    if ($jlist>0){
+    $var = $sum/$jlist;
+    return $var;}
 }
 
 
 function zScore($x ,$list){
     $std = sqrt(variance($list));
     $avg = mean($list);
-
+    if ($std>0){
     $z = abs($x - $avg)/$std;
-
-    return $z;
+    
+    return $z;}
 }
 
 function findOutlier($list){
