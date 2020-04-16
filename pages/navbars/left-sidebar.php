@@ -1,5 +1,9 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/query/q-sidebar.php'; ?>
+<?php include $path.'/query/q-sidebar.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  }
+?>
 
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
@@ -47,13 +51,15 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>                            User List</a></li>
+                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>User List</a></li>
                     <li><a href="/TA2/DBAudit/pages/database-user/password.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             User Password Change</a></li>
                     <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             Privileges</a></li>
                     <li><a href="/TA2/DBAudit/pages/database-user/role.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
                             Roles</a></li>
+                    <li><a href="/TA2/DBAudit/pages/database-user/not-active.php?id=<?php echo $makerValue?>"><i class="fa fa-circle-o"></i>
+                    Inactive User</a></li>
                 </ul>
             </li>
             <li><a href="/TA2/DBAudit/pages/report/report.php?id=<?php echo $makerValue?>"><i class="fa fa-book"></i> <span>Audit Report</span></a>

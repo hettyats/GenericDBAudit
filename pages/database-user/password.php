@@ -1,5 +1,9 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  }
+?>
 
 <?php include $path.'/query/database-user/q-db-password.php'; ?>
 <div class="wrapper">
@@ -36,13 +40,13 @@
                                         <th>Username</th>
                                         <th>Hash Algorithm</th>
                                         <th>Last Change Time</th>
-                                        <th>More</th>
+                                        <!-- <th>More</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $Pass->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
-                                        <td><?php echo $row['LoginName'] ?></td>
+                                        <td><?php echo $row['name'] ?></td>
                                         <td><?php echo $row['passhashalgo'] ?></td>
                                         <td>
                                             <?php 
@@ -50,11 +54,11 @@
                                                 else{echo date('jS \of F Y h:i:s A',strtotime($row['lastsettime']));}
                                             ?>
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             <a href="" class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <?php } ?>
                                 </tbody>

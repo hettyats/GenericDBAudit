@@ -1,12 +1,11 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
-<?php
+<?php include $path.'/query/q-index.php';
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   } 
 
 ?>
-
 
 <div class="wrapper">
 
@@ -37,17 +36,88 @@ if (isset($_GET['id'])) {
                 <div class="col-xs-12">
                     <div class="box box-solid">
                         <div class="box-header">
-                            <h3 class="box-title">Database Access</h3>
+                            <h3 class="box-title">Database Access Today</h3>
                             <div class="box-tools pull-right">
-                                <a href="">View Detail</a>
+                                <a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>">View Detail</a>
                             </div>
                         </div>
                         <div class="box-body">
-                            <div class="chart">
+                            <!-- <div class="chart">
                                 <canvas id="accessChart" style="height:250px"></canvas>
-                            </div>
+                            </div> -->
+                            <table id="TodayAccess" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                    <?php if ($makerValue == 1) {?>
+                                        <th>Username</th>
+                                        <th>Total</th>
+                                        <th>Last Access</th>
+                                        <?php } else{ ?>
+                                        <th>Username</th>
+                                        <th>SPID</th>
+                                        <th>Program Name</th>
+                                        <th>Access Time</th>
+                                        <!-- <th>Logon Time</th>
+                                        <th>spid</th> -->
+                                        <?php }?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <?php while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {?>
+                                    <tr>
+                                    <?php if ($makerValue == 1) {?>
+                                      <td><?php echo $row['Name'] ?></td>
+                                      <td><?php echo $row['Total'] ?></td>
+                                      <td><?php echo $row['LastAccess'] ?></td>
+                                      <?php } else{ ?>
+                                      <td><?php echo $row['login_name'] ?></td>
+                                      <td><?php echo $row['spid'] ?></td>
+                                      <td><?php echo $row['program_name'] ?></td>
+                                      <td><?php echo $row['access_time'] ?></td>
+                                      <!-- <td><?php //echo $row['access_time'] ?></td>
+                                      <td><?php //echo $row['spid'] ?></td> -->
+                                      <?php }?>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                        <div class="box box-solid">
+                            <div class="box-header">
+                                <h3 class="box-title">Database Access perday</h3>
+                            </div>
+                            <div class="box-body">
+                            <table id="AccessList" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <?php //if ($makerValue == 1) {?>
+                                        <th>Date</th>
+                                        <th>Username</th>
+                                        <th>Total</th>
+                                        <?php //} else{ ?>
+                                          
+                                        <!-- <th>More</th> -->
+                                        <?php //}?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                        <?php while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                        //if ($makerValue == 1) {?>
+                                        <tr>
+                                        <td><?php echo ($row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']) ?></td>
+                                        <td><?php echo ($row['login_name'])?></td>
+                                        <td><?php echo ($row['Total'])?></td>
+                                      <?php //} else{ ?>
+                                        
+                                      <?php }?>
+                                    </tr>
+                                    <?php //} ?>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
                 </div>
             </div>
         </section>
@@ -65,5 +135,21 @@ if (isset($_GET['id'])) {
 
 <!-- CHARTS -->
 <?php include $path.'/charts/index-charts/index-charts.php'; ?>
+
+<!-- DATA TABLES -->
+<script src="/TA2/DBAudit/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/TA2/DBAudit/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('#TodayAccess').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
 
 <?php include $path.'/pages/navbars/end.php'; ?>

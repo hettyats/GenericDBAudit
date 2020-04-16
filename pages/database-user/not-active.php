@@ -1,7 +1,7 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
 
-
+<?php include $path.'/query/database-user/q-db-not-active.php'; ?>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>
@@ -39,12 +39,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php while ($row = $NA->fetch(PDO::FETCH_ASSOC)) {?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>2</td>
-                                    <td>3</td>
+                                    <td><?php echo $row['name'] ?></td>
+                                    <td><?php echo $row[''] ?></td>
+                                    <td><?php echo $row[''] ?></td>
                                 </tr>
                                 </tbody>
+                                <?php }?>
                             </table>
                         </div>
                     </div>
