@@ -10,21 +10,22 @@ if (isset($_GET['id'])) {
 // Database User Query
 if ($makerValue == 1){
     $DBUserQuery = '
-    SELECT * 
-    FROM 
-    `general_log`
+    SELECT 
+    `user_host` AS `Name`,
+    MAX(`event_time`) AS `LastAccess`,
+    COUNT(*) AS `Total`
+    FROM `databaseaudit`.`general_log`
+    GROUP BY `user_host`
     ';
-
     $DBUser = $dbh->query($DBUserQuery);
 } else {
     $DBUserQuery = '
-    SELECT TOP 10
-    [access_log_id],
-    [spid],
-    [login_name],
-    [access_time]
-FROM databaseauditbikestore.dbo.success_access_log';
-    
+    SELECT 
+    login_name as [Name],
+    count(*) as [Total]
+FROM databaseaudit.dbo.success_access_log
+GROUP BY login_name
+';
     $DBUser = $conn->query($DBUserQuery);
 }
 // $name = array();

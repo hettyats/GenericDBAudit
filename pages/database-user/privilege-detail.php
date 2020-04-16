@@ -37,17 +37,37 @@
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                      <th>CLass Description</th>
-                                      <th>Type Permission</th>
+                                    <?php if ($makerValue == 1) {?>
                                       <th>Permission State</th>
+                                      <th>Login Name</th>
+                                      <th>Login Type</th>
+                                      <th>Database User Name</th>
+                                      <th>Object Type</th>
+                                    
+                                    <?php } else{ ?>
+                                      <th>Permission State</th>
+                                      <th>Login Name</th>
+                                      <th>Login Type</th>
+                                      <th>Database User Name</th>
+                                      <th>Object Type</th>
+                                      <th>Object Name</th>
+                                      <?php }?> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
+                                    <?php while ($row = $ListPriv->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
-                                        <td><?php echo $row['class_desc'] ?></td>
-                                        <td><?php echo $row['type'] ?></td>
-                                        <td><?php echo $row['state_desc'] ?></td>
+                                    <?php if ($makerValue == 1) {?>
+
+
+                                    <?php } else{ ?>
+                                        <td><?php echo $row['PermissionState'] ?></td>
+                                        <td><?php echo $row['UserName'] ?></td>
+                                        <td><?php echo $row['UserType'] ?></td>
+                                        <td><?php echo $row['DatabaseUserName'] ?></td>
+                                        <td><?php echo $row['ObjectType'] ?></td>
+                                        <td><?php echo $row['ObjectName'] ?></td>
+                                        <?php }?> 
                                     </tr>
                                     <?php } ?>
                                 </tbody>

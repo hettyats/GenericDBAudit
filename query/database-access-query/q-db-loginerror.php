@@ -16,7 +16,7 @@ select
 	Text as [Message],
 	count as [Total],
 	date as [Date]
-from [databaseauditbikestore].[dbo].[failed_login]
+from [databaseaudit].[dbo].[failed_login]
 ";
 $Error = $conn->query($ErrorQuery);
 }

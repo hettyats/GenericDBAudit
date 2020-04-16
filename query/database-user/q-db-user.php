@@ -11,19 +11,21 @@ $DatabaseAccessQuery = '
 SELECT * 
 FROM 
 `user_list`
-ORDER BY USER ASC
+ORDER BY `username` ASC
 ';
 $LoginName = $dbh->query($DatabaseAccessQuery);
 
 } else {
 $LoginNameQuery = '
-SELECT name,
-			 principal_id,
-			 type_desc,
-			 create_date,
-			 modify_date,
-			 authentication_type
-			 FROM databaseauditbikestore.sys.database_principals
+SELECT TOP 1000 [principal_id]
+      ,[name]
+      ,[type_desc]
+      ,[status]
+      ,[create_date]
+      ,[modify_date]
+      ,[last_access]
+      ,[duration]
+  FROM [DatabaseAudit].[dbo].[database_user]
 ';
 $LoginName = $conn->query($LoginNameQuery);
     }	

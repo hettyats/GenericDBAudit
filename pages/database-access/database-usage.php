@@ -38,25 +38,30 @@ if (isset($_GET['id'])) {
                                 <thead>
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                        <th>Id</th>
                                         <th>Username</th>
-                                        <th>Logon Time</th>
-                                        <th>spid</th>
+                                        <th>Total</th>
+                                        <th>Last Access</th>
                                         <?php } else{ ?>
-                                        <th>Id</th>
                                         <th>Username</th>
-                                        <th>Logon Time</th>
-                                        <th>spid</th>
+                                        <th>Total</th>
+                                        <!-- <th>Logon Time</th>
+                                        <th>spid</th> -->
                                         <?php }?>
                                     </tr>
                                 </thead>
                                 <tbody>
                                   <?php while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
-                                      <td><?php echo $row['access_log_id'] ?></td>
-                                      <td><?php echo $row['login_name'] ?></td>
-                                      <td><?php echo $row['access_time'] ?></td>
-                                      <td><?php echo $row['spid'] ?></td>
+                                    <?php if ($makerValue == 1) {?>
+                                      <td><?php echo $row['Name'] ?></td>
+                                      <td><?php echo $row['Total'] ?></td>
+                                      <td><?php echo $row['LastAccess'] ?></td>
+                                      <?php } else{ ?>
+                                      <td><?php echo $row['Name'] ?></td>
+                                      <td><?php echo $row['Total'] ?></td>
+                                      <!-- <td><?php //echo $row['access_time'] ?></td>
+                                      <td><?php //echo $row['spid'] ?></td> -->
+                                      <?php }?>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

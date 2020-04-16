@@ -40,17 +40,13 @@ if (isset($_GET['id'])) {
                                     <th>Username</th>
                                     <th>Host</th>
                                     <th>Password</th>
-                                    <th>Default Role</th>
-                                    <th>Password Expired</th>
-                                    <th>Authentication String</th>
-                                    <th>Authentication Type</th>
+                                    <!-- <th>Password Expired</th> -->
                                     <?php } else{ ?>
-                                    <th>Username</th>
                                     <th>Principal_id</th>
+                                    <th>Username</th>
+                                    <th>Status</th>
                                     <th>Create Date</th>
-                                    <th>Type Description</th>
                                     <th>Modify Date</th>
-                                    <th>Authentication Type</th>
                                     <?php }?>
                                     </tr>
                                 </thead>
@@ -58,20 +54,15 @@ if (isset($_GET['id'])) {
                                     <?php while ($row = $LoginName->fetch(PDO::FETCH_ASSOC)) {?>
                                 <tr>
                                 <?php if ($makerValue == 1) {?>
-                                    <td><?php echo $row['USER'] ?></td>
-                                    <td><?php echo $row['host'] ?></td>
+                                    <td><?php echo $row['username'] ?></td>
+                                    <td><?php echo $row['HOST'] ?></td>
                                     <td><?php echo $row['PASSWORD'] ?></td>
-                                    <td><?php echo $row['default_role'] ?></td>
-                                    <td><?php echo $row['password_expired'] ?></td>
-                                    <td><?php echo $row['authentication_string'] ?></td>
-                                    <td><?php echo $row['auth_type'] ?></td>
-                                <?php } else{ ?>
-                                    <td><?php echo $row['name'] ?></td>
+                                    <?php } else{ ?>
                                     <td><?php echo $row['principal_id'] ?></td>
+                                    <td><?php echo $row['name'] ?></td>
+                                    <td><?php echo $row['status'] ?></td>
                                     <td><?php echo $row['create_date'] ?></td>
-                                    <td><?php echo $row['type_desc'] ?></td>
                                     <td><?php echo $row['modify_date'] ?></td>
-                                    <td><?php echo $row['authentication_type'] ?></td>
                                     
                                     <?php }?>
                               </tr>

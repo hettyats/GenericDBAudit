@@ -5,18 +5,26 @@ if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   }
 
-
 if ($makerValue == 1){
-    $PrivilegeQuery = '';
+    $PrivilegeQuery = "
+    SELECT 	`PRIVILEGE_TYPE` AS `PermissionName`, 
+        CASE `IS_GRANTABLE`
+          WHEN 'YES' THEN 'GRANT'
+          ELSE 'DENY'
+        END AS `state_desc`
+      FROM 
+        `databaseaudit`.`privileges` 
+    ";
     
 $Privilege = $dbh->query($PrivilegeQuery);
 } else {  
 // Database Privilege List Query
 $PrivilegeQuery = '
-SELECT DISTINCT permission_name as PermissionName,
-       type,
-       state_desc,
-       class_desc FROM databaseauditbikestore.sys.database_permissions
+SELECT [PermissionName]
+      ,[type]
+      ,[state_desc]
+      ,[class_desc]
+  FROM [DatabaseAudit].[dbo].[privileges]
 ';
 $Privilege = $conn->query($PrivilegeQuery);
 }

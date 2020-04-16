@@ -40,8 +40,8 @@ if (isset($_GET['id'])) {
                                       <tr>
                                       <?php if ($makerValue == 1) {?>
                                           <th>Role ID</th>
-                                          <th>Role Name</th>
-                                          <th>Status</th>
+                                          <th>Username</th>
+                                          <th>Host</th>
                                           <th>Type</th>
                                           <th>Create Date</th>
 
@@ -56,10 +56,18 @@ if (isset($_GET['id'])) {
                                 <tbody>
                                     <?php while ($row = $Role->fetch(PDO::FETCH_ASSOC)) {?>
                                       <tr>
+                                      <?php if ($makerValue == 1) {?>
+                                          <td><?php echo $row['Role_id'] ?></td>
+                                          <td><?php echo $row['User'] ?></td>
+                                          <td><?php echo $row['HOST'] ?></td>
+                                          <td><?php echo $row['Role'] ?></td>
+                                          <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['Create_date'])); ?></td>
+                                          <?php } else{ ?>
                                           <td><?php echo $row['principal_id'] ?></td>
                                           <td><?php echo $row['name'] ?></td>
                                           <td><?php echo $row['type_desc'] ?></td>
                                           <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['create_date'])); ?></td>
+                                          <?php }?>    
                                       </tr>
                                     <?php } ?>
                                 </tbody>

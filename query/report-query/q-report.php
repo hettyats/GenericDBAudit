@@ -31,7 +31,7 @@ select top 365
     year(access_time) as [Year],
     count(access_time) as [Total]
 from
-    databaseauditbikestore.dbo.success_access_log
+    databaseaudit.dbo.success_access_log
 group by
 	year(access_time),
     month(access_time),
@@ -52,28 +52,5 @@ while ($row = $dbAccessStmt->fetch(PDO::FETCH_ASSOC)) {
 // $test = [1,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33];
 
 $outlier = findOutlier($dbAccess);
-// $outlier = [0,2]; 
-
-// $dependencyQuery = "
-// select
-// 	ObjName as [Name],
-// 	ObjID as [ID]
-// from ViewList
-// where Status = 'No'
-// ";
-
-// $dependencyStmt = $dbh->query($dependencyQuery);
-
-// $dependID = array();
-// $dependName = array();
-
-// while ($row = $dependencyStmt->fetch(PDO::FETCH_ASSOC)) {
-//     array_push($dependID, $row['ID']);
-//     array_push($dependName, $row['Name']);
-// }
-
-
-
-
 
 ?>

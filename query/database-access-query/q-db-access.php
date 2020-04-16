@@ -25,7 +25,7 @@ if ($makerValue == 1){
         login_name [Name],
         program_name as [Program],
         access_time as [Time]
-    FROM databaseauditbikestore.dbo.success_access_log
+    FROM databaseaudit.dbo.success_access_log
     ORDER BY [Time] desc';
 $AccessList = $conn->query($DatabaseAccessQuery);
     }

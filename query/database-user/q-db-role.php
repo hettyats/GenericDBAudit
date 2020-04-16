@@ -9,7 +9,16 @@ if (isset($_GET['id'])) {
 
 // Database Login Name List Query
 if ($makerValue == 1){
-     $RoleQuery = '';
+     $RoleQuery = '
+     SELECT 	`Role_id`, 
+	`User`, 
+	`HOST`, 
+	`Role`, 
+	`Create_date`, 
+	`Admin_option`
+	 
+	FROM 
+	`databaseaudit`.`role_list` ';
      $Role = $dbh->query($RoleQuery);
 } else {   
 $RoleQuery = '
@@ -17,7 +26,7 @@ SELECT principal_id,
      name,
      type_desc,
      type,
-     create_date FROM databaseauditbikestore.sys.database_principals
+     create_date FROM databaseaudit.sys.database_principals
 ';
 $Role = $conn->query($RoleQuery);
 }

@@ -36,19 +36,32 @@ if (isset($_GET['id'])) {
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                   <tr>
+                                  <?php if ($makerValue == 1) {?>
+                                    <th>Permission Name</th>
+                                    <th>Permission State</th>
+                                    <th>More</th>
+
+                                    <?php } else{ ?>
                                       <th>Permission Name</th>
                                       <th>CLass Description</th>
                                       <th>Type Permission</th>
                                       <th>Permission State</th>
+                                      <th>More</th>
+                                      <?php }?>  
                                   </tr>
                                 </thead>
                                 <tbody method="get">
                                     <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
                                       <tr  method="POST">
                                         <?php if ($makerValue == 1) {?>
-
-
-
+                                          <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
+                                          <td><?php echo $row['state_desc'] ?></td>
+                                          <td>
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
+                                                class="text-muted">
+                                                <i class="fa fa-search"></i>
+                                            </a>
+                                          </td>
                                         <?php } else{ ?>
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['class_desc'] ?></td>
@@ -56,7 +69,7 @@ if (isset($_GET['id'])) {
                                           <td><?php echo $row['state_desc'] ?></td>
 
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
