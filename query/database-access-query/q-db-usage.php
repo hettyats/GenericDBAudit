@@ -28,11 +28,5 @@ GROUP BY login_name
 ';
     $DBUser = $conn->query($DBUserQuery);
 }
-// $name = array();
-// $total = array();
 
-//  while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {
-//      array_push($total, $row['Total']);
-//      array_push($name, $row['Name']);
-//  }
 ?>

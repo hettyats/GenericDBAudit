@@ -1,10 +1,8 @@
 <?php
 $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
-// include $path.'/choose_db.php';
-// Database Access Query
-// include $path.'/choose_db.php';
 
+// Database Access Query
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   }

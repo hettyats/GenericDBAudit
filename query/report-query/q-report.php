@@ -48,9 +48,15 @@ while ($row = $dbAccessStmt->fetch(PDO::FETCH_ASSOC)) {
     array_push($accessDate,$row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']);
 }
 
-
-// $test = [1,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33,33];
-
 $outlier = findOutlier($dbAccess);
+
+$outsideQuery ='
+SELECT
+    login_name, Count (distinct(access_time)) As [Total], MAX(access_time) as [last_access]
+    FROM
+    [DatabaseAudit].[dbo].[user_outside_operating_hour]
+    GROUP BY login_name
+';
+$dbOutside = $conn->query($outsideQuery);
 
 ?>

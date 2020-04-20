@@ -34,7 +34,9 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        <i class="fa fa-pie-chart"></i> Database Audit Report: <?php $dbname ?>
+                        <i class="fa fa-pie-chart"></i> Database Audit Report: <?php if ($makerValue == 1) {?>Northwind
+                    <?php } else { ?>BikeStores
+                <?php }?>
                         <small class="pull-right">Date: <?php echo date('F, j Y'); ?></small>
                     </h2>
                 </div>
@@ -43,9 +45,8 @@ if (isset($_GET['id'])) {
 
             <div class="row">
                 <div class="col-xs-12">
-
                     <h3>Observation Database Access</h3>
-                    <?php if(count($outlier)>0){echo $outlier[0];}else{echo "none";} ?>
+                    <?php if(count($outlier)>0){echo $outlier[0];} //else{echo "none";} ?>
                     <dl>
                         <dt>Database Unusual Access</dt>
                         <dd>
@@ -63,8 +64,34 @@ if (isset($_GET['id'])) {
                         </dd>
 
                         <br>
-                        <dt>Database Failed Access</dt>
-                        <dl>Database failed access on:</dl>
+                        <dt>Access Outside Operating Hour</dt>
+                        <dl>The following user access database outside of normal operating hour:</dl>
+                        <table id="AccessList" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <?php if ($makerValue == 1) {?>
+                                        
+                                        <?php } else{ ?>
+                                          <th>Username</th>
+                                          <th>Total Access</th>
+                                          <th>Last Access On</th>
+                                        <?php }?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <?php while ($row = $dbOutside->fetch(PDO::FETCH_ASSOC)) {
+                                        if ($makerValue == 1) {?>
+                                       
+                                      <?php } else{ ?>
+                                      <td> <?php echo $row['login_name']?> </td>
+                                      <td> <?php echo $row['Total']?></td>
+                                      <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['last_access'])); ?></td>
+                                      <?php }?>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                     </dl>
                     <h4>Recommendation</h4>
                     <dl>
@@ -72,91 +99,26 @@ if (isset($_GET['id'])) {
                         <dt>Database Most Access</dt>
                         <dd>Please verify database access is correct.</dd>
                         <?php } ?>
+                        <dt>Access Outside Operating Hour</dt>
+                        <dd>Make sure the access is indeed carried out by authorized users and check the activities carried out by these users.<dd>
                     </dl>
-
-                    <!-- <h3>Observation No. 2: Database Object</h3>
-                    <dl>
-                        <dt>Database Dependencies</dt>
-                        <dd>
-                            <?php if(count($dependID) > 0){ ?>
-                            This database object did not have depend object:
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Object ID</th>
-                                    <th>Object Name</th>
-                                    <th>Object Type</th>
-                                </thead>
-                                <tbody>
-                                    <?php for($i=0;$i<count($dependID);$i++){ ?>
-                                    <tr>
-                                        <td><?php echo $dependID[$i]?></td>
-                                        <td><?php echo $dependName[$i] ?></td>
-                                        <td><?php echo "View" ?></td>
-                                    </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                            <?php }else{ ?>
-                            All database object are fine.
-                            <?php } ?>
-                        </dd>
-                    </dl>
-                    <h4>Recommendation</h4>
-                    <dl>
-                        <?php if(count($dependID) > 0){ ?>
-                        <dt>Database Dependencies</dt>
-                        <dd>
-                            Delete the database object or fix the database depend object:
-                            <ul>
-                                <?php for($i=0;$i<count($dependID);$i++){ ?>
-                                <li><?php echo $dependName[$i]." (Object ID: ".$dependID[$i].")"; ?></li>
-                                <?php } ?>
-                            </ul>
-                        </dd>
-                        <?php } ?>
-                    </dl>
-                     -->
-                    <!-- <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
-                    <dl>
-                        <dt>Most DDL Activity</dt>
-                        <dd>
-                            
-                        </dd>
-                    </dl>
-                    <h4>Recommendation</h4>
-                    <dl>
-                        <dt>Most DDL Activity</dt>
-                        <dd></dd>
-                    </dl>
-
-                    <h3>Observation No. 4: Database Error</h3>
-                    <dl>
-                        <dt>Failed Login</dt>
-                        <dd>
-                        </dd>
-                        <dt>Syntax Error</dt>
-                        <dd>
-                        </dd>
-                    </dl>
-                    <h4>Recommendation</h4>
-                    <dl>
-                        <dt>Failed Login</dt>
-                        <dd></dd>
-                        <dt>Syntax Error</dt>
-                        <dd></dd>
-                    </dl> -->
-
                     <h3>Observation Database User</h3>
                     <dl>
                         <dt>Inactive User</dt>
+                        <!-- <dl>This user is not using the database for several times:</dl> -->
+                        <dd>There is no Inactive User in database.
+                        </dd>
+                        <br/>
+                        <dt>Not Change Password </dt>
+                        <dl>This user is not change the password for several times:</dl>
                         <dd>
                         </dd>
                     </dl>
-                    <!-- <h4>Recommendation</h4>
+                    <h4>Recommendation</h4>
                     <dl>
-                        <dt>Inactive User</dt>
-                        <dd></dd>
-                    </dl> -->
+                        <!-- <dt>Inactive User</dt>
+                        <dd></dd> -->
+                    </dl>
 
                 </div>
             </div>
