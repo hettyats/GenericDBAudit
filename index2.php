@@ -49,9 +49,9 @@ if (isset($_GET['id'])) {
                                 <thead>
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                        <th>Username</th>
-                                        <th>Total</th>
-                                        <th>Last Access</th>
+                                        <th>Access Time</th>
+                                        <th>User Host</th>
+                                        <th>Command Type</th>
                                         <?php } else{ ?>
                                         <th>Username</th>
                                         <th>SPID</th>
@@ -66,9 +66,9 @@ if (isset($_GET['id'])) {
                                   <?php while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                      <td><?php echo $row['Name'] ?></td>
-                                      <td><?php echo $row['Total'] ?></td>
-                                      <td><?php echo $row['LastAccess'] ?></td>
+                                      <td><?php echo $row['event_time'] ?></td>
+                                      <td><?php echo $row['user_host'] ?></td>
+                                      <td><?php echo $row['command_type'] ?></td>
                                       <?php } else{ ?>
                                       <td><?php echo $row['login_name'] ?></td>
                                       <td><?php echo $row['spid'] ?></td>
@@ -104,16 +104,18 @@ if (isset($_GET['id'])) {
                                 <tbody>
                                     
                                         <?php while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                                        //if ($makerValue == 1) {?>
+                                        if ($makerValue == 1) {?>
                                         <tr>
+                                        <td><?php echo ($row['event_time'])?> </td>
+                                        <td><?php echo ($row['user_host'])?></td>
+                                        <td><?php echo ($row['event_time'])?></td>
+                                      <?php } else{ ?>
                                         <td><?php echo ($row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']) ?></td>
                                         <td><?php echo ($row['login_name'])?></td>
                                         <td><?php echo ($row['Total'])?></td>
-                                      <?php //} else{ ?>
-                                        
                                       <?php }?>
                                     </tr>
-                                    <?php //} ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             </div>
