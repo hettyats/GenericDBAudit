@@ -7,7 +7,12 @@ if (isset($_GET['id'])) {
 
 if ($makerValue == 1){
 // Database login error List Query
-$ErrorQuery = "";
+$ErrorQuery = 'SELECT
+*
+FROM
+`count_failed_login`
+ORDER BY event_time DESC
+';
 
 $Error = $dbh->query($ErrorQuery);
 } else {

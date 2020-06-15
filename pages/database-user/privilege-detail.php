@@ -20,7 +20,7 @@
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
                 <li><a href="/TA2/DBAudit/pages/database-user/user-list.php">Database User</a></li>
                 <li><a href="/TA2/DBAudit/pages/database-user/privilege.php">Database Privileges</a></li>
-                <li class='active'>Database Privileges</a></li>
+                <li class='active'>Database Privileges Detail</a></li>
 
             </ol>
         </section>

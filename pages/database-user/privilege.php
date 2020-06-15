@@ -15,7 +15,9 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database User
+                Database User <?php if ($makerValue == 1) {?>Northwind
+                    <?php } else { ?>BikeStores
+                <?php }?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -50,10 +52,10 @@ if (isset($_GET['id'])) {
                                       <?php }?>  
                                   </tr>
                                 </thead>
-                                <tbody method="get">
-                                    <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {?>
-                                      <tr  method="POST">
-                                        <?php if ($makerValue == 1) {?>
+                                <tbody>
+                                    <tr>
+                                    <?php while ($row = $Privilege->fetch(PDO::FETCH_ASSOC)) {
+                                       if ($makerValue == 1) {?>
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['state_desc'] ?></td>
                                           <td>

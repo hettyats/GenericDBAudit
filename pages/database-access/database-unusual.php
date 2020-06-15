@@ -1,7 +1,10 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; ?>
+<?php include $path.'/pages/navbars/head.php';
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } ?>
 
-<?php include $path.'/query/database-access-query/q-db-usage.php'; ?>
+<?php include $path.'/query/database-access-query/q-db-unusual.php'; ?>
 
 <div class="wrapper">
 
@@ -13,7 +16,9 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Access
+            Database Unusual Access <?php if ($makerValue == 1) {?>Northwind
+                    <?php } else { ?>BikeStores
+                <?php }?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
@@ -30,7 +35,7 @@
                 <div class="col-xs-12">
                     <div class="box ">
                         <div class="box-header">
-                            <h3 class="box-title">Database Access Chart</h3>
+                            <h3 class="box-title">Database Unusual Access Chart</h3>
                         </div>
                         <div class="box-body">
                             <div class="chart">
@@ -48,20 +53,35 @@
                             <h3 class="box-title">Database Unusual Access List</h3>
                         </div>
                         <div class="box-body">
-                            <table id="" class="table table-bordered table-hover">
+                            <table id="Unusual" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Access Date</th>
-                                        <th>Total of Access</th>
-                                        <th>More</th>
+                                        <?php if ($makerValue == 1) {?>
+                                        <th>User Host</th>
+                                        <th>Server ID</th>
+                                        <th>Access Time</th>
+                                        <?php } else{ ?>
+                                            <th>Login Name</th>
+                                            <th>Program Name</th>
+                                            <!-- <th>IP Address</th> -->
+                                            <th>Access Time</th>
+                                        <?php }?>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <?php while ($row = $Unusual->fetch(PDO::FETCH_ASSOC)) {
+                                        if ($makerValue == 1) {?>
+                                        <td><?php echo ($row['user_host']);?></td>
+                                        <td><?php echo ($row['server_id'])?></td>
+                                        <td><?php echo ($row['event_time']);?></td>
+                                    <?php } else{ ?>
+                                        <td> <?php echo $row['Name']?> </td>
+                                        <td> <?php echo $row['Program']?></td>
+                                        <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['Time'])); ?></td>
+                                      <?php }?>
                                     </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -88,5 +108,17 @@
 <script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
 
 <?php //include $path.'/charts/db-access-charts/usage-charts.php'; ?>
+<script>
+$(function() {
+    $('#Unusual').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
 
 <?php include $path.'/pages/navbars/end.php'; ?>
