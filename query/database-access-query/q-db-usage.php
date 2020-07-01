@@ -18,15 +18,37 @@ if ($makerValue == 1){
     GROUP BY `user_host`
     ';
     $DBUser = $dbh->query($DBUserQuery);
+    
+    $name = array();
+    $total = array();
+    $totals = array();
+    $month = array();
+
+    while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {
+    array_push($total, $row['Total']);
+    array_push($name, $row['Name']);
+    array_push($month, $row['LastAccess']);
+    }
+
+
 } else {
     $DBUserQuery = '
     SELECT 
     login_name as [Name],
     count(*) as [Total]
-FROM databaseaudit.dbo.success_access_log
-GROUP BY login_name
-';
+        FROM databaseaudit.dbo.success_access_log
+        GROUP BY login_name
+        ';
     $DBUser = $conn->query($DBUserQuery);
+
+    $name = array();
+    $total = array();
+
+    while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {
+    array_push($total, $row['Total']);
+    array_push($name, $row['Name']);
+    }
+
 }
 
 ?>

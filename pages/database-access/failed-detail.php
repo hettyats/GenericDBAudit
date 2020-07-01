@@ -4,10 +4,10 @@ if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   } ?>
 
-<?php $permissionType = $_GET['perm']; 
-$permission = $_GET['PRIVILEGE_TYPE'];?>
+<?php $user_host = $_GET['user_host'];
+?>
 
-<?php include $path.'/query/database-user/q-db-privilege-detail.php'; ?>
+<?php include $path.'/query/database-access-query/q-db-failed-detail.php'; ?>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>
@@ -22,9 +22,9 @@ $permission = $_GET['PRIVILEGE_TYPE'];?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-user/user-list.php">Database User</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue ?>">Database Privileges</a></li>
-                <li class='active'>Database Privileges Detail</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>">Database Access</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>">Failed Login</a></li>
+                <li class='active'>Failed Login Detail</a></li>
 
             </ol>
         </section>
@@ -35,42 +35,36 @@ $permission = $_GET['PRIVILEGE_TYPE'];?>
                 <div class="col-xs-12">
                     <div class="box ">
                         <div class="box-header">
-                            <h3 class="box-title">Database Privileges: </h3>
+                            <h3 class="box-title">Failed Login : </h3>
                         </div>
                         <div class="box-body">
-                            <table id="ViewList" class="table table-bordered table-hover">
+                            <table id="FailDetList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                      <th>Login Name</th>
-                                      <th>Permission State</th>
-                                      <th>Permission Type</th>
+                                        <th>Host</th>
+                                        <th>Last Access Time</th>
+                                        <th>Arguments</th>
                                     
                                     <?php } else{ ?>
-                                      <th>Permission State</th>
-                                      <th>Login Name</th>
-                                      <th>Login Type</th>
-                                      <th>Database User Name</th>
-                                      <th>Object Type</th>
-                                      <th>Object Name</th>
+                                      <th>Message</th>
+                                      <th>Date</th>
+                                      <th>Source</th>
                                       <?php }?> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($row = $ListPriv->fetch(PDO::FETCH_ASSOC)) {?>
+                                    <?php while ($row = $ListErr->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                        <td><?php echo $row['GRANTEE'] ?></td>
-                                        <td><?php echo $row['PRIVILEGE_TYPE'] ?></td>
-                                        <td><?php echo $row['state_desc'] ?></td>
+                                    <td><?php echo $row['user_host']?></td>
+                                    <td><?php echo $row['event_time']?></td>
+                                    <td><?php echo $row['argument']?></td>
 
                                     <?php } else{ ?>
-                                        <td><?php echo $row['PermissionState'] ?></td>
-                                        <td><?php echo $row['UserName'] ?></td>
-                                        <td><?php echo $row['UserType'] ?></td>
-                                        <td><?php echo $row['DatabaseUserName'] ?></td>
-                                        <td><?php echo $row['ObjectType'] ?></td>
-                                        <td><?php echo $row['ObjectName'] ?></td>
+                                        <td><?php echo $row['error_message'] ?></td>
+                                        <td><?php echo $row['error_date'] ?></td>
+                                        <td><?php echo $row['source'] ?></td>
                                         <?php }?> 
                                     </tr>
                                     <?php } ?>

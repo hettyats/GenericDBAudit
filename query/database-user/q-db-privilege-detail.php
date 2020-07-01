@@ -2,7 +2,8 @@
 $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
 if (isset($_GET['perm'])) {
-	$permissionType = $_GET['perm'];
+  $permissionType = $_GET['perm'];
+  $permission = $_GET['PRIVILEGE_TYPE'];
 	$makerValue = $_GET['id'];
 }
   
@@ -18,7 +19,7 @@ SELECT 	`GRANTEE`,
         END AS `state_desc`
 	FROM 
 	`databaseaudit`.`privileges_list` 
-	where `PRIVILEGE_TYPE` = '".$permissionType."'";
+	where `PRIVILEGE_TYPE` = '".$permission."'";
 	$ListPriv = $dbh->query($ListPrivQuery);
 } else { 
 $ListPrivQuery = "
@@ -30,7 +31,7 @@ SELECT [UserName]
       ,[ObjectType]
       ,[ObjectName]
   FROM [DatabaseAudit].[dbo].[privilege_list]
-where PermissionType = '".$permissionType."'";//cari tau dlu dmana itu disimpan
+where PermissionType = '".$permissionType."'";
 $ListPriv = $conn->query($ListPrivQuery);
 }
 ?>

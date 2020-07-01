@@ -27,6 +27,22 @@ if (isset($_GET['id'])) {
 
         <!-- Main content -->
         <section class="content container-fluid">
+
+        <div class="row">
+                <div class="col-xs-12">
+                    <div class="box ">
+                        <div class="box-header">
+                            <h3 class="box-title">Database Login Chart</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart">
+                                <canvas id="userChart" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box ">
@@ -50,20 +66,20 @@ if (isset($_GET['id'])) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  <?php while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {?>
+                                  
                                     <tr>
                                     <?php if ($makerValue == 1) {?>
-                                      <td><?php echo $row['Name'] ?></td>
-                                      <td><?php echo $row['Total'] ?></td>
-                                      <td><?php echo $row['LastAccess'] ?></td>
+                                        <td><?php echo implode("<br> ",$name). "<br>"; ?></td>
+                                      <td><?php echo implode("<br> ",$total). "<br>"; ?></td>
+                                      <td><?php echo implode("<br> ",$month). "<br>"; ?></td>
                                       <?php } else{ ?>
-                                      <td><?php echo $row['Name'] ?></td>
-                                      <td><?php echo $row['Total'] ?></td>
+                                      <td><?php echo implode("<br> ",$name). "<br>"; ?></td>
+                                      <td><?php echo implode("<br> ",$total). "<br>"; ?></td>
                                       <!-- <td><?php //echo $row['access_time'] ?></td>
                                       <td><?php //echo $row['spid'] ?></td> -->
                                       <?php }?>
                                     </tr>
-                                    <?php } ?>
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -88,5 +104,7 @@ if (isset($_GET['id'])) {
 <script src="/TA2/DBAudit/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
+
+<?php include $path.'/charts/db-access-charts/usage-charts.php'; ?>
 
 <?php include $path.'/pages/navbars/end.php'; ?>
