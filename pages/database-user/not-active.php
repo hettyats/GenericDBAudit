@@ -1,7 +1,10 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
 
-<?php include $path.'/query/database-user/q-db-not-active.php'; ?>
+<?php include $path.'/query/database-user/q-db-not-active.php'; 
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  }?>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>
@@ -35,15 +38,17 @@
                                     <tr>
                                         <th>Username</th>
                                         <th>Last Access</th>
-                                        <th>More</th>
+                                        <!-- <th>More</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <?php while ($row = $NA->fetch(PDO::FETCH_ASSOC)) {?>
-                                <tr>
-                                    <td><?php echo $row['name'] ?></td>
-                                    <td><?php echo $row[''] ?></td>
-                                    <td><?php echo $row[''] ?></td>
+                                <tr> <?php if ($makerValue == 1){ ?>
+                                    <td><?php echo $row['user_host'] ?></td>
+                                    <td><?php echo $row['last_access'] ?></td>
+                                    <?php } else{ ?>
+                                    <td><?php echo $row['login_name'] ?></td>
+                                    <td><?php echo $row['last_access'] ?></td> <?php }?>
                                 </tr>
                                 </tbody>
                                 <?php }?>
