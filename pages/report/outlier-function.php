@@ -3,7 +3,7 @@
 function mean($list){
     $avg = array_sum($list)/count($list);
     return $avg;
-};
+}
 
 function variance($list){
     $sum = 0;

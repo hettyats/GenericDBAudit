@@ -1,8 +1,9 @@
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
 <?php include $path.'/query/q-index.php';
+
 if (isset($_GET['id'])) {
-    $makerValue = $_GET['id'];
+    $makerValue = $GLOBALS['makerValue'];
   } 
 
 ?>
@@ -108,7 +109,7 @@ if (isset($_GET['id'])) {
                                         <tr>
                                         <td><?php echo ($row['event_time'])?> </td>
                                         <td><?php echo ($row['user_host'])?></td>
-                                        <td><?php echo ($row['event_time'])?></td>
+                                        <td><?php echo ($row['Total'])?></td>
                                       <?php } else{ ?>
                                         <td><?php echo ($row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']) ?></td>
                                         <td><?php echo ($row['login_name'])?></td>

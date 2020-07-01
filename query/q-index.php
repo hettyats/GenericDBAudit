@@ -40,9 +40,8 @@ if ($makerValue == 1){
   $query2 = '
   SELECT *
   FROM databaseaudit.count_success_log
-  GROUP BY user_host
   ';
-  $stmt2 = $dbh->query($query1);
+  $stmt2 = $dbh->query($query2);
   } else {
 $query2 = '
 SELECT [Day]
