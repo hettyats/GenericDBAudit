@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-user/user-list.php">Database User</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue ?>">Database User</a></li>
                 <li class='active'>Database Privileges</a></li>
             </ol>
         </section>
@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['state_desc'] ?></td>
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?PRIVILEGE_TYPE=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
