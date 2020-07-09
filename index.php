@@ -28,29 +28,27 @@ include $path.'/connection/connection.php';?>
 
 <body class="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
-          <a href="./index.php"><b>Choose your Database</b></a>
-        </div>
       <!-- /.login-logo -->
         <div class="login-box-body">
           <!-- <p class="login-box-msg">Sign in to start your session</p> -->
           <!-- <form method="POST" action = "./index2.php"> -->
            <form method="get" action = "./choose_db.php">
+           <div class="login-logo">
+          <a href="./index.php"><b>Choose your Database</b></a>
+        </div>
             <div class="form-group has-feedback">
-              <div class="col-xs-12">
-                <!-- <form method="POST" > -->
-                  <label>RDBMS : </label>
-                    <select id="cmbMake" class="form-control" name="id" >
-                      <option disabled selected>Select RDBMS </option>
-                      <option value="1">MySQL</option>
-                      <option value="2">Ms. SQL Server</option>
-                    </select>
+              <!-- <div class="col-xs-12"> -->
+                  <select id="cmbMake" class="form-control" name="id" >
+                    <option disabled selected>Select RDBMS </option>
+                    <option value="1">MySQL</option>
+                    <option value="2">Ms. SQL Server</option>
+                  </select>
                   <br/>
                   <select id="cmbMake" class="form-control" name="db" >
                       <!-- <option value="0">Select RDBMS</option> -->
                       <option value="create">Create a New Database Audit</option>
                       <option value="use">Use an exist Database Audit</option>
-                    </select>
+                  </select>
                   <br/>
                   <div class="row">
                     <div class="col-xs-4 pull-right">
@@ -58,30 +56,9 @@ include $path.'/connection/connection.php';?>
                       <button type="submit" class="btn btn-primary btn-block btn-flat">Audit</button>
                     </div>
                   </div>
-                </form>
-                <?php
-                //onchange="document.getElementById('selected_text').value=this.options[this.selectedIndex].text"
-                  // if(isset($_GET['search']))
-                  // {
-                  //     $makerValue = $_GET['search'];
-                      // $makerValue = $_POST['Make']; // make value
-                      // $dbh = new PDO("mysql:host=$host;dbname=$db", $dbuser, $password);
-                      // $conn = new PDO("sqlsrv:server=$server", $pwd);
-                      // if ($makerValue == 1){
-                      // $maker = mysqli_real_escape_string($dbh, $_POST['selected_text']); // get the selected text
-                      // } else if ($makerValue == 2) {
-                      //   $maker = mysqli_real_escape_string($conn, $_POST['selected_text']); 
-                      // }
-                      // $bool=true;
-                      // $db1 = "Northwind";
-                      // $db2 = "BikeStores";
-                     
-                      // if (isset($_GET['search'])) {
-                      //   $makerValue = $_GET['search'];
-                      // }
-                  //} ?>
-              </div>
+              <!-- </div> -->
             </div>
+            </form>
         </div>
     <!-- /.login-box-body -->
     </div>
