@@ -148,7 +148,7 @@ if (isset($_GET['id'])) {
                     $gen = $dbh->prepare("use mysql");
                     $gen->execute();
 
-                    $genlog = "CREATE TABLE IF NOT EXIST `general_log` (
+                    $genlog = "CREATE TABLE IF NOT EXISTS `general_log` (
                         `event_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
                                                ON UPDATE CURRENT_TIMESTAMP,
                         `user_host` mediumtext NOT NULL,
@@ -156,17 +156,15 @@ if (isset($_GET['id'])) {
                         `server_id` int(10) unsigned NOT NULL,
                         `command_type` varchar(64) NOT NULL,
                         `argument` mediumtext NOT NULL
-                       ) ENGINE=CSV DEFAULT CHARSET=utf8 COMMENT='General log'
-                       
-                        SET @old_log_state = @@GLOBAL.general_log;
-                        SET GLOBAL general_log = 'OFF';
-                        ALTER TABLE mysql.general_log ENGINE = MYISAM;
-                        SET GLOBAL general_log = @old_log_state;
-
-
-                        SET global general_log = 1;
-                        SET global log_output = 'table';";
+                       ) ENGINE=CSV DEFAULT CHARSET=utf8 COMMENT='General log'";
                     $dbh->exec($genlog); 
+
+                    $log = "SET @old_log_state = @@GLOBAL.general_log;
+                    SET GLOBAL general_log = 'OFF';
+                    ALTER TABLE mysql.general_log ENGINE = MYISAM;
+                    SET GLOBAL general_log = @old_log_state;
+                    SET global log_output = 'table';";
+                    $dbh->exec($log); 
 
                     
                     $ser = $dbh->prepare("use " . $user."audit");
@@ -253,7 +251,7 @@ if (isset($_GET['id'])) {
     
                         $sql= "CREATE VIEW inactive_user AS
                                       SELECT user_host
-                                            , MAX(event_time) AS last_acccess
+                                            , MAX(event_time) AS last_access
                                         FROM general_log
                                       WHERE CONVERT(MONTH(CURDATE()), INT) - CONVERT(MONTH(event_time), INT) >=3
                                       GROUP BY user_host";
@@ -296,7 +294,7 @@ if (isset($_GET['id'])) {
 
                     $dbaudit = $user.'audit';
 
-                   $stmt = $conn->prepare("CREATE TABLE [dbo].[failed_access](
+                   $stmt = $conn->prepare("CREATE TABLE [dbo].[error_log](
                         [id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
                         [LogDate] [datetime] NULL,
                         [ProcessInfo] [varchar](50) NULL,
@@ -317,7 +315,7 @@ if (isset($_GET['id'])) {
                     exec $dbtarget.sys.sp_readerrorlog 0, 1, 'Login failed';
                 
                 
-                    MERGE INTO dbo.failed_access T
+                    MERGE INTO dbo.error_log T
                     USING (
                         SELECT [LogDate],[ProcessInfo],[Text]
                         FROM @FailedAccess
@@ -435,7 +433,7 @@ if (isset($_GET['id'])) {
                         GROUP BY lg.principal_id, lg.name, lg.type_desc, lg.create_date, lg.modify_date, lg.status",$pdo_options);
                 $stmt->execute();
                 
-                $stmt = $conn->prepare("CREATE VIEW [dbo].[user_password] AS 
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[database_user_password] AS 
                         SELECT principal_id, name, type_desc, LOGINPROPERTY(name, 'PasswordLastSetTime') AS lastsettime, LOGINPROPERTY(name, 'DaysUntilExpiration') AS dayexpiration, LOGINPROPERTY(name, 'PasswordHash') 
                                                 AS passhash, LOGINPROPERTY(name, 'PasswordHashAlgorithm') AS passhashalgo
                         FROM [dbo].[database_user]",$pdo_options);
@@ -542,11 +540,11 @@ if (isset($_GET['id'])) {
                         login_name",$pdo_options);
                 $stmt->execute();
                 
-                $stmt = $conn->prepare("CREATE VIEW [dbo].[count_failed_login] AS
-                        SELECT CAST(error_message AS varchar(MAX)) AS Text, COUNT(error_date) AS count, MAX(error_date) AS date
-                        FROM dbo.error_log
-                        WHERE (error_message LIKE '%Login failed for user%')
-                        GROUP BY CAST(error_message AS varchar(MAX))",$pdo_options);
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[error_log] AS
+                SELECT CAST(Text AS varchar(MAX)) AS Text, COUNT(LogDate) AS count, MAX(LogDate) AS date
+                FROM [dbo].[error_log]
+                WHERE (Text LIKE '%Login failed for user%')
+                GROUP BY CAST(Text AS varchar(MAX))",$pdo_options);
                 $stmt->execute();
 
                     // unset($stmt);
