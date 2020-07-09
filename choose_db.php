@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
                         <!-- <div class="col-xs-12"> -->
                         <form method="post" action="">
                             <div class="login-logo">
-                                <a href="./index.php"><b>Use Database</b></a>
+                                <a href="./index.php"><b>Create Database Audit</b></a>
                             </div>
                             <div class="form-group has-feedback">
                                 <input type="text" class="form-control" name="db" placeholder="Database name">
@@ -96,7 +96,10 @@ if (isset($_GET['id'])) {
                         </form>
                     <?php }else{?>
                         <form method="get" action="./index2.php?id=<?=$makerValue ?>">
-                        <label>Database name: </label>
+                            <div class="login-logo">
+                                <a href="./index.php"><b>Use Database</b></a>
+                            </div>
+                            <div class="form-group has-feedback">
                                 <select class="form-control" name="usedb" id="cmbMake">
                                     <option disabled selected> Select Database Audit </option>
                                     <?php 
@@ -117,8 +120,8 @@ if (isset($_GET['id'])) {
                                     <option value="<?= $row["name"]?>"><?=$row["name"]?></option>
                                     <?php endforeach; ?>
                                     <!-- </select> -->
-
                                 </select>
+                            </div>
                                 <div class="row">
                                     <div class="col-xs-4 pull-right">
                                         <button type="submit" class="btn btn-primary btn-block btn-flat">Use</button>
