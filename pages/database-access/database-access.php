@@ -1,8 +1,29 @@
+<?php //session_start();
+      //Put session start at the beginning of the file
+?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php';
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } ?>
+  }
+
+//   if(isset($_SESSION["id"])){
+//     $makerValue = $_SESSION["id"];
+//     echo "session db ".$makerValue;
+// }
+//   if (isset($_GET['usedb'])) {
+//     $dbnya = $_GET['usedb'];
+//   }
+//   if(!isset($_SESSION)){
+//     session_start();
+// }
+//   if (isset($_GET['usedb'])) {
+//     $usedb = $_GET['usedb'];
+//     $_SESSION['usedb']=$usedb;
+//     session_start();
+//     echo "masuk pak eko ".$usedb;
+// }
+  ?>
 <?php include $path.'/query/database-access-query/q-db-access.php'; ?>
 
 
@@ -16,14 +37,12 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Access <?php if ($makerValue == 1) {?>Northwind
-                    <?php } else { ?>BikeStores
-                <?php }?>
+                Database Access <?php echo $dbnya?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-access/database-access.php">Database Access</a></li>
+                <li><a href="/TA2/DBAudit/index.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-dashboard"></i>Home</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>">Database Access</a></li>
                 <li class="active">Database Access List</li>
             </ol>
         </section>

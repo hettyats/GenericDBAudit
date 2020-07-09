@@ -4,7 +4,15 @@ include $path . "/connection/connection.php";
 if (isset($_GET['perm'])) {
   $permissionType = $_GET['perm'];
   $permission = $_GET['PRIVILEGE_TYPE'];
-	$makerValue = $_GET['id'];
+}
+
+if(isset($_SESSION["id"])){
+  $makerValue = $_SESSION["id"];
+  // echo "session db ".$makerValue;
+}
+
+if (isset($_GET['usedb'])) {
+$dbnya = $_GET['usedb'];
 }
   
 // Database Privilege List Query
@@ -18,7 +26,7 @@ SELECT 	`GRANTEE`,
           ELSE 'DENY'
         END AS `state_desc`
 	FROM 
-	`databaseaudit`.`privileges_list` 
+	`$dbnya`.`privileges_list` 
 	where `PRIVILEGE_TYPE` = '".$permission."'";
 	$ListPriv = $dbh->query($ListPrivQuery);
 } else { 
@@ -30,7 +38,7 @@ SELECT [UserName]
       ,[PermissionState]
       ,[ObjectType]
       ,[ObjectName]
-  FROM [DatabaseAudit].[dbo].[privilege_list]
+  FROM [$dbnya].[dbo].[privilege_list]
 where PermissionType = '".$permissionType."'";
 $ListPriv = $conn->query($ListPrivQuery);
 }

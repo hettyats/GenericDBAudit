@@ -37,15 +37,33 @@ if (isset($_GET['id'])) {
                             <table id="ViewList" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                    <?php if ($makerValue == 1) {?>
+                                    <th>User</th>
+                                    <th>Status</th>
+
+                                    <?php } else{ ?>
                                         <th>Username</th>
                                         <th>Hash Algorithm</th>
                                         <th>Last Change Time</th>
                                         <!-- <th>More</th> -->
+                                        <?php }?>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($row = $Pass->fetch(PDO::FETCH_ASSOC)) {?>
                                     <tr>
+                                    <?php if ($makerValue == 1){ ?>
+                                        <?php if($row['Status'] ==  'Expired'){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
+                                        <td><?php echo $row['USER']?></td>
+                                        <td><?php echo $row['Status']?></td>
+                                        <?php } else{ ?>
+                                            <?php if($row['lastsettime'] !== 'Not SQL Server Login' && $row['lastsettime'] > '(datediff(MM,convert(datetime,lastsettime), getdate())) > 2' ){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
                                         <td><?php echo $row['name'] ?></td>
                                         <td><?php echo $row['passhashalgo'] ?></td>
                                         <td>
@@ -54,6 +72,7 @@ if (isset($_GET['id'])) {
                                                 else{echo date('jS \of F Y h:i:s A',strtotime($row['lastsettime']));}
                                             ?>
                                         </td>
+                                        <?php }?>
                                         <!-- <td>
                                             <a href="" class="text-muted">
                                                 <i class="fa fa-search"></i>

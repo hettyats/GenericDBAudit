@@ -4,6 +4,14 @@ include $path . "/connection/connection.php";
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   }
+  if(isset($_SESSION["id"])){
+    $makerValue = $_SESSION["id"];
+    // echo "session db ".$makerValue;
+}
+
+if (isset($_GET['usedb'])) {
+  $dbnya = $_GET['usedb'];
+}
 
 if ($makerValue == 1){
     $PrivilegeQuery = "
@@ -13,19 +21,19 @@ if ($makerValue == 1){
           ELSE 'DENY'
         END AS `state_desc`
       FROM 
-        `databaseaudit`.`privileges` 
+        `$dbnya`.`privileges` 
     ";
     
 $Privilege = $dbh->query($PrivilegeQuery);
 } else {  
 // Database Privilege List Query
-$PrivilegeQuery = '
+$PrivilegeQuery = "
 SELECT [PermissionName]
       ,[type]
       ,[state_desc]
       ,[class_desc]
-  FROM [DatabaseAudit].[dbo].[privileges]
-';
+  FROM [$dbnya].[dbo].[privileges]
+";
 $Privilege = $conn->query($PrivilegeQuery);
 }
 ?>

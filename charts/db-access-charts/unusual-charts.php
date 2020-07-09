@@ -1,10 +1,10 @@
 <script>
 $(function() {
-    var name = <?php echo json_encode($name); ?>;
+    var name = <?php echo json_encode($month); ?>;
     var total = <?php echo json_encode($total); ?>;
 
     var UnusAccessData = {
-        labels: name,
+        labels: total,
         datasets: [{
             label: 'Electronics',
             fillColor: 'rgba(210, 214, 222, 1)',

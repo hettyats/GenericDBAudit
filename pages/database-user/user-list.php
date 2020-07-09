@@ -54,10 +54,18 @@ if (isset($_GET['id'])) {
                                     <?php while ($row = $LoginName->fetch(PDO::FETCH_ASSOC)) {?>
                                 <tr>
                                 <?php if ($makerValue == 1) {?>
+                                    <?php if($row['username'] ==  NULL){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
                                     <td><?php echo $row['username'] ?></td>
                                     <td><?php echo $row['HOST'] ?></td>
                                     <td><?php echo $row['PASSWORD'] ?></td>
                                     <?php } else{ ?>
+                                        <?php if($row['status'] == 'Deactivated'){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
                                     <td><?php echo $row['principal_id'] ?></td>
                                     <td><?php echo $row['name'] ?></td>
                                     <td><?php echo $row['status'] ?></td>

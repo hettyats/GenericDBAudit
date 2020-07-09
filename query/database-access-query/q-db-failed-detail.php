@@ -3,7 +3,16 @@ $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
 if (isset($_GET['user_host'])) {
   $user_host = $_GET['user_host'];
-	$makerValue = $_GET['id'];
+  // $err = $_GET['error_message'];
+  $makerValue = $_GET['id'];
+}
+if(isset($_SESSION["id"])){
+  $makerValue = $_SESSION["id"];
+  // echo "session db ".$makerValue;
+}
+
+if (isset($_GET['usedb'])) {
+$dbnya = $_GET['usedb'];
 }
   
 // Database Failed Login List Query
@@ -13,7 +22,7 @@ SELECT
   `event_time`,
   `user_host`,
   `argument`
-FROM `databaseaudit`.`failed_list` 
+FROM `$dbnya`.`failed_list` 
 WHERE `user_host` = '".$user_host."'";
   $ListErr = $dbh->query($ListErrQuery);
 
@@ -24,7 +33,7 @@ $ListErrQuery = "
 SELECT [error_date],
 [error_message],
 [source]
-FROM [DatabaseAudit].[dbo].[error_log]";
+FROM [$dbnya].[dbo].[error_log]";
 $ListErr = $conn->query($ListErrQuery);
 }
 ?>
