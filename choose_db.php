@@ -47,22 +47,23 @@ if (isset($_GET['id'])) {
 
 <body class="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
-            <a href="./index.php"><b>Use Database</b></a>
-        </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
             <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
            <!-- <form method="POST" > -->
-           <div class="form-group has-feedback">
-                <div class="col-xs-12">
+            <div class="form-group has-feedback">
+                <!-- <div class="col-xs-12"> -->
                     <?php if ($db == 'create') {?>
-                        <div class="col-xs-12">
-                            <form method="post" action="">
-                            <label>Database name: </label>
-
-                            <input type="text" name="db">
+                        <!-- <div class="col-xs-12"> -->
+                        <form method="post" action="">
+                            <div class="login-logo">
+                                <a href="./index.php"><b>Use Database</b></a>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input type="text" class="form-control" name="db" placeholder="Database name">
+                            </div>
+                            <div class="form-group has-feedback">
                                 <select id="cmbMake" class="form-control" name="dbtarget">>
                                     <option disabled selected>Select Database Target </option>
                                     <?php 
@@ -84,14 +85,15 @@ if (isset($_GET['id'])) {
                                     <?php endforeach;?>
                                 </select>
                                 <br>
-
-                                <div class="row">
-                                    <div class="col-xs-4 pull-right">
-                                        <!-- <input type="hidden" name="selected_text" id="selected_text" /> -->
-                                        <button type="submit" class="btn btn-primary btn-block btn-flat">Create</button>
                                     </div>
+
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <!-- <input type="hidden" name="selected_text" id="selected_text" /> -->
+                                    <button type="submit" class="btn btn-primary btn-block btn-flat">Create</button>
                                 </div>
-                            </form>
+                            </div>
+                        </form>
                     <?php }else{?>
                         <form method="get" action="./index2.php?id=<?=$makerValue ?>">
                         <label>Database name: </label>
