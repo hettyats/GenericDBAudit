@@ -540,7 +540,7 @@ if (isset($_GET['id'])) {
                         login_name",$pdo_options);
                 $stmt->execute();
                 
-                $stmt = $conn->prepare("CREATE VIEW [dbo].[error_log] AS
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[failed_login] AS
                 SELECT CAST(Text AS varchar(MAX)) AS Text, COUNT(LogDate) AS count, MAX(LogDate) AS date
                 FROM [dbo].[error_log]
                 WHERE (Text LIKE '%Login failed for user%')
