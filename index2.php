@@ -1,10 +1,26 @@
+<?php session_start();
+      //Put session start at the beginning of the file
+?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
 <?php include $path.'/query/q-index.php';
 
-if (isset($_GET['id'])) {
-    $makerValue = $GLOBALS['makerValue'];
-  } 
+// if (isset($_SESSION['id'])) {
+//     $makerValue = $_GET['id'];
+//   }
+//   if(isset($_SESSION["id"])){
+//     $makerValue = $_SESSION["id"];
+//     echo "session db ".$makerValue;
+// }
+//   if (isset($_GET['usedb'])) {
+//     $dbnya = $_GET['usedb'];
+//   }
+
+//   if (isset($_GET['id'])) {
+//     $makerValue = $_GET['id'];
+//     $_SESSION['id']=$makerValue;
+//     echo "masuk pak eko ".$makerValue;
+// }
 
 ?>
 
@@ -18,9 +34,7 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Audit: <?php if ($makerValue == 1) {?>Northwind
-                    <?php } else { ?>BikeStores
-                <?php }?>
+                Database Audit: <?php echo $dbnya?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
@@ -30,7 +44,7 @@ if (isset($_GET['id'])) {
         </section>
 
         <!-- Main content -->
-        <section class="content container-fluid">
+        
 
             <!-- DATABASE ACCESS -->
             <div class="row">
@@ -84,6 +98,18 @@ if (isset($_GET['id'])) {
                             </table>
                         </div>
                     </div>
+
+                    <div class="box box-solid">         
+                        <div class="box-header">
+                            <h3 class="box-title">Database Access Per Day Chart</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart">
+                                <canvas id="indexChart" style="height:230px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+    
                         <div class="box box-solid">
                             <div class="box-header">
                                 <h3 class="box-title">Database Access perday</h3>
@@ -155,4 +181,21 @@ $(function() {
 })
 </script>
 
+
+<script>
+$(function() {
+    $('#AccessList').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
+
 <?php include $path.'/pages/navbars/end.php'; ?>
+
+
+<?php include $path.'/charts/db-access-charts/index-charts.php'; ?>

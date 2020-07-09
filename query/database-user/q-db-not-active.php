@@ -4,7 +4,14 @@ include $path . "/connection/connection.php";
 if (isset($_GET['id'])) {
   $makerValue = $_GET['id'];
 }
+if(isset($_SESSION["id"])){
+  $makerValue = $_SESSION["id"];
+  // echo "session db ".$makerValue;
+}
 
+if (isset($_GET['usedb'])) {
+$dbnya = $_GET['usedb'];
+}
 // Database User Not-Active Query
 if ($makerValue == 1){
 $NotActiveQuery = "
@@ -15,7 +22,7 @@ $NotActiveQuery = "
 } else{
 $NotActiveQuery = "
 SELECT *
-  FROM [DatabaseAudit].[dbo].[inactive]
+  FROM [$dbnya].[dbo].[inactive]
 ";
 $NA = $conn->query($NotActiveQuery);
 }

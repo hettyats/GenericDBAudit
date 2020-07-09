@@ -1,7 +1,18 @@
+<?php //session_start();
+      //Put session start at the beginning of the file
+?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
-<?php include $path.'/pages/navbars/head.php'; 
+<?php include $path.'/pages/navbars/head.php';
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
+  }
+
+//   if(isset($_SESSION["id"])){
+//     $makerValue = $_SESSION["id"];
+//     echo "session db ".$makerValue;
+// }
+  if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
   } ?>
 <?php include $path.'/query/database-access-query/q-db-usage.php'; ?>
 
@@ -15,7 +26,7 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Access
+                Database Usage <?php echo $dbnya?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
@@ -68,18 +79,27 @@ if (isset($_GET['id'])) {
                                 <tbody>
                                   
                                     <tr>
-                                    <?php if ($makerValue == 1) {?>
-                                        <td><?php echo implode("<br> ",$name). "<br>"; ?></td>
-                                      <td><?php echo implode("<br> ",$total). "<br>"; ?></td>
-                                      <td><?php echo implode("<br> ",$month). "<br>"; ?></td>
+                                    <?php while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {
+                                    if ($makerValue == 1) {?>
+                                    <?php if($row['Total'] > 430){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
+                                        <td><?php echo $row['Name']?></td>
+                                        <td><?php echo $row['Total']?></td>
+                                        <td><?php echo $row['LastAccess']?></td>
                                       <?php } else{ ?>
-                                      <td><?php echo implode("<br> ",$name). "<br>"; ?></td>
-                                      <td><?php echo implode("<br> ",$total). "<br>"; ?></td>
+                                        <?php if($row['Total'] > 1000){ ?>
+                                            <tr style="background-color: #f56954;">
+                                                <?php }else{ ?>
+                                            <?php }?>
+                                        <td><?php echo $row['Name']?></td>
+                                        <td><?php echo $row['Total']?></td>
                                       <!-- <td><?php //echo $row['access_time'] ?></td>
                                       <td><?php //echo $row['spid'] ?></td> -->
                                       <?php }?>
                                     </tr>
-                                    
+                                <?php }?>  
                                 </tbody>
                             </table>
                         </div>

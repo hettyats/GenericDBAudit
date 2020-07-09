@@ -5,7 +5,7 @@
   }
 ?>
     <!-- Logo -->
-    <a href="/TA2/DBAudit/index2.php?id=<?php echo $makerValue?>" class="logo">
+    <a href="/TA2/DBAudit/index2.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">DBAT</span>
         <!-- logo for regular state and mobile devices -->

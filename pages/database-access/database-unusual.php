@@ -16,9 +16,7 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
         <h1>
-                Database Unusual Access <?php if ($makerValue == 1) {?>Northwind
-                    <?php } else { ?>BikeStores
-                <?php }?>
+                Database Unusual Access <?php echo $dbnya?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
@@ -38,7 +36,7 @@ if (isset($_GET['id'])) {
                         </div>
                         <div class="box-body">
                             <div class="chart">
-                                <canvas id="unusChart" style="height:230px"></canvas>
+                                <canvas id="accessChart" style="height:230px"></canvas>
                             </div>
                         </div>
                     </div>
@@ -69,19 +67,19 @@ if (isset($_GET['id'])) {
                                 </thead>
                                 <tbody>
                                     
-                                        <?php 
+                                        <?php while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
                                         if ($makerValue == 1) {?>
                                         <tr>
-                                        <td><?php echo implode("<br> ",$month). "<br>";?></td>
-                                        <td><?php echo implode("<br> ",$name). "<br>";?></td>
-                                        <td><?php echo implode("<br> ",$total). "<br>";?></td>
+                                        <td><?php echo $row['event_time']?></td>
+                                        <td><?php echo $row['user_host']?></td>
+                                        <td><?php echo $row['Total']?></td>
                                       <?php } else{ ?>
-                                        <td><?php echo implode("<br> ",$month). "<br>";?></td>
-                                        <td><?php echo implode("<br> ",$name). "<br>";?></td>
-                                        <td><?php echo implode("<br> ",$total). "<br>";?></td>
+                                        <td><?php echo $row['Month']?></td>
+                                        <td><?php echo $row['login_name']?></td>
+                                        <td><?php echo $row['Total']?></td>
                                       <?php }?>
                                     </tr>
-                                    
+                                    <?php }?>
                                 </tbody>
                             </table>
                         </div>
@@ -107,6 +105,6 @@ if (isset($_GET['id'])) {
 <!-- FastClick -->
 <script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
 
-<?php include $path.'/charts/db-access-charts/unusual-charts.php'; ?>
+<?php include $path.'/charts/db-access-charts/access-charts.php'; ?>
 
 <?php include $path.'/pages/navbars/end.php'; ?>

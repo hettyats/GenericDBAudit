@@ -2,10 +2,21 @@
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } ?>
+  }
+    if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
+    // echo "masuk pak eko ".$dbnya;
+  }
 
-<?php $user_host = $_GET['user_host'];
+  if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+    $_SESSION['id']=$makerValue;
+    // echo "masuk pak eko ".$makerValue;
+} 
 ?>
+
+<?php //$user_host = $_GET['user_host'];
+// $total = $_GET['Total'];?>
 
 <?php include $path.'/query/database-access-query/q-db-failed-detail.php'; ?>
 <div class="wrapper">
@@ -22,8 +33,8 @@ if (isset($_GET['id'])) {
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>">Database Access</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>">Failed Login</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>">Database Access</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>">Failed Login</a></li>
                 <li class='active'>Failed Login Detail</a></li>
 
             </ol>

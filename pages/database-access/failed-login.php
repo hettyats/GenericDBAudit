@@ -2,7 +2,18 @@
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } ?>
+  } 
+  if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
+    // echo "masuk pak eko ".$dbnya;
+  }
+
+  if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+    $_SESSION['id']=$makerValue;
+    // echo "masuk pak eko ".$makerValue;
+}
+  ?>
 
 <?php include $path.'/query/database-access-query/q-db-loginerror.php'; ?>
 <div class="wrapper">
@@ -19,7 +30,7 @@ if (isset($_GET['id'])) {
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>">Database Access</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>">Database Access</a></li>
                 <li class='active'>Failed Login</a></li>
 
             </ol>
@@ -73,20 +84,20 @@ if (isset($_GET['id'])) {
                                     <tr>
                                     <td value=<?php echo $row['user_host'] ?> ><?php echo $row['user_host'] ?></td>
                                     <!-- <td><?php //echo ($row['user_host']);?></td> -->
-                                    <td><?php echo ($row['event_time']);?></td>
-                                    <td><?php echo ($row['Total']);?></td>
+                                    <td><?php echo $row['event_time']?></td>
+                                    <td><?php echo $row['Total']?></td>
                                         <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-access/failed-detail.php?user_host=<?php echo $row['user_host']?>&id=<?php echo $makerValue?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-access/failed-detail.php?user_host=<?php echo $row['user_host']?>&id=<?php echo $makerValue?>?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
                                           </td>
                                     <?php } else{ ?>
                                     <td value=<?php echo $row['error_message']?> ><?php echo $row['error_message'] ?></td>
-                                    <td><?php echo ($row['Total']);?></td>
-                                    <td><?php echo ($row['Date']);?></td>
+                                    <td><?php echo $row['Total']?></td>
+                                    <td><?php echo $row['Date']?></td>
                                     <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-access/failed-detail.php?error_message=<?php echo $row['error_message']?>&id=<?php echo $makerValue?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-access/failed-detail.php?error_message=<?php echo $row['error_message']?>&id=<?php echo $makerValue?>?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
@@ -113,6 +124,6 @@ if (isset($_GET['id'])) {
 <!-- FastClick -->
 <script src="/TA2/DBAudit/bower_components/fastclick/lib/fastclick.js"></script>
 
-<?php include $path.'/charts/db-access-charts/error-charts.php'; ?>
+<?php include $path.'/charts/db-access-charts/failed-charts.php'; ?>
 
 <?php include $path.'/pages/navbars/end.php'; ?>

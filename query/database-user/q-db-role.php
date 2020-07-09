@@ -5,11 +5,18 @@ include $path . "/connection/connection.php";
 if (isset($_GET['id'])) {
      $makerValue = $_GET['id'];
    }
-
+   if(isset($_SESSION["id"])){
+     $makerValue = $_SESSION["id"];
+     // echo "session db ".$makerValue;
+ }
+ 
+ if (isset($_GET['usedb'])) {
+   $dbnya = $_GET['usedb'];
+ }
 
 // Database Login Name List Query
 if ($makerValue == 1){
-     $RoleQuery = '
+     $RoleQuery = "
      SELECT 	`Role_id`, 
 	`User`, 
 	`HOST`, 
@@ -18,16 +25,16 @@ if ($makerValue == 1){
 	`Admin_option`
 	 
 	FROM 
-	`databaseaudit`.`role_list` ';
+	`$dbnya`.`role_list` ";
      $Role = $dbh->query($RoleQuery);
 } else {   
-$RoleQuery = '
+$RoleQuery = "
 SELECT principal_id,
      name,
      type_desc,
      type,
-     create_date FROM databaseaudit.sys.database_principals
-';
+     create_date FROM $dbnya.sys.database_principals
+";
 $Role = $conn->query($RoleQuery);
 }
 ?>

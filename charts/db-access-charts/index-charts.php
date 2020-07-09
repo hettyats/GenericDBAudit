@@ -1,21 +1,9 @@
-<?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';?>
-<?php include $path.'/query/database-access-query/q-failed.php';?>
-
 <script>
 $(function() {
-
-    $error = array();
-    $total = array();
-
-    while ($row = $Failed->fetch(PDO::FETCH_ASSOC)) {
-    array_push($total, $row['Total']);
-    array_push($error, $row['Message']);
-    }
-    
-    var name = <?php echo json_encode($error); ?>;
+    var name = <?php echo json_encode($name); ?>;
     var total = <?php echo json_encode($total); ?>;
 
-    var FailedAccessData = {
+    var IndexAccessData = {
         labels: name,
         datasets: [{
             label: 'Electronics',
@@ -29,15 +17,15 @@ $(function() {
         }]
     }
 
-    var failedChartCanvas = $('#failedChart').get(0).getContext('2d')
-    var failedChart = new Chart(failedChartCanvas)
-    var failedChartData = FailedAccessData
+    var indexChartCanvas = $('#indexChart').get(0).getContext('2d')
+    var indexChart = new Chart(indexChartCanvas)
+    var indexChartData = IndexAccessData
 
-    failedChartData.datasets[0].fillColor = 'rgba(60,141,188,0.9)'
-    failedChartData.datasets[0].strokeColor = 'rgba(60,141,188,0.8)'
-    failedChartData.datasets[0].pointColor = '#3b8bba'
+    indexChartData.datasets[0].fillColor = 'rgba(60,141,188,0.9)'
+    indexChartData.datasets[0].strokeColor = 'rgba(60,141,188,0.8)'
+    indexChartData.datasets[0].pointColor = '#3b8bba'
 
-    var failedChartOptions = {
+    var indexChartOptions = {
         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
         scaleBeginAtZero: true,
         //Boolean - Whether grid lines are shown across the chart
@@ -65,7 +53,7 @@ $(function() {
         maintainAspectRatio: true
     } 
 
-    failedChartOptions.datasetFill = false
-    failedChart.Bar(failedChartData, failedChartOptions)
+    indexChartOptions.datasetFill = false
+    indexChart.Bar(indexChartData, indexChartOptions)
 })
 </script>

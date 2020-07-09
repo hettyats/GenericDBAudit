@@ -2,10 +2,20 @@
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } ?>
+  } 
+    if(isset($_SESSION["id"])){
+    $makerValue = $_SESSION["id"];
+    echo "session db ".$makerValue;
+}
+  if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
+  }
+  ?>
 
 <?php $permissionType = $_GET['perm']; 
 $permission = $_GET['PRIVILEGE_TYPE'];?>
+
+
 
 <?php include $path.'/query/database-user/q-db-privilege-detail.php'; ?>
 <div class="wrapper">
@@ -23,7 +33,7 @@ $permission = $_GET['PRIVILEGE_TYPE'];?>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>
                 <li><a href="/TA2/DBAudit/pages/database-user/user-list.php">Database User</a></li>
-                <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue ?>">Database Privileges</a></li>
+                <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>">Database Privileges</a></li>
                 <li class='active'>Database Privileges Detail</a></li>
 
             </ol>

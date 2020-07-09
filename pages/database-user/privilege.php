@@ -2,7 +2,15 @@
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
-  } ?>
+  } 
+    if(isset($_SESSION["id"])){
+    $makerValue = $_SESSION["id"];
+    echo "session db ".$makerValue;
+}
+  if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
+  }
+  ?>
 
 <?php include $path.'/query/database-user/q-db-privilege.php'; ?>
 <div class="wrapper">
@@ -57,7 +65,7 @@ if (isset($_GET['id'])) {
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['state_desc'] ?></td>
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?PRIVILEGE_TYPE=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?PRIVILEGE_TYPE=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
@@ -69,7 +77,7 @@ if (isset($_GET['id'])) {
                                           <td><?php echo $row['state_desc'] ?></td>
 
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
