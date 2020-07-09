@@ -33,7 +33,7 @@ function findOutlier($list){
     $outlierIndex = array();
     for($i = 0; $i < (count($list)); $i++){
         $zScore = zScore($list[$i],$list);
-        if($zScore >= 3){
+        if($zScore >= 3 && $list[$i]>= $avg){
             array_push($outlierIndex, $i);
         }
     }

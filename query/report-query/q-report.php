@@ -1,78 +1,88 @@
-<?php
+<?php 
 $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
 include $path . "/pages/report/outlier-function.php";
 //include $path.'/choose_db.php';
-
-
-// Akses basis data MySQL
+if (isset($_GET['id'])) {
+    $makerValue = $_GET['id'];
+  } 
+if (isset($_GET['usedb'])) {
+    $dbnya = $_GET['usedb'];
+  }
+// $dbnya = 'databaseaudit';
+//MySQL
 if ($makerValue == 1){
-
-$query2 = '
-  SELECT *
-  FROM databaseaudit.count_success_log
-  WHERE Total > 400
-  GROUP BY user_host
-  ';
-$stmt2 = $dbh->query($query2);
-
-$databaseAccessQuery = '
-SELECT 
-	DAY(event_time) AS Day,
+$databaseAccessQuery = "
+  SELECT 
+    DAY(event_time) AS Day,
     MONTH(event_time) AS Month,
     YEAR(event_time) AS Year,
-    COUNT(event_time) AS Total
-FROM
-    `general_log`
-group by
-	year(event_time),
-    month(event_time),
-    day(event_time)
-Order by Year asc, Month asc, day asc
-';
+    COUNT(event_time) AS Total,
+    user_host
+  FROM $dbnya.count_success_log
+  WHERE Total > 400
+  GROUP BY user_host
+  ";
 $dbAccessStmt = $dbh->query($databaseAccessQuery);
 
-$outsideQuery = '
-SELECT        user_host, MAX(`general_log`.`event_time`) AS `event_time`, COUNT(`general_log`.`event_time`) AS `Total`
-FROM            `databaseaudit`.`general_log`
-WHERE CONVERT(TIME(event_time), INT) < CONVERT("08:00:00", TIME) OR CONVERT(TIME(event_time), INT) > CONVERT("19:00:00", TIME)
-GROUP BY `general_log`.`user_host`
-';
+$dbAccess = array();
+$accessDate = array();
+
+while ($row = $dbAccessStmt->fetch(PDO::FETCH_ASSOC)) {
+    array_push($dbAccess, $row['Total']);
+    array_push($accessDate, $row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']);
+}
+$outlier = findOutlier($dbAccess);
+
+
+
+$outsideQuery = "
+SELECT        
+    user_host, `last_access`, `Total`
+FROM `$dbnya`.`count_user_outside_operating_hour`
+";
 $dbOutside = $dbh->query($outsideQuery);
 
-$NotActiveQuery = '
-SELECT * FROM inactive_user;   
-';
+
+
+$notchangePassword ="
+SELECT `HOST`,
+  `USER`, 
+  `password_expired`,
+(CASE 
+WHEN `password_expired` = 'Y' THEN 'Expired'
+ELSE 'Not Expired'
+END) AS `Status`
+    FROM `$dbnya`.`user_password_expired`
+    Where `password_expired` = 'Y'
+
+";
+$dbChangePW = $dbh->query($notchangePassword);
+
+
+
+$NotActiveQuery = "
+SELECT user_host, last_access FROM `$dbnya`.`inactive_user`;   
+";
 $NA = $dbh->query($NotActiveQuery);
 
+
+
+
 } else {
-// Akses basis data SQL Server
-$query2 = '
-SELECT [Day]
+//SQL Server
+$databaseAccessQuery = "
+select [Day]
     ,[Month]
-    ,[Year]
     ,[Total]
     ,[login_name]
-from [DatabaseAudit].[dbo].[database_access_per_day]
-WHERE [Total] > 1000
-order by Day desc
-';
-$stmt2 = $conn->query($query2);
-
-$databaseAccessQuery = '
-select top 365
-	day(access_time) as [Day],
-    month(access_time) as [Month],
-    year(access_time) as [Year],
-    count(access_time) as [Total]
+    ,[Year]
 from
-    databaseaudit.dbo.success_access_log
-group by
-	year(access_time),
-    month(access_time),
-    day(access_time)
-Order by Year asc, Month asc, day asc
-';
+[$dbnya].[dbo].[database_access_per_day]
+   
+    WHERE [Total] > 400
+Order by day asc
+";
 $dbAccessStmt = $conn->query($databaseAccessQuery);
 
 $dbAccess = array();
@@ -80,19 +90,22 @@ $accessDate = array();
 
 while ($row = $dbAccessStmt->fetch(PDO::FETCH_ASSOC)) {
     array_push($dbAccess, $row['Total']);
-    array_push($accessDate,$row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']);
+    array_push($accessDate, $row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year']);
 }
-
 $outlier = findOutlier($dbAccess);
 
-$outsideQuery ='
+
+
+$outsideQuery ="
 SELECT
     login_name, Count (distinct(access_time)) As [Total], MAX(access_time) as [last_access]
     FROM
-    [DatabaseAudit].[dbo].[user_outside_operating_hour]
+    [$dbnya].[dbo].[user_outside_operating_hour]
     GROUP BY login_name
-';
+";
 $dbOutside = $conn->query($outsideQuery);
+
+
 
 $notchangePassword ="
 SELECT [name]
@@ -112,19 +125,23 @@ SELECT [name]
 			when 2 then 'SHA-2'
 			else 'Not SQL Server login'
 		END
-  FROM [DatabaseAudit].[dbo].[database_user_password]
+  FROM [$dbnya].[dbo].[database_user_password]
   WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2
 ";
 $dbChangePW = $conn->query($notchangePassword);
 
+
+
+
 $NotActiveQuery = "
-SELECT [login_name],[program_name],MAX(access_time) AS last_access
-        FROM [DatabaseAudit].[dbo].[success_access_log]
+SELECT  [login_name], MAX(access_time) AS last_access
+        FROM [$dbnya].[dbo].[success_access_log]
         WHERE CONVERT(INT, month(getdate()), 111) -CONVERT(INT,month([access_time]), 111) > 2
-		GROUP BY login_name, [program_name]
+		GROUP BY login_name
 ";
 $NA = $conn->query($NotActiveQuery);
 
-
 }
+
+
 ?>
