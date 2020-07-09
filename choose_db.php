@@ -259,6 +259,17 @@ if (isset($_GET['id'])) {
                                       GROUP BY user_host";
                           $dbh->exec($sql);
 
+                          $sql= "CREATE VIEW user_password_expired AS 
+                                    SELECT user, host, password_expired FROM mysql.user";
+                          $dbh->exec($sql);
+
+                          $sql= 'CREATE VIEW count_user_outside_operating_hour AS
+                                SELECT user_host, MAX(`general_log`.`event_time`) AS `event_time`, COUNT(`general_log`.`event_time`) AS `Total`
+                                FROM `general_log`
+                                WHERE CONVERT(TIME(event_time), INT) < CONVERT("08:00:00", TIME) OR CONVERT(TIME(event_time), INT) > CONVERT("19:00:00", TIME)
+                                GROUP BY `general_log`.`user_host`';
+                          $dbh->exec($sql);
+
                     echo "Database created successfully with the name $user".'audit';
                    ?> <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>"> Audit Now <a>
 
@@ -285,264 +296,258 @@ if (isset($_GET['id'])) {
 
                     $dbaudit = $user.'audit';
 
-                    $stmt = $conn->prepare("CREATE TABLE [success_access_log]( 
-                        [access_log_id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
-                        [spid]   INT   NOT NULL, 
-                        [login_name]  VARCHAR(50)  NOT NULL, 
-                        [program_name]  VARCHAR(500)  NOT NULL, 
-                        [ip_address]  VARCHAR(100)  NOT NULL,  
-                        [access_time]  DATETIME  NOT NULL 
-                        ) 
-                        CREATE INDEX index_access_loginname 
-                        ON dbo.success_access_log(login_name) 
-                        CREATE INDEX index_access_programname 
-                        ON dbo.success_access_log(program_name);",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("CREATE TRIGGER [access_log_trigger]
-                    ON ALL SERVER FOR LOGON
-                    AS
-                    
-                    BEGIN
-                    DECLARE
-                    @LogonTriggerData xml,
-                    @EventTime datetime,
-                    @LoginName varchar(50),
-                    @ClientHost varchar(50),
-                    @LoginType varchar(50),
-                    @HostName varchar(50),
-                    @AppName varchar(500)
-                    SET @LogonTriggerData = EVENTDATA()
-                    SET @EventTime =
-                    @LogonTriggerData.value('(/EVENT_INSTANCE/PostTime)[1]','datetime')
-                    SET @LoginName =
-                    @LogonTriggerData.value('(/EVENT_INSTANCE/LoginName)[1]','varchar(50)
-                    ')
-                    SET @ClientHost =
-                    @LogonTriggerData.value('(/EVENT_INSTANCE/ClientHost)[1]','varchar(50
-                    )')
-                    SET @HostName = HOST_NAME()
-                    SET @AppName = APP_NAME()
-                    INSERT INTO $dbaudit.[dbo].success_access_log
-                    (
-                    login_name,
-                    [program_name],
-                    access_time,
-                    spid,
-                    ip_address
-                    )
-                    SELECT
-                    @LoginName,
-                    @AppName,
-                    @EventTime,
-                    @@SPID,
-                    client_net_address
-                    FROM sys.sysprocesses S
-                    INNER JOIN sys.dm_exec_connections decc
-                    ON S.spid = decc.session_id
-                    WHERE spid = @@SPID
-                    END;
-                    
-                    ENABLE TRIGGER [access_log_trigger] ON ALL SERVER;",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("ENABLE TRIGGER access_log_trigger ON ALL SERVER;",$pdo_options);
-                    $stmt->execute();
-                    
-                    // $dbtarget = 'BikeStores';
-                    
-                    $stmt1 = $conn->prepare("CREATE TABLE [dbo].[failed_access](
-                            [id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
-                            [LogDate] [datetime] NULL,
-                            [ProcessInfo] [varchar](50) NULL,
-                            [Text] [varchar](200) NULL);
-                            
-                            Declare @FailedAccess table(
-                            [LogDate] datetime, 
-                            [ProcessInfo] nvarchar(20), 
-                            [Text] nvarchar(4000)
-                        );
-                        insert into @FailedAccess([LogDate],[ProcessInfo],[Text]) 
-                        exec $dbtarget.sys.sp_readerrorlog 0, 1, 'Login failed';
-                    
+                   $stmt = $conn->prepare("CREATE TABLE [dbo].[failed_access](
+                        [id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+                        [LogDate] [datetime] NULL,
+                        [ProcessInfo] [varchar](50) NULL,
+                        [Text] [varchar](200) NULL);
+                        
+                        Declare @FailedAccess table(
+                        [LogDate] datetime, 
+                        [ProcessInfo] nvarchar(20), 
+                        [Text] nvarchar(4000)
+                    );
+                    insert into @FailedAccess([LogDate],[ProcessInfo],[Text]) 
+                    exec $dbtarget.sys.sp_readerrorlog 0, 1, 'Login failed';
+                
+                    SELECT [LogDate],[ProcessInfo],[Text]
+                    FROM @FailedAccess;
+                
+                    insert into @FailedAccess([LogDate],[ProcessInfo],[Text]) 
+                    exec $dbtarget.sys.sp_readerrorlog 0, 1, 'Login failed';
+                
+                
+                    MERGE INTO dbo.failed_access T
+                    USING (
                         SELECT [LogDate],[ProcessInfo],[Text]
-                        FROM @FailedAccess;
-                    
-                        insert into @FailedAccess([LogDate],[ProcessInfo],[Text]) 
-                        exec $dbtarget.sys.sp_readerrorlog 0, 1, 'Login failed';
-                    
-                    
-                        MERGE INTO dbo.failed_access T
-                        USING (
-                            SELECT [LogDate],[ProcessInfo],[Text]
-                            FROM @FailedAccess
-                        ) S
-                        ON T.LogDate = S.LogDate
-                        when NOT MATCHED then
-                            insert (LogDate, ProcessInfo, Text)
-                            values (S.LogDate, S.ProcessInfo, S.Text)
-                        WHEN MATCHED THEN
-                            UPDATE 
-                            SET LogDate = S.LogDate, 
-                                ProcessInfo = S.ProcessInfo,
-                                Text = S.Text;",$pdo_options);
-                    $stmt1->execute();
-                    
-                    $stmt2 = $conn->prepare("CREATE VIEW [dbo].[count_success_log] AS
-                            SELECT
-                            login_name,
-                            program_name,
-                            DAY(access_time) AS [Day],
-                            MONTH(access_time) AS [Month],
-                            YEAR(access_time) AS [Year],
-                            Count (distinct(access_time)) As [Total]
-                            FROM [dbo].[success_access_log]
-                            GROUP BY
-                            login_name,
-                            program_name,
-                            YEAR(access_time),
-                            MONTH(access_time),
-                            DAY(access_time)",$pdo_options);
-                    $stmt2->execute();
-                    
-                    $stmt3 = $conn->prepare("CREATE VIEW database_access_per_day AS
-                            SELECT
-                            DAY(access_time) AS [Day],
-                            MONTH(access_time) AS [Month],
-                            YEAR(access_time) AS [Year],
-                            COUNT(access_time) AS [Total],
-                            login_name
-                            FROM success_access_log
-                            GROUP BY
-                            login_name,
-                            YEAR(access_time),
-                            MONTH(access_time),
-                            DAY(access_time)",$pdo_options);
-                    $stmt3->execute();
-                    
-                    $stmt4 = $conn->prepare("CREATE VIEW [dbo].[database_user] AS 
-                            SELECT lg.principal_id, lg.name, lg.type_desc, lg.status, lg.create_date, lg.modify_date, MAX(acc.access_time) AS last_access, CASE WHEN MAX(acc.access_time) IS NULL THEN - 1 ELSE DATEDIFF(MM, 
-                                                    MAX(acc.access_time), GETDATE()) END AS duration
-                            FROM (SELECT principal_id, name, type_desc, create_date, modify_date, CASE is_disabled WHEN 0 THEN 'Activated' WHEN 1 THEN 'Deactivated' END AS status
-                                                    FROM $dbtarget.sys.server_principals
-                                                    WHERE (type IN ('S', 'U'))) AS lg LEFT OUTER JOIN
-                                                    dbo.success_access_log AS acc ON acc.login_name COLLATE DATABASE_DEFAULT = lg.name COLLATE DATABASE_DEFAULT
-                            GROUP BY lg.principal_id, lg.name, lg.type_desc, lg.create_date, lg.modify_date, lg.status",$pdo_options);
-                    $stmt4->execute();
-                    
-                    $stmt5 = $conn->prepare("CREATE VIEW [dbo].[user_password] AS 
-                            SELECT principal_id, name, type_desc, LOGINPROPERTY(name, 'PasswordLastSetTime') AS lastsettime, LOGINPROPERTY(name, 'DaysUntilExpiration') AS dayexpiration, LOGINPROPERTY(name, 'PasswordHash') 
-                                                    AS passhash, LOGINPROPERTY(name, 'PasswordHashAlgorithm') AS passhashalgo
-                            FROM [dbo].[database_user]",$pdo_options);
-                    $stmt5->execute();
-                    
-                    $stmt6 = $conn->prepare("CREATE VIEW [dbo].[inactive_user] AS
-                            SELECT [access_log_id]
-                                ,[spid]
-                                ,[login_name]
-                                ,[program_name]
-                                ,[ip_address]
-                                ,[access_time]
-                            FROM [dbo].[success_access_log]
-                            WHERE CONVERT(INT, month(getdate()), 111) -CONVERT(INT,month([access_time]), 111) > 2",$pdo_options);
-                    $stmt6->execute();
-                    
-                    $stmt7 = $conn->prepare("CREATE VIEW [dbo].[database_usage] AS 
-                            SELECT 
-                                login_name as [Name],
-                                count(*) as [Total]
-                            FROM $dbaudit.dbo.success_access_log
-                            GROUP BY login_name",$pdo_options);
-                    $stmt7->execute();
-                    
-                    $stmt8 = $conn->prepare("CREATE VIEW [dbo].[not_change_password] AS
-                            SELECT [principal_id]
-                                ,[name]
-                                ,[type_desc]
-                                ,[lastsettime]
-                                ,[dayexpiration]
-                                ,[passhash]
-                                ,[passhashalgo]
-                            FROM $dbaudit.[dbo].[user_password]
-                            WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2",$pdo_options);
-                    $stmt8->execute();
-                    
-                    $stmt9 = $conn->prepare("Create View [dbo].[privileges] As
-                            SELECT DISTINCT permission_name as PermissionName,
-                                type,
-                                state_desc,
-                                class_desc FROM $dbtarget.sys.database_permissions",$pdo_options);
-                    $stmt9->execute();
-                    
-                    $stmt10 = $conn->prepare("CREATE VIEW [dbo].[privilege_list] AS
-                            SELECT
-                                [UserName] = CASE princ.[type] 
-                                                WHEN 'S' THEN princ.[name]
-                                                WHEN 'U' THEN ulogin.[name] COLLATE Latin1_General_CI_AI
-                                            END,
-                                [UserType] = CASE princ.[type]
-                                                WHEN 'S' THEN 'SQL User'
-                                                WHEN 'U' THEN 'Windows User'
-                                            END,  
-                                [DatabaseUserName] = princ.[name],       
-                                [Role] = null,      
-                                [PermissionType] = perm.[permission_name],       
-                                [PermissionState] = perm.[state_desc],       
-                                [ObjectType] = obj.type_desc,--perm.[class_desc],
-                                [ObjectName] = obj.name, 
-                                [ColumnName] = col.[name]
-                            FROM    
-                                --database user
-                                $dbtarget.sys.database_principals princ  
-                            LEFT JOIN
-                                --Login accounts
-                                $dbtarget.sys.login_token ulogin on princ.[sid] = ulogin.[sid]
-                            LEFT JOIN        
-                                --Permissions
-                                $dbtarget.sys.database_permissions perm ON perm.[grantee_principal_id] = princ.[principal_id]
-                            LEFT JOIN
-                                --Table columns
-                                $dbtarget.sys.columns col ON col.[object_id] = perm.major_id 
-                                                AND col.[column_id] = perm.[minor_id]
-                            LEFT JOIN
-                                $dbtarget.sys.objects obj ON perm.[major_id] = obj.[object_id]
-                            WHERE 
-                                princ.[type] in ('S','U')",$pdo_options);
-                    $stmt10->execute();
-                    
-                    $stmt = $conn->prepare("CREATE VIEW [dbo].[role_list] AS
-                            SELECT name, principal_id, type, type_desc, default_schema_name, create_date, modify_date, owning_principal_id, sid, is_fixed_role, authentication_type, authentication_type_desc, default_language_name, 
-                                                    default_language_lcid
-                            FROM $dbtarget.sys.database_principals",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("CREATE VIEW [dbo].[user_list] AS
-                    SELECT        name AS username, create_date, modify_date, type_desc AS type, authentication_type_desc AS authentication_type
-                    FROM            $dbtarget.sys.database_principals",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("CREATE VIEW [dbo].[user_outside_operating_hour] AS
-                            SELECT        login_name, program_name, ip_address, access_time
-                            FROM            dbo.success_access_log
-                            WHERE        (CONVERT(time, access_time) < CONVERT(time, '08:00:00', 105)) OR
-                                                    (CONVERT(time, access_time) > CONVERT(time, '19:00:00', 105))",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("CREATE VIEW [dbo].[count_outside_operating_hour] AS
-                            SELECT
-                            login_name, Count (distinct(access_time)) As [Total], MAX(access_time) as [last_access]
-                            FROM
-                            [dbo].[user_outside_operating_hour]
-                            GROUP BY
-                            login_name",$pdo_options);
-                    $stmt->execute();
-                    
-                    $stmt = $conn->prepare("CREATE VIEW [dbo].[count_failed_login] AS
-                            SELECT CAST(error_message AS varchar(MAX)) AS Text, COUNT(error_date) AS count, MAX(error_date) AS date
-                            FROM dbo.error_log
-                            WHERE (error_message LIKE '%Login failed for user%')
-                            GROUP BY CAST(error_message AS varchar(MAX))",$pdo_options);
-                    $stmt->execute();
+                        FROM @FailedAccess
+                    ) S
+                    ON T.LogDate = S.LogDate
+                    when NOT MATCHED then
+                        insert (LogDate, ProcessInfo, Text)
+                        values (S.LogDate, S.ProcessInfo, S.Text)
+                    WHEN MATCHED THEN
+                        UPDATE 
+                        SET LogDate = S.LogDate, 
+                            ProcessInfo = S.ProcessInfo,
+                            Text = S.Text;",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE TABLE [success_access_log]( 
+                    [access_log_id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+                    [spid]   INT   NOT NULL, 
+                    [login_name]  VARCHAR(50)  NOT NULL, 
+                    [program_name]  VARCHAR(500)  NOT NULL, 
+                    [ip_address]  VARCHAR(100)  NOT NULL,  
+                    [access_time]  DATETIME  NOT NULL 
+                    ) 
+                    CREATE INDEX index_access_loginname 
+                    ON dbo.success_access_log(login_name) 
+                    CREATE INDEX index_access_programname 
+                    ON dbo.success_access_log(program_name);",$pdo_options);
+                $stmt->execute();
+                
+                $triggerName = $dbaudit.'access_log_trigger';
+                            $query = "CREATE TRIGGER $triggerName ON ALL SERVER FOR LOGON
+                            AS
+                            BEGIN
+                            DECLARE
+                            @LogonTriggerData xml,
+                            @EventTime datetime,
+                            @LoginName varchar(50),
+                            @ClientHost varchar(50),
+                            @LoginType varchar(50),
+                            @HostName varchar(50),
+                            @AppName varchar(500)
+                            SET @LogonTriggerData = EVENTDATA()
+                            SET @EventTime = @LogonTriggerData.value('(/EVENT_INSTANCE/PostTime)[1]','datetime')
+                            SET @LoginName = @LogonTriggerData.value('(/EVENT_INSTANCE/LoginName)[1]','varchar(50)')
+                            SET @ClientHost = @LogonTriggerData.value('(/EVENT_INSTANCE/ClientHost)[1]','varchar(50)')
+                            SET @HostName = HOST_NAME()
+                            SET @AppName = APP_NAME()
+                            INSERT INTO $dbaudit.[dbo].success_access_log
+                            (login_name,
+                            [program_name],
+                            access_time,
+                            spid,
+                            ip_address)
+                            SELECT @LoginName,
+                            @AppName,
+                            @EventTime,
+                            @@SPID,
+                            client_net_address
+                            FROM sys.sysprocesses S
+                            INNER JOIN sys.dm_exec_connections decc
+                            ON S.spid = decc.session_id
+                            WHERE spid = @@SPID
+                            END
+                            ";
+                            $stmt = $conn->query($query);
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            print_r($result);
+                
+                            $query = "
+                            ENABLE TRIGGER $triggerName ON ALL SERVER
+                            ";
+                            $stmt = $conn->query($query);
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                            print_r($result);
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[count_success_log] AS
+                        SELECT
+                        login_name,
+                        program_name,
+                        DAY(access_time) AS [Day],
+                        MONTH(access_time) AS [Month],
+                        YEAR(access_time) AS [Year],
+                        Count (distinct(access_time)) As [Total]
+                        FROM [dbo].[success_access_log]
+                        GROUP BY
+                        login_name,
+                        program_name,
+                        YEAR(access_time),
+                        MONTH(access_time),
+                        DAY(access_time)",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW database_access_per_day AS
+                        SELECT
+                        DAY(access_time) AS [Day],
+                        MONTH(access_time) AS [Month],
+                        YEAR(access_time) AS [Year],
+                        COUNT(access_time) AS [Total],
+                        login_name
+                        FROM success_access_log
+                        GROUP BY
+                        login_name,
+                        YEAR(access_time),
+                        MONTH(access_time),
+                        DAY(access_time)",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[database_user] AS 
+                        SELECT lg.principal_id, lg.name, lg.type_desc, lg.status, lg.create_date, lg.modify_date, MAX(acc.access_time) AS last_access, CASE WHEN MAX(acc.access_time) IS NULL THEN - 1 ELSE DATEDIFF(MM, 
+                                                MAX(acc.access_time), GETDATE()) END AS duration
+                        FROM (SELECT principal_id, name, type_desc, create_date, modify_date, CASE is_disabled WHEN 0 THEN 'Activated' WHEN 1 THEN 'Deactivated' END AS status
+                                                FROM $dbtarget.sys.server_principals
+                                                WHERE (type IN ('S', 'U'))) AS lg LEFT OUTER JOIN
+                                                dbo.success_access_log AS acc ON acc.login_name COLLATE DATABASE_DEFAULT = lg.name COLLATE DATABASE_DEFAULT
+                        GROUP BY lg.principal_id, lg.name, lg.type_desc, lg.create_date, lg.modify_date, lg.status",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[user_password] AS 
+                        SELECT principal_id, name, type_desc, LOGINPROPERTY(name, 'PasswordLastSetTime') AS lastsettime, LOGINPROPERTY(name, 'DaysUntilExpiration') AS dayexpiration, LOGINPROPERTY(name, 'PasswordHash') 
+                                                AS passhash, LOGINPROPERTY(name, 'PasswordHashAlgorithm') AS passhashalgo
+                        FROM [dbo].[database_user]",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[inactive_user] AS
+                        SELECT [access_log_id]
+                            ,[spid]
+                            ,[login_name]
+                            ,[program_name]
+                            ,[ip_address]
+                            ,[access_time]
+                        FROM [dbo].[success_access_log]
+                        WHERE CONVERT(INT, month(getdate()), 111) -CONVERT(INT,month([access_time]), 111) > 2",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[database_usage] AS 
+                        SELECT 
+                            login_name as [Name],
+                            count(*) as [Total]
+                        FROM $dbaudit.dbo.success_access_log
+                        GROUP BY login_name",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[not_change_password] AS
+                        SELECT [principal_id]
+                            ,[name]
+                            ,[type_desc]
+                            ,[lastsettime]
+                            ,[dayexpiration]
+                            ,[passhash]
+                            ,[passhashalgo]
+                        FROM $dbaudit.[dbo].[user_password]
+                        WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("Create View [dbo].[privileges] As
+                        SELECT DISTINCT permission_name as PermissionName,
+                            type,
+                            state_desc,
+                            class_desc FROM $dbtarget.sys.database_permissions",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[privilege_list] AS
+                        SELECT
+                            [UserName] = CASE princ.[type] 
+                                            WHEN 'S' THEN princ.[name]
+                                            WHEN 'U' THEN ulogin.[name] COLLATE Latin1_General_CI_AI
+                                        END,
+                            [UserType] = CASE princ.[type]
+                                            WHEN 'S' THEN 'SQL User'
+                                            WHEN 'U' THEN 'Windows User'
+                                        END,  
+                            [DatabaseUserName] = princ.[name],       
+                            [Role] = null,      
+                            [PermissionType] = perm.[permission_name],       
+                            [PermissionState] = perm.[state_desc],       
+                            [ObjectType] = obj.type_desc,--perm.[class_desc],
+                            [ObjectName] = obj.name, 
+                            [ColumnName] = col.[name]
+                        FROM    
+                            --database user
+                            $dbtarget.sys.database_principals princ  
+                        LEFT JOIN
+                            --Login accounts
+                            $dbtarget.sys.login_token ulogin on princ.[sid] = ulogin.[sid]
+                        LEFT JOIN        
+                            --Permissions
+                            $dbtarget.sys.database_permissions perm ON perm.[grantee_principal_id] = princ.[principal_id]
+                        LEFT JOIN
+                            --Table columns
+                            $dbtarget.sys.columns col ON col.[object_id] = perm.major_id 
+                                            AND col.[column_id] = perm.[minor_id]
+                        LEFT JOIN
+                            $dbtarget.sys.objects obj ON perm.[major_id] = obj.[object_id]
+                        WHERE 
+                            princ.[type] in ('S','U')",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[role_list] AS
+                        SELECT name, principal_id, type, type_desc, default_schema_name, create_date, modify_date, owning_principal_id, sid, is_fixed_role, authentication_type, authentication_type_desc, default_language_name, 
+                                                default_language_lcid
+                        FROM $dbtarget.sys.database_principals",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[user_list] AS
+                SELECT        name AS username, create_date, modify_date, type_desc AS type, authentication_type_desc AS authentication_type
+                FROM            $dbtarget.sys.database_principals",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[user_outside_operating_hour] AS
+                        SELECT        login_name, program_name, ip_address, access_time
+                        FROM            dbo.success_access_log
+                        WHERE        (CONVERT(time, access_time) < CONVERT(time, '08:00:00', 105)) OR
+                                                (CONVERT(time, access_time) > CONVERT(time, '19:00:00', 105))",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[count_outside_operating_hour] AS
+                        SELECT
+                        login_name, Count (distinct(access_time)) As [Total], MAX(access_time) as [last_access]
+                        FROM
+                        [dbo].[user_outside_operating_hour]
+                        GROUP BY
+                        login_name",$pdo_options);
+                $stmt->execute();
+                
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[count_failed_login] AS
+                        SELECT CAST(error_message AS varchar(MAX)) AS Text, COUNT(error_date) AS count, MAX(error_date) AS date
+                        FROM dbo.error_log
+                        WHERE (error_message LIKE '%Login failed for user%')
+                        GROUP BY CAST(error_message AS varchar(MAX))",$pdo_options);
+                $stmt->execute();
 
                     // unset($stmt);
                     // unset($conn);
