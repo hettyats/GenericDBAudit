@@ -282,7 +282,7 @@ if (isset($_GET['id'])) {
                     echo $e->getMessage();
                 }
                 // $dbh = null;
-            }elseif ($makerValue == 2) {
+            }else if ($makerValue == 2) {
                 try {
                     $conn = new PDO("sqlsrv:server=$server", $pwd);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
@@ -300,10 +300,10 @@ if (isset($_GET['id'])) {
                     $dbaudit = $user.'audit';
 
                    $stmt = $conn->prepare("CREATE TABLE [dbo].[error_log](
-                        [id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
-                        [LogDate] [datetime] NULL,
-                        [ProcessInfo] [varchar](50) NULL,
-                        [Text] [varchar](200) NULL);
+                       [error_log_id] [int] IDENTITY(1,1) NOT NULL,
+                        [error_date] [datetime] NOT NULL,
+                        [source] [varchar](20) NULL,
+                        [error_message] [text] NOT NULL);
                         
                         Declare @FailedAccess table(
                         [LogDate] datetime, 
@@ -325,15 +325,15 @@ if (isset($_GET['id'])) {
                         SELECT [LogDate],[ProcessInfo],[Text]
                         FROM @FailedAccess
                     ) S
-                    ON T.LogDate = S.LogDate
+                    ON T.error_date = S.LogDate
                     when NOT MATCHED then
-                        insert (LogDate, ProcessInfo, Text)
+                        insert (error_date, [source], [error_message])
                         values (S.LogDate, S.ProcessInfo, S.Text)
                     WHEN MATCHED THEN
                         UPDATE 
-                        SET LogDate = S.LogDate, 
-                            ProcessInfo = S.ProcessInfo,
-                            Text = S.Text;",$pdo_options);
+                        SET T.error_date = S.LogDate, 
+                            T.[source] = S.ProcessInfo,
+                            T.[error_message] = S.Text;",$pdo_options);
                 $stmt->execute();
                 
                 $stmt = $conn->prepare("CREATE TABLE [success_access_log]( 
@@ -351,50 +351,51 @@ if (isset($_GET['id'])) {
                 $stmt->execute();
                 
                 $triggerName = $dbaudit.'access_log_trigger';
-                            $query = "CREATE TRIGGER $triggerName ON ALL SERVER FOR LOGON
-                            AS
-                            BEGIN
-                            DECLARE
-                            @LogonTriggerData xml,
-                            @EventTime datetime,
-                            @LoginName varchar(50),
-                            @ClientHost varchar(50),
-                            @LoginType varchar(50),
-                            @HostName varchar(50),
-                            @AppName varchar(500)
-                            SET @LogonTriggerData = EVENTDATA()
-                            SET @EventTime = @LogonTriggerData.value('(/EVENT_INSTANCE/PostTime)[1]','datetime')
-                            SET @LoginName = @LogonTriggerData.value('(/EVENT_INSTANCE/LoginName)[1]','varchar(50)')
-                            SET @ClientHost = @LogonTriggerData.value('(/EVENT_INSTANCE/ClientHost)[1]','varchar(50)')
-                            SET @HostName = HOST_NAME()
-                            SET @AppName = APP_NAME()
-                            INSERT INTO $dbaudit.[dbo].success_access_log
-                            (login_name,
-                            [program_name],
-                            access_time,
-                            spid,
-                            ip_address)
-                            SELECT @LoginName,
-                            @AppName,
-                            @EventTime,
-                            @@SPID,
-                            client_net_address
-                            FROM sys.sysprocesses S
-                            INNER JOIN sys.dm_exec_connections decc
-                            ON S.spid = decc.session_id
-                            WHERE spid = @@SPID
-                            END
-                            ";
-                            $stmt = $conn->query($query);
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            print_r($result);
-                
-                            $query = "
-                            ENABLE TRIGGER $triggerName ON ALL SERVER
-                            ";
-                            $stmt = $conn->query($query);
-                            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                            print_r($result);
+                $query = "CREATE TRIGGER $triggerName ON ALL SERVER FOR LOGON
+                AS
+                BEGIN
+                DECLARE
+                @LogonTriggerData xml,
+                @EventTime datetime,
+                @LoginName varchar(50),
+                @ClientHost varchar(50),
+                @LoginType varchar(50),
+                @HostName varchar(50),
+                @AppName varchar(500)
+                SET @LogonTriggerData = EVENTDATA()
+                SET @EventTime = @LogonTriggerData.value('(/EVENT_INSTANCE/PostTime)[1]','datetime')
+                SET @LoginName = @LogonTriggerData.value('(/EVENT_INSTANCE/LoginName)[1]','varchar(50)')
+                SET @ClientHost = @LogonTriggerData.value('(/EVENT_INSTANCE/ClientHost)[1]','varchar(50)')
+                SET @HostName = HOST_NAME()
+                SET @AppName = APP_NAME()
+                INSERT INTO $dbaudit.[dbo].[success_access_log]
+                (login_name,
+                [program_name],
+                access_time,
+                spid,
+                ip_address)
+                SELECT @LoginName,
+                @AppName,
+                @EventTime,
+                @@SPID,
+                client_net_address
+                FROM sys.sysprocesses S
+                INNER JOIN sys.dm_exec_connections decc
+                ON S.spid = decc.session_id
+                WHERE spid = @@SPID
+                END
+                ";
+                $stmt = $conn->query($query);
+                // $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                // print_r($result);
+    
+                $query = "
+                ENABLE TRIGGER $triggerName ON ALL SERVER
+                ";
+                $stmt = $conn->query($query);
+                // $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                // print_r($result);
+
                 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[count_success_log] AS
                         SELECT
@@ -413,7 +414,7 @@ if (isset($_GET['id'])) {
                         DAY(access_time)",$pdo_options);
                 $stmt->execute();
                 
-                $stmt = $conn->prepare("CREATE VIEW database_access_per_day AS
+                $stmt = $conn->prepare("CREATE VIEW [dbo].[database_access_per_day] AS
                         SELECT
                         DAY(access_time) AS [Day],
                         MONTH(access_time) AS [Month],
@@ -471,11 +472,11 @@ if (isset($_GET['id'])) {
                             ,[dayexpiration]
                             ,[passhash]
                             ,[passhashalgo]
-                        FROM $dbaudit.[dbo].[user_password]
+                        FROM $dbaudit.[dbo].[database_user_password]
                         WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2",$pdo_options);
                 $stmt->execute();
                 
-                $stmt = $conn->prepare("Create View [dbo].[privileges] As
+                $stmt = $conn->prepare("CREATE View [dbo].[privileges] As
                         SELECT DISTINCT permission_name as PermissionName,
                             type,
                             state_desc,
@@ -546,17 +547,18 @@ if (isset($_GET['id'])) {
                 $stmt->execute();
                 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[failed_login] AS
-                SELECT CAST(Text AS varchar(MAX)) AS Text, COUNT(LogDate) AS count, MAX(LogDate) AS date
-                FROM [dbo].[error_log]
-                WHERE (Text LIKE '%Login failed for user%')
-                GROUP BY CAST(Text AS varchar(MAX))",$pdo_options);
+                SELECT CAST(error_message AS varchar(MAX)) AS Text, COUNT(error_date) AS count, MAX(error_date) AS date
+                        FROM dbo.error_log
+                        WHERE (error_message LIKE '%Login failed for user%')
+                        GROUP BY CAST(error_message AS varchar(MAX))",$pdo_options);
                 $stmt->execute();
 
                     // unset($stmt);
                     // unset($conn);
 
-                    echo "Database created successfully with the name $user".'audit';
-                } catch (PDOException $e) {
+                    echo "Database created successfully with the name $user".'audit';?>
+                    <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
+               <?php } catch (PDOException $e) {
                     echo $e->getMessage();
                 }
             }
