@@ -21,6 +21,11 @@
 //     $_SESSION['id']=$makerValue;
 //     echo "masuk pak eko ".$makerValue;
 // }
+if (isset($_GET['dbtarget'])) {
+        $dbtarget = $_GET['dbtarget'];
+        // echo $dbtarget;
+        // die;
+      }
 
 ?>
 
@@ -34,7 +39,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Audit: <?php echo $dbnya?>
+                Database Audit:
+                <?php if (!isset($_GET['dbtarget']) && $makerValue == 1) {?>Northwind
+                    <?php } else if (!isset($_GET['dbtarget']) && $makerValue == 2){ ?>BikeStores	
+                <?php } else{ echo $dbtarget; }?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">

@@ -217,7 +217,7 @@ if (isset($_GET['id'])) {
                                 ORDER BY `PRIVILEGE_TYPE`";
                                 $dbh->exec($sql);
     
-                        $sql="CREATE TABLE `database_usage` AS SELECT
+                        $sql="CREATE VIEW `database_usage` AS SELECT
                             `user_host` AS `Name`,
                             MAX(`event_time`) AS `LastAccess`,
                             COUNT(*) AS `Total`
@@ -274,7 +274,7 @@ if (isset($_GET['id'])) {
                           $dbh->exec($sql);
 
                     echo "Database created successfully with the name $user".'audit';
-                   ?> <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>"> Audit Now <a>
+                   ?> <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
 
                    <?php
                     }
