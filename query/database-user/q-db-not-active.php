@@ -16,13 +16,13 @@ $dbnya = $_GET['usedb'];
 if ($makerValue == 1){
 $NotActiveQuery = "
   SELECT *
-    FROM inactive_user
+    FROM $dbnya.inactive_user
   ";
   $NA = $dbh->query($NotActiveQuery);
 } else{
 $NotActiveQuery = "
 SELECT *
-  FROM [$dbnya].[dbo].[inactive]
+  FROM [$dbnya].[dbo].[inactive_user]
 ";
 $NA = $conn->query($NotActiveQuery);
 }

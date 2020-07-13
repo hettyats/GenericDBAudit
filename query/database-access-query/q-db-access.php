@@ -19,13 +19,13 @@ if(isset($_SESSION["id"])){
   } 
 
 if ($makerValue == 1){
-    $DatabaseAccessQuery = '
+    $DatabaseAccessQuery = "
     SELECT
         *
     FROM
-    `general_log`
+    `$dbnya`.`general_log`
     ORDER BY event_time DESC
-    ';
+    ";
     $AccessList = $dbh->query($DatabaseAccessQuery);
 }elseif ($makerValue == 2) {
 

@@ -60,9 +60,9 @@ if (isset($_GET['id'])) {
                             <div class="login-logo">
                                 <a href="./index.php"><b>Create Database Audit</b></a>
                             </div>
-                            <div class="form-group has-feedback">
+                            <!-- <div class="form-group has-feedback">
                                 <input type="text" class="form-control" name="db" placeholder="Database name">
-                            </div>
+                            </div> -->
                             <div class="form-group has-feedback">
                                 <select id="cmbMake" class="form-control" name="dbtarget">>
                                     <option disabled selected>Select Database Target </option>
@@ -137,8 +137,8 @@ if (isset($_GET['id'])) {
 
             <?php  
             
-        if(isset($_POST["db"]) && isset($_POST["dbtarget"])){
-            $user = $_POST["db"];
+        if(isset($_POST["dbtarget"])){
+            // $user = $_POST["db"];
             $dbtarget = $_POST["dbtarget"];
             $makerValue = $_GET['id'];
            if ($makerValue == 1) {
@@ -146,7 +146,7 @@ if (isset($_GET['id'])) {
                     $dbh = new PDO("mysql:host=$host", $dbuser, $password);
                     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
-                    $db = $dbh->prepare("CREATE SCHEMA $user".'audit');
+                    $db = $dbh->prepare("CREATE SCHEMA $dbtarget".'audit');
                     $db->execute(); 
 
 
@@ -172,10 +172,10 @@ if (isset($_GET['id'])) {
                     $dbh->exec($log); 
 
                     
-                    $ser = $dbh->prepare("use " . $user."audit");
+                    $ser = $dbh->prepare("use " . $dbtarget."audit");
                     $ser->execute();
 
-                    $dbaudit = $user.'audit';
+                    $dbaudit = $dbtarget.'audit';
 
                         $sql = "CREATE TABLE `role_list` (
                             `HOST` char (180),
@@ -273,8 +273,8 @@ if (isset($_GET['id'])) {
                                 GROUP BY `general_log`.`user_host`';
                           $dbh->exec($sql);
 
-                    echo "Database created successfully with the name $user".'audit';
-                   ?> <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
+                    echo "Database created successfully with the name $dbtarget".'audit';
+                   ?> <a href="./index2.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
 
                    <?php
                     }
@@ -282,22 +282,22 @@ if (isset($_GET['id'])) {
                     echo $e->getMessage();
                 }
                 // $dbh = null;
-            }else if ($makerValue == 2) {
+            } else if ($makerValue == 2) {
                 try {
                     $conn = new PDO("sqlsrv:server=$server", $pwd);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
                     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
-                    $ser = $conn->prepare("CREATE DATABASE"."[$user".'audit]');
+                    $ser = $conn->prepare("CREATE DATABASE"."[$dbtarget".'audit]');
                     $ser->execute(); 
 
                     $pdo_options = array();
                     $pdo_options[PDO::ATTR_EMULATE_PREPARES] = true;
                     $pdo_options[PDO::SQLSRV_ATTR_ENCODING] = PDO::SQLSRV_ENCODING_UTF8;
                     
-                    $ser = $conn->prepare("use " . $user."audit");
+                    $ser = $conn->prepare("use " . $dbtarget."audit");
                     $ser->execute();
 
-                    $dbaudit = $user.'audit';
+                    $dbaudit = $dbtarget.'audit';
 
                    $stmt = $conn->prepare("CREATE TABLE [dbo].[error_log](
                        [error_log_id] [int] IDENTITY(1,1) NOT NULL,
@@ -556,8 +556,8 @@ if (isset($_GET['id'])) {
                     // unset($stmt);
                     // unset($conn);
 
-                    echo "Database created successfully with the name $user".'audit';?>
-                    <a href="./index2.php?id=<?=$makerValue?>&dbtarget=<?=$dbtarget?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
+                    echo "Database created successfully with the name $dbtarget".'audit';?>
+                    <a href="./index2.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
                <?php } catch (PDOException $e) {
                     echo $e->getMessage();
                 }
