@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
                                             <tr style="background-color: #f56954;">
                                                 <?php }else{ ?>
                                             <?php }?>
-                                        <td><?php echo $row['USER']?></td>
+                                        <td><?php echo $row['us']?></td>
                                         <td><?php echo $row['Status']?></td>
                                         <?php } else{ ?>
                                             <?php if($row['lastsettime'] !== 'Not SQL Server Login' && $row['lastsettime'] > '(datediff(MM,convert(datetime,lastsettime), getdate())) > 2' ){ ?>

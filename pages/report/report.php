@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-            <i class="fa fa-pie-chart"></i>Database Audit Report           <a href="pdf.php?id=<?php echo $makerValue?>" target="_blank" class="btn btn-primary" style="margin-right: 5px;">
+            <i class="fa fa-pie-chart"></i>Database Audit Report           <a href="pdf.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>" target="_blank" class="btn btn-primary" style="margin-right: 5px;">
                         <i class="fa fa-print"></i> Print Report
                     </a>
             </h1>

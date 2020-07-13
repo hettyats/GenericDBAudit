@@ -14,12 +14,12 @@ if (isset($_GET['usedb'])) {
 }
 if ($makerValue == 1){
 // Database Login Name List Query
-$DatabaseAccessQuery = '
+$DatabaseAccessQuery = "
 SELECT * 
 FROM 
-`user_list`
+`$dbnya`.`user_list`
 ORDER BY `username` ASC
-';
+";
 $LoginName = $dbh->query($DatabaseAccessQuery);
 
 } else {

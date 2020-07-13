@@ -16,7 +16,7 @@ if (isset($_GET['usedb'])) {
 if ($makerValue == 1){
   $PassQuery = "
   SELECT DISTINCT
-  `USER`, 
+  `USER` as us, 
   `password_expired`,
 (CASE 
 WHEN `password_expired` = 'Y' THEN 'Expired'
