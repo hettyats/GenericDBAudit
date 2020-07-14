@@ -35,8 +35,8 @@ $query2 = " SELECT *
   FROM $dbnya.audit_period
   WHERE period_id = $period
   )
-  ORDER BY event_time DESC
   GROUP BY user_host
+  ORDER BY event_time DESC
   ";
 $stmt2 = $dbh->query($query2);
 

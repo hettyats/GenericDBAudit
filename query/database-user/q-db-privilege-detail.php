@@ -2,8 +2,12 @@
 $path = $_SERVER['DOCUMENT_ROOT'] . '/TA2/DBAudit';
 include $path . "/connection/connection.php";
 if (isset($_GET['perm'])) {
-  $permissionType = $_GET['perm'];
-  $permission = $_GET['PRIVILEGE_TYPE'];
+  $permission = $_GET['perm'];
+}
+if (isset($_GET['state'])) {
+  $state = $_GET['state'];
+  // echo $state;
+  // die;
 }
 
 if(isset($_SESSION["id"])){
@@ -17,8 +21,7 @@ $dbnya = $_GET['usedb'];
   
 // Database Privilege List Query
 if ($makerValue == 1){
-$ListPrivQuery = "
-SELECT 	`GRANTEE`, 
+$ListPrivQuery = "SELECT 	`GRANTEE`, 
 	`TABLE_CATALOG`, 
 	`PRIVILEGE_TYPE`, 
 	CASE `IS_GRANTABLE`
@@ -27,11 +30,10 @@ SELECT 	`GRANTEE`,
         END AS `state_desc`
 	FROM 
 	`$dbnya`.`privileges_list` 
-	where `PRIVILEGE_TYPE` = '".$permission."'";
+	where `PRIVILEGE_TYPE` = '".$permission."' AND `IS_GRANTABLE` = '$state'";
 	$ListPriv = $dbh->query($ListPrivQuery);
 } else { 
-$ListPrivQuery = "
-SELECT [UserName]
+$ListPrivQuery = "SELECT [UserName]
       ,[UserType]
       ,[DatabaseUserName]
       ,[Role]
@@ -39,7 +41,7 @@ SELECT [UserName]
       ,[ObjectType]
       ,[ObjectName]
   FROM [$dbnya].[dbo].[privilege_list]
-where PermissionType = '".$permissionType."'";
+where PermissionType = '".$permission."' AND  PermissionState = '$state'";
 $ListPriv = $conn->query($ListPrivQuery);
 }
 ?>
