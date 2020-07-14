@@ -139,7 +139,7 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
       $gen = $dbh->prepare("use $dbnya");
                   $gen->execute();
       $query = $dbh->prepare("INSERT INTO `audit_period` (period_name, period_start, period_end)
-                  VALUES ($name, $start, $end)");
+                  VALUES ('$name', '$start', '$end')");
       $query->execute();
     } catch (PDOException $e) {
       echo $e->getMessage();}

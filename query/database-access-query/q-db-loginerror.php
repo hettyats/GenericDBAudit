@@ -77,13 +77,13 @@ $total = array();
   WHERE date BETWEEN
 (
 SELECT period_start
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id = $period
 )
 AND
 (
 SELECT period_end
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id= $period
 )";
   $Error = $conn->query($ErrorQuery);
@@ -97,13 +97,13 @@ from [$dbnya].[dbo].[failed_login]
 WHERE date BETWEEN
 (
 SELECT period_start
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id = $period
 )
 AND
 (
 SELECT period_end
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id= $period
 )";
 $ErrorChart = $conn->query($ErrorChartQuery);

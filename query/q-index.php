@@ -104,12 +104,12 @@ while ($row = $Chart->fetch(PDO::FETCH_ASSOC)) {
 }
 
   } else {
-$query2 = "SELECT 
+$query2 = "SELECT DISTINCT [login_name],
 [Day]
     ,[Month]
     ,[Year]
     ,[Total]
-    ,[login_name]
+  
 from [$dbnya].[dbo].[database_access_per_day]
 WHERE access_time BETWEEN
 (

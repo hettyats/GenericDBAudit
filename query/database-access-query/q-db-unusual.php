@@ -14,12 +14,9 @@ if (isset($_GET['id'])) {
 if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 }
-if (isset($_POST['period'])) {
-  $period = $_POST['period'];
-  $_SESSION['period']=$period;
-   echo $period;
-  }
 
+  if(isset($_SESSION["period"])){
+    $period = $_SESSION["period"];}
 // Database User Query
 if ($makerValue == 1){
 

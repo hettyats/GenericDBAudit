@@ -441,6 +441,7 @@ if (isset($_GET['id'])) {
                 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[database_access_per_day] AS
                         SELECT
+                        access_time,
                         DAY(access_time) AS [Day],
                         MONTH(access_time) AS [Month],
                         YEAR(access_time) AS [Year],
@@ -448,6 +449,7 @@ if (isset($_GET['id'])) {
                         login_name
                         FROM success_access_log
                         GROUP BY
+                        access_time,
                         login_name,
                         YEAR(access_time),
                         MONTH(access_time),
