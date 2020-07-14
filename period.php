@@ -1,7 +1,24 @@
-<?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
+<?php session_start();
+
+$path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php 
 // include $path.'/pages/navbars/head.php'; 
-include $path.'/connection/connection.php';?>
+include $path.'/connection/connection.php';
+// include $path.'/q-period.php';
+
+// if (isset($_GET['id'])) {
+//   $makerValue = $_GET['id'];
+//   echo $makerValue;
+// }
+if(isset($_SESSION["id"])){
+  $makerValue = $_SESSION["id"];
+  echo $makerValue;
+}
+if (isset($_GET['usedb'])) {
+  $dbnya = $_GET['usedb'];
+  echo $dbnya;
+}
+?>
 
 
 <!DOCTYPE html>
@@ -26,21 +43,12 @@ include $path.'/connection/connection.php';?>
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php $path ?>./bower_components/bootstrap-daterangepicker/daterangepicker.css">
-  <!-- <style type="text/css">
-  .demo { position: relative; }
-  .demo i {
-    position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer;
-  }
-  </style> -->
- 
-<!-- Include Required Prerequisites -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
- 
-<!-- Include Date Range Picker -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+           <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
+           <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+
 </head>
 
 <body class="hold-transition login-page">
@@ -54,45 +62,62 @@ include $path.'/connection/connection.php';?>
                   <a href="./index.php"><b>Audit Period</b></a>
               </div>
               <div class="form-group has-feedback">
-              <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
-              <script type="text/javascript">
-              $(function() {
-                  $('input[name="daterange"]').daterangepicker();
-              });
-              </script>
-               <h3 align="center">Order Data</h3><br />  
-                <div class="col-md-3">  
-                     <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date" />  
-                </div>  
-                <div class="col-md-3">  
-                     <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" />  
-                </div>  
-                <div class="col-md-5">  
-                     <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  
-                </div>  
-                <div style="clear:both"></div>                 
-                <br />  
+                <input type="text" class="form-control" name="period_name" id="period_name" value="" placeholder="Period Name" />
+              </div>  
+              <div class="form-group has-feedback">
+                <!-- <div class="col-md-7">   -->
+                     <input type="text" name="period_start" id="period_start" class="form-control" placeholder="Period Start" />  
+                <!-- </div>  -->
+            </div> 
+            <div class="form-group has-feedback">
+                <!-- <div class="col-md-7">   -->
+                     <input type="text" name="period_end" id="period_end" class="form-control" placeholder="Period End" />  
+                <!-- </div>   -->
+              </div><br /> 
+
+              <div class="form-group has-feedback">
+                <div class="row">
+                  <div class="col-xs-4 pull-right">
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" >Create</button>  
+                  </div>  
+                <!-- <div style="clear:both"></div>                  -->
+                <!-- <br />   -->
+                </div>
+              </div>
+          </form>
+          <form method="post" action="./index2.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>">
+              <div class="login-logo">
+                  <h4><b>OR</b></h4>
               </div>
               <div class="form-group has-feedback">
-                  <select id="cmbMake" class="form-control" name="dbtarget">>
+                  <select id="cmbMake" class="form-control" name="period">>
                       <option disabled selected>Select an exists period</option>
-                      <?php 
-                          $smt = $dbh->prepare("SELECT * FROM `databaseaudit`.`audit_period`");
+                      <?php if ($makerValue == 1){
+                          $smt = $dbh->prepare("SELECT * FROM `$dbnya`.`audit_period`");
                           $smt->execute();
                           $mysq = $smt->fetchAll(); ?>
                       <?php foreach ($mysq as $row): ?>
                         <optgroup label="<?= $row["period_name"]?>">
-                          <option value="<?= $row["period_name"]?>"><b>Start date :</b> <?=$row["period_start"]?>  <b>End date : </b><?=$row["period_end"]?></option>
+                          <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?>  <b>End date : </b><?=$row["period_end"]?></option>
                         </optgroup>
                       <?php endforeach ?>
                       <!-- </select> -->
+                      <?php }elseif ($makerValue == 2) {
+                          $stmt = $conn->prepare("SELECT * from $dbnya.dbo.audit_period");
+                          $stmt->execute();
+                          $sqls = $stmt->fetchAll(); }
+                          ?>
+                      <?php foreach ($sqls as $row): ?>
+                        <optgroup label="<?= $row["period_name"]?>">
+                          <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?>  <b>End date : </b><?=$row["period_end"]?></option>
+                        </optgroup>
+                      <?php endforeach;?>
                   </select>
                   <br>
                       </div>
 
               <div class="row">
                   <div class="col-xs-4 pull-right">
-                      <!-- <input type="hidden" name="selected_text" id="selected_text" /> -->
                       <button type="submit" class="btn btn-primary btn-block btn-flat">Audit</button>
                   </div>
               </div>
@@ -101,38 +126,71 @@ include $path.'/connection/connection.php';?>
     <!-- /.login-box-body -->
     </div>
 </body>
+<?php 
+if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))  
+{  $name = $_POST["period_name"];
+  $start = $_POST["period_start"];
+  $end = $_POST["period_end"];
+  if ($makerValue == 1) {
+    try{
+      $dbh = new PDO("mysql:host=$host", $dbuser, $password);
+      $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+      $gen = $dbh->prepare("use $dbnya");
+                  $gen->execute();
+      $query = $dbh->prepare("INSERT INTO `audit_period` (period_name, period_start, period_end)
+                  VALUES ($name, $start, $end)");
+      $query->execute();
+    } catch (PDOException $e) {
+      echo $e->getMessage();}
+  } else if ($makerValue == 2) {
+    try{
+      $conn = new PDO("sqlsrv:server=$server", $pwd);
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
+      $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+      
+      $ser = $conn->prepare("use $dbnya");
+      $ser->execute();
+
+      $sql = "INSERT INTO [dbo].[audit_period] (period_name, period_start, period_end) VALUES (?,?,?)";
+    $stmt= $conn->prepare($sql);
+    $stmt->execute([$name, $start, $end]);
+      echo "done";
+    } catch (PDOException $e) {
+      echo $e->getMessage();}
+    }
+  }
+?>
 <script>  
       $(document).ready(function(){  
            $.datepicker.setDefaults({  
-                dateFormat: 'yy-mm-dd'   
+                dateFormat: 'yy-mm-dd'
            });  
            $(function(){  
-                $("#from_date").datepicker();  
-                $("#to_date").datepicker();  
+                $("#period_start").datepicker();  
+                $("#period_end").datepicker();  
            });  
-           $('#filter').click(function(){  
-                var from_date = $('#from_date').val();  
-                var to_date = $('#to_date').val();  
-                if(from_date != '' && to_date != '')  
-                {  
-                     $.ajax({  
-                          url:"q-period.php",  
-                          method:"POST",  
-                          data:{from_date:from_date, to_date:to_date},  
-                          success:function(data)  
-                          {  
-                               $('#order_table').html(data);  
-                          }  
-                     });  
-                }  
-                else  
-                {  
-                     alert("Please Select Date");  
-                }  
-           });  
+      //      $('#submit').click(function(){  
+      //           var period_start = $('#period_start').val();  
+      //           var period_end = $('#period_end').val();  
+      //           var period_name = $('#period_name').val();
+      //     //       if(period_start = '' && period_end = '' && period_name = '' )  
+      //     //       {  
+      //     //         alert("Please Select Date");  }
+
+      //     //       //   $.ajax({  
+      //     //       //           url:"q-period.php",  
+      //     //       //           method:"POST",  
+      //     //       //           data:{period_start:period_start, period_end:period_end, period_name:period_name},  
+      //     //       //      });  
+      //     //       // }  
+      //     //       // else  
+      //     //       // {  
+      //     //       //      alert("Please Select Date");  
+      //     //       // }  
+      //     //  });  
       });  
  </script>
-
 
 
 </html>

@@ -14,13 +14,31 @@ if (isset($_GET['id'])) {
 if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 }
+if (isset($_POST['period'])) {
+  $period = $_POST['period'];
+  $_SESSION['period']=$period;
+   echo $period;
+  }
+
 // Database User Query
 if ($makerValue == 1){
 
-$query2 = "
-  SELECT *
+$query2 = " SELECT *
   FROM `$dbnya`.count_success_log
-  WHERE Total > 400
+  WHERE Total > 400 AND
+  event_time BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  ORDER BY event_time DESC
   GROUP BY user_host
   ";
 $stmt2 = $dbh->query($query2);
@@ -28,7 +46,19 @@ $stmt2 = $dbh->query($query2);
 $querychart = 
   "SELECT *
   FROM `$dbnya`.count_success_log
-  WHERE Total > 400
+  WHERE Total > 400 AND
+  event_time BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
   GROUP BY user_host"
   ;
 $accessChart = $dbh->query($querychart);
@@ -45,26 +75,48 @@ $accessChart = $dbh->query($querychart);
 
 } else {
 
-    $query2 = " 
-    SELECT [Day]
+    $query2 = " SELECT [Day]
         ,[Month]
         ,[Year]
         ,[Total]
         ,[login_name]
     from [$dbnya].[dbo].[database_access_per_day]
     WHERE [Total] > 1000
+    AND access_time BETWEEN
+    (
+    SELECT period_start
+    FROM $dbnya.dbo.audit_period
+    WHERE period_id = $period
+    )
+    AND
+    (
+    SELECT period_end
+    FROM $dbnya.dbo.audit_period
+    WHERE period_id = $period
+    )
     order by Day desc"
     ;
     $stmt2 = $conn->query($query2);
 
-    $querychart = "
-    SELECT [Day]
+    $querychart = "SELECT [Day]
         ,[Month]
         ,[Year]
         ,[Total]
         ,[login_name]
     from [$dbnya].[dbo].[database_access_per_day]
     WHERE [Total] > 1000
+    AND access_time BETWEEN
+    (
+    SELECT period_start
+    FROM $dbnya.dbo.audit_period
+    WHERE period_id = $period
+    )
+    AND
+    (
+    SELECT period_end
+    FROM $dbnya.dbo.audit_period
+    WHERE period_id = $period
+    )
     order by Day desc";
     $accessChart = $conn->query($querychart);
 
