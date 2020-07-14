@@ -12,26 +12,50 @@ if (isset($_GET['id'])) {
 if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 }
+
+if(isset($_SESSION["period"])){
+  $period = $_SESSION["period"];}
+
 if ($makerValue == 1){
 // Database login error List Query
 $ErrorQuery = "
 SELECT
-  `general_log`.`event_time` AS `event_time`,
-  `general_log`.`user_host`  AS `user_host`,
-  COUNT(`general_log`.`event_time`) AS `Total`
-FROM `$dbnya`.`general_log`
-WHERE argument LIKE 'Access denied for user%'
-GROUP BY `general_log`.`user_host`";
+        *
+    FROM
+    `$dbnya`.`failed_login`
+    WHERE event_time BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)
+    ";
 
 $Error = $dbh->query($ErrorQuery);
 
 $ErrorChartQuery = "
 SELECT
-  `general_log`.`user_host`  AS `user_host`,
-  COUNT(`general_log`.`event_time`) AS `Total`
-FROM `$dbnya`.`general_log`
-WHERE argument LIKE 'Access denied for user%'
-GROUP BY `general_log`.`user_host`";
+        *
+    FROM
+    `$dbnya`.`failed_login`
+    WHERE event_time BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)";
 
 $ErrorChart = $dbh->query($ErrorChartQuery);
 
@@ -49,7 +73,19 @@ $total = array();
     Text as [error_message],
     count as [Total],
     date as [Date]
-  from [$dbnya].[dbo].[failed_login]";
+  from [$dbnya].[dbo].[failed_login]
+  WHERE date BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)";
   $Error = $conn->query($ErrorQuery);
   
   $ErrorChartQuery =
@@ -57,7 +93,19 @@ $total = array();
 	Text as [error_message],
   count as [Total],
   date as [Date]
-from [$dbnya].[dbo].[failed_login]";
+from [$dbnya].[dbo].[failed_login]
+WHERE date BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)";
 $ErrorChart = $conn->query($ErrorChartQuery);
 
 $name = array();

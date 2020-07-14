@@ -95,7 +95,7 @@ if (isset($_GET['id'])) {
                             </div>
                         </form>
                     <?php }else{?>
-                        <form method="get" action="./index2.php?id=<?=$makerValue ?>">
+                        <form method="get" action="./period.php?id=<?=$makerValue ?>">
                             <div class="login-logo">
                                 <a href="./index.php"><b>Use Database</b></a>
                             </div>
@@ -165,7 +165,7 @@ if (isset($_GET['id'])) {
                     $dbh->exec($genlog); 
 
                     $log = "SET @old_log_state = @@GLOBAL.general_log;
-                    SET GLOBAL general_log = 'OFF';
+                    SET GLOBAL general_log = 'ON';
                     ALTER TABLE mysql.general_log ENGINE = MYISAM;
                     SET GLOBAL general_log = @old_log_state;
                     SET global log_output = 'table';";
@@ -177,14 +177,12 @@ if (isset($_GET['id'])) {
 
                     $dbaudit = $dbtarget.'audit';
 
-                        $sql = "CREATE TABLE `role_list` (
-                            `HOST` char (180),
-                            `User` char (240),
-                            `Role` char (240),
-                            `Admin_option` char (3),
-                            `Role_id` mediumint (9),
-                            `Create_date` datetime
-                        )";
+                        $sql = "CREATE VIEW role_list AS SELECT
+                                HOST, 
+                                USER, 
+                                ROLE, 
+                                Admin_option 
+                                FROM  mysql.roles_mapping;";
                         $dbh->exec($sql);
     
                          $sql="CREATE VIEW `general_log` AS
@@ -235,6 +233,15 @@ if (isset($_GET['id'])) {
                             FROM mysql.user
                             ORDER BY USER";
                             $dbh->exec($sql);
+
+                            $sql="CREATE VIEW failed_login AS SELECT
+                            `general_log`.`event_time` AS `event_time`,
+                            `general_log`.`user_host`  AS `user_host`,
+                            COUNT(`general_log`.`event_time`) AS `Total`
+                            FROM `$dbaudit`.`general_log`
+                            WHERE argument LIKE 'Access denied for user%'
+                            GROUP BY `general_log`.`user_host`";
+                            $dbh->exec($sql);
     
                         $sql="CREATE VIEW `count_success_log` AS
                                 SELECT
@@ -273,8 +280,17 @@ if (isset($_GET['id'])) {
                                 GROUP BY `general_log`.`user_host`';
                           $dbh->exec($sql);
 
+                          $sql="CREATE TABLE `audit_period` (  
+                            `period_id` INT NOT NULL AUTO_INCREMENT,
+                            `period_name` VARCHAR(75) NOT NULL,
+                            `period_start` DATE NOT NULL,
+                            `period_end` DATE NOT NULL,
+                            PRIMARY KEY (`period_id`),
+                            UNIQUE (`period_name`))";
+                        $dbh->exec($sql);
+
                     echo "Database created successfully with the name $dbtarget".'audit';
-                   ?> <a href="./index2.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
+                   ?> <a href="./period.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
 
                    <?php
                     }
@@ -396,7 +412,16 @@ if (isset($_GET['id'])) {
                 // $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 // print_r($result);
 
-                
+                $query = "CREATE TABLE audit_period(
+                    period_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+                    period_name VARCHAR(75) NOT NULL UNIQUE,
+                    period_start DATE NOT NULL,
+                    period_end DATE NOT NULL
+                    )
+                    CREATE INDEX index_audit_period_date
+                    ON dbo.audit_period(period_start, period_end)";
+                $stmt = $conn->query($query);
+
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[count_success_log] AS
                         SELECT
                         login_name,
@@ -446,16 +471,12 @@ if (isset($_GET['id'])) {
                 $stmt->execute();
                 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[inactive_user] AS
-                        SELECT [access_log_id]
-                            ,[spid]
-                            ,[login_name]
-                            ,[program_name]
-                            ,[ip_address]
-                            ,[access_time]
-                        FROM [dbo].[success_access_log]
-                        WHERE CONVERT(INT, month(getdate()), 111) -CONVERT(INT,month([access_time]), 111) > 2",$pdo_options);
+                        SELECT login_name, program_name, MAX(access_time) AS last_access
+                        FROM $dbaudit.dbo.success_access_log
+                        WHERE (CONVERT(INT, MONTH(GETDATE()), 111) - CONVERT(INT, MONTH(access_time), 111) > 2)
+                        GROUP BY login_name, program_name",$pdo_options);
                 $stmt->execute();
-                
+
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[database_usage] AS 
                         SELECT 
                             login_name as [Name],
@@ -557,7 +578,7 @@ if (isset($_GET['id'])) {
                     // unset($conn);
 
                     echo "Database created successfully with the name $dbtarget".'audit';?>
-                    <a href="./index2.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
+                    <a href="./period.php?id=<?=$makerValue?>&usedb=<?=$dbaudit?>&dbtarget=<?=$dbtarget?>"> Audit Now <a>
                <?php } catch (PDOException $e) {
                     echo $e->getMessage();
                 }
