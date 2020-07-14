@@ -20,7 +20,7 @@ if (isset($_GET['id'])) {
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i
                                 class="fa fa-circle-o"></i>Database Access
                                 <?php if($accessnotif['NotifAccess'] > 0) {?>
                             <span class="pull-right-container">
@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
                             </span>
                             <?php } ?>
                                 </a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-usage.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-usage.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i
                                 class="fa fa-circle-o"></i>Account Usage
                                 <?php if($userNotif['NotifUser'] > 0) {?>
                             <span class="pull-right-container">
@@ -36,9 +36,9 @@ if (isset($_GET['id'])) {
                             </span>
                             <?php } ?>
                                 </a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/database-unusual.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/database-unusual.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i
                                 class="fa fa-circle-o"></i>Database Unusual Access</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i
+                    <li><a href="/TA2/DBAudit/pages/database-access/failed-login.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i
                                 class="fa fa-circle-o"></i>Database Failed Login</a></li>
 
                 </ul>

@@ -1,4 +1,4 @@
-<?php //session_start();
+<?php session_start();
       //Put session start at the beginning of the file
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
@@ -7,6 +7,12 @@ if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   }
 
+  if (isset($_POST['period'])) {
+    $period = $_POST['period'];
+    $_SESSION['period']=$period;
+     echo $period;
+     die;
+    }
 //   if(isset($_SESSION["id"])){
 //     $makerValue = $_SESSION["id"];
 //     echo "session db ".$makerValue;

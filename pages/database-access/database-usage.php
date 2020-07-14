@@ -1,4 +1,4 @@
-<?php //session_start();
+<?php session_start();
       //Put session start at the beginning of the file
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>

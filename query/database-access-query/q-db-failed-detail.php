@@ -54,13 +54,13 @@ FROM [$dbnya].[dbo].[error_log]
 WHERE error_date BETWEEN
 (
 SELECT period_start
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id = $period
 )
 AND
 (
 SELECT period_end
-FROM $dbnya.audit_period
+FROM $dbnya.dbo.audit_period
 WHERE period_id= $period
 )
 ";
