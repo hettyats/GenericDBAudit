@@ -18,12 +18,27 @@ if(isset($_SESSION["id"])){
     $dbnya = $_GET['usedb'];
   } 
 
+  if(isset($_SESSION["period"])){
+    $period = $_SESSION["period"];}
+
 if ($makerValue == 1){
     $DatabaseAccessQuery = "
     SELECT
         *
     FROM
     `$dbnya`.`general_log`
+    WHERE event_time BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)
     ORDER BY event_time DESC
     ";
     $AccessList = $dbh->query($DatabaseAccessQuery);
@@ -36,6 +51,18 @@ if ($makerValue == 1){
         program_name as [Program],
         access_time as [Time]
     FROM $dbnya.[dbo].[success_access_log]
+    WHERE access_time BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)
     ORDER BY [Time] desc";
 $AccessList = $conn->query($DatabaseAccessQuery);
 }

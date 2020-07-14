@@ -134,10 +134,8 @@ $dbChangePW = $conn->query($notchangePassword);
 
 
 $NotActiveQuery = "
-SELECT  [login_name], MAX(access_time) AS last_access
-        FROM [$dbnya].[dbo].[success_access_log]
-        WHERE CONVERT(INT, month(getdate()), 111) -CONVERT(INT,month([access_time]), 111) > 2
-		GROUP BY login_name
+SELECT *
+  FROM [$dbnya].[dbo].[inactive_user]
 ";
 $NA = $conn->query($NotActiveQuery);
 

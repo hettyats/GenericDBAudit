@@ -15,6 +15,17 @@ if (isset($_GET['id'])) {
         
         .page-header {
     margin: 10px 0 5px 0;}
+
+    @media print {
+  body, .wrapper {
+    display: block !important;
+    position: relative !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin-left: 0 !important;
+  }
+}
         </style>
 <head>
     <meta charset="utf-8">
@@ -49,9 +60,7 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        <i class="fa fa-pie-chart"></i> Database Audit Report: <?php if ($makerValue == 1) {?>Northwind
-                    <?php } else { ?>BikeStores
-                <?php }?>
+                        <i class="fa fa-pie-chart"></i> Database Audit Report: <?php echo substr($dbnya,0,-5)?>
                         <small class="pull-right">Date: <?php echo date('F, j Y'); ?></small>
                     </h2>
                 </div>
@@ -235,72 +244,12 @@ if (isset($_GET['id'])) {
                 </div>
             </div>
 
-
-                    
-                    <!-- <h3>Observation No. 2: Database Object</h3>
-                    <dl>
-                        <dt>Database Dependencies</dt>
-                        <dd>
-                            <?php //if(count($dependID) > 0){ ?>
-                            This database object did not have depend object:
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Object ID</th>
-                                    <th>Object Name</th>
-                                    <th>Object Type</th>
-                                </thead>
-                                <tbody>
-                                    <?php //for($i=0;$i<count($dependID);$i++){ ?>
-                                    <tr>
-                                        <td><?php //echo $dependID[$i]?></td>
-                                        <td><?php //echo $dependName[$i] ?></td>
-                                        <td><?php //echo "View" ?></td>
-                                    </tr>
-                                    <?php //} ?>
-                                </tbody>
-                            </table>
-                            <?php //}else{ ?>
-                            All database object are fine.
-                            <?php //} ?>
-                        </dd>
-                    </dl>
-                    <h4>Recommendation</h4>
-                    <dl>
-                        <?php //if(count($dependID) > 0){ ?>
-                        <dt>Database Dependencies</dt>
-                        <dd>
-                            Delete the database object or fix the database depend object:
-                            <ul>
-                                <?php /*for($i=0;$i<count($dependID);$i++){ ?>
-                                <li><?php echo $dependName[$i]." (Object ID: ".$dependID[$i].")"; ?></li>
-                                <?php } */?>
-                            </ul>
-                        </dd>
-                        <?php //} ?>
-                    </dl> -->
-
-                    <hr>
-                    <!-- <h3>Observation No. 3: Database Data-Definition Languange (DDL) Activity</h3>
-                    <dl>
-                        <dt>test</dt>
-                        <dd>
-                            test
-                        </dd>
-                    </dl>
-                    <h4>Recommendation</h4>
-                    <dl>
-                        <dt>test</dt>
-                        <dd>test</dd>
-                    </dl> -->
-
                 </div>
-            </div>
-
         </section>
         <!-- /.content -->
     </div>
     <!-- ./wrapper -->
 </body>
-</body>
+
 
 </html>

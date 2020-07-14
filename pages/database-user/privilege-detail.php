@@ -28,7 +28,7 @@ $permission = $_GET['PRIVILEGE_TYPE'];?>
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database User
+                Database Privileges Detail: <?php echo substr($dbnya,0,-5)?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/TA2/DBAudit/index.php"><i class="fa fa-dashboard"></i>Home</a></li>

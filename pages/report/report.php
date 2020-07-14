@@ -41,9 +41,7 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-xs-12">
                     <h3>
-                        <i class="fa fa-database"></i> Database Name: <?php if ($makerValue == 1) {?>Northwind
-                    <?php } else { ?>BikeStores
-                <?php }?>
+                        <i class="fa fa-database"></i> Database Name: <?php echo substr($dbnya,0,-5)?>
                         <small class="pull-right">Date: <?php echo date('F, j Y'); ?></small>
                     </h3>
                 </div>
@@ -165,15 +163,15 @@ if (isset($_GET['id'])) {
                                     <td><?php echo $row['login_name'] ?></td>
                                     <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['last_access'])); ?></td>
                                     </tr>
-                                    <?php } else if(!$row){?>
+                                    <?php } else{?>
                                         <tr>
                                         <td>No result found</td>
                                         <td>No result found</td>
                                     </tr>
-                                   
-                                    <?php }
+                                    <?php  } ?>
+                                    <?php 
                                                   if(!$row){ echo "There is no Inactive User in database."; }  ?> 
-                                    <?php  }?> 
+                                    <?php  } ?> 
                                     </tbody>
                                     </table>
                         </div>

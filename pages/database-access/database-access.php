@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Database Access <?php echo $dbnya?>
+                Database Access: <?php echo substr($dbnya,0,-5)?>
                 <!-- <small>Optional description</small> -->
             </h1>
             <ol class="breadcrumb">
