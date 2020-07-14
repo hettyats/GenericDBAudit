@@ -12,8 +12,7 @@ if (isset($_GET['id'])) {
   }
   ?>
 
-<?php $permissionType = $_GET['perm']; 
-$permission = $_GET['PRIVILEGE_TYPE'];?>
+<?php $permission = $_GET['perm'];?>
 
 
 

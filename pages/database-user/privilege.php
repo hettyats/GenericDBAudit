@@ -63,9 +63,9 @@ if (isset($_GET['id'])) {
                                       <tr  method="POST">
                                         <?php if ($makerValue == 1) {?>
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
-                                          <td><?php echo $row['state_desc'] ?></td>
+                                          <td  value=<?php echo $row['IS_GRANTABLE'] ?>><?php echo $row['state_desc'] ?></td>
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?PRIVILEGE_TYPE=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?state=<?php echo $row['IS_GRANTABLE']?>&perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
@@ -74,10 +74,10 @@ if (isset($_GET['id'])) {
                                           <td value=<?php echo $row['PermissionName'] ?> ><?php echo $row['PermissionName'] ?></td>
                                           <td><?php echo $row['class_desc'] ?></td>
                                           <td><?php echo $row['type'] ?></td>
-                                          <td><?php echo $row['state_desc'] ?></td>
+                                          <td value=<?php echo $row['state_desc'] ?>><?php echo $row['state_desc'] ?></td>
 
                                           <td>
-                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
+                                            <a method="get" href="/TA2/DBAudit/pages/database-user/privilege-detail.php?state=<?php echo $row['state_desc']?>&perm=<?php echo $row['PermissionName']?>&id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>

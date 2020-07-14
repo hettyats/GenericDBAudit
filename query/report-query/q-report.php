@@ -38,7 +38,7 @@ $outlier = findOutlier($dbAccess);
 
 $outsideQuery = "
 SELECT        
-    user_host, `last_access`, `Total`
+    user_host, `event_time`, `Total`
 FROM `$dbnya`.`count_user_outside_operating_hour`
 ";
 $dbOutside = $dbh->query($outsideQuery);

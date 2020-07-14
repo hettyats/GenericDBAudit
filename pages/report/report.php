@@ -109,7 +109,7 @@ if (isset($_GET['id'])) {
                                                 <tr>
                                                   <td> <?php echo $row['user_host']?> </td>
                                                   <td> <?php echo $row['Total']?></td>
-                                                  <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['last_access']));?></td>
+                                                  <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['event_time']));?></td>
                                                 </tr>
                                                
                                                   <?php } else if($makerValue == 2 && $row != 0){ 

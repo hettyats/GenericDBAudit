@@ -15,7 +15,7 @@ if (isset($_GET['usedb'])) {
 
 if ($makerValue == 1){
     $PrivilegeQuery = "
-    SELECT 	`PRIVILEGE_TYPE` AS `PermissionName`, 
+    SELECT 	`PRIVILEGE_TYPE` AS `PermissionName`, `IS_GRANTABLE`,
         CASE `IS_GRANTABLE`
           WHEN 'YES' THEN 'GRANT'
           ELSE 'DENY'
