@@ -13,6 +13,9 @@ if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 }
 
+if(isset($_SESSION["period"])){
+  $period = $_SESSION["period"];}
+
 if ($makerValue == 1){
     $PrivilegeQuery = "
     SELECT 	`PRIVILEGE_TYPE` AS `PermissionName`, `IS_GRANTABLE`,

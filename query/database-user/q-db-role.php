@@ -14,6 +14,9 @@ if (isset($_GET['id'])) {
    $dbnya = $_GET['usedb'];
  }
 
+ if(isset($_SESSION["period"])){
+     $period = $_SESSION["period"];}
+
 // Database Login Name List Query
 if ($makerValue == 1){
      $RoleQuery = "

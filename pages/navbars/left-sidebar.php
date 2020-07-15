@@ -50,14 +50,14 @@ if (isset($_GET['id'])) {
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-circle-o"></i>User List
+                    <li><a href="/TA2/DBAudit/pages/database-user/user-list.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i class="fa fa-circle-o"></i>User List
                     <?php if($userlistNotif['NotifUserList'] > 0) {?>
                             <span class="pull-right-container">
                                 <small class="label pull-right bg-red"><?php echo $userlistNotif['NotifUserList'] ?></small>
                             </span>
                             <?php } ?>
                     </a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/password.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/password.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i class="fa fa-circle-o"></i>
                             User Password Change
                             <?php if($passwordnotif['NotifPassword'] > 0) {?>
                             <span class="pull-right-container">
@@ -65,11 +65,11 @@ if (isset($_GET['id'])) {
                             </span>
                             <?php } ?>
                             </a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/privilege.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i class="fa fa-circle-o"></i>
                             Privileges</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/role.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/role.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i class="fa fa-circle-o"></i>
                             Roles</a></li>
-                    <li><a href="/TA2/DBAudit/pages/database-user/not-active.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>"><i class="fa fa-circle-o"></i>
+                    <li><a href="/TA2/DBAudit/pages/database-user/not-active.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>"><i class="fa fa-circle-o"></i>
                     Inactive User</a></li>
                 </ul>
             </li>
