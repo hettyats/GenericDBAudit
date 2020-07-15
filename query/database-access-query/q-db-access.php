@@ -25,8 +25,7 @@ if(isset($_SESSION["id"])){
 }
 
 if ($makerValue == 1){
-    $DatabaseAccessQuery = "
-    SELECT
+    $DatabaseAccessQuery = "SELECT
         *
     FROM
     `$dbnya`.`general_log`
@@ -47,8 +46,7 @@ WHERE period_id= $period
     $AccessList = $dbh->query($DatabaseAccessQuery);
 }elseif ($makerValue == 2) {
 
-    $DatabaseAccessQuery = "
-    SELECT
+    $DatabaseAccessQuery = "SELECT
         access_log_id [Id],
         login_name [Name],
         program_name as [Program],

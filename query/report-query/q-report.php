@@ -9,19 +9,35 @@ if (isset($_GET['id'])) {
 if (isset($_GET['usedb'])) {
     $dbnya = $_GET['usedb'];
   }
-// $dbnya = 'databaseaudit';
+
+  if(isset($_SESSION["period"])){
+    $period = $_SESSION["period"];
+  }
+
 //MySQL
 if ($makerValue == 1){
-$databaseAccessQuery = "
-  SELECT 
+$databaseAccessQuery = "SELECT 
     DAY(event_time) AS Day,
     MONTH(event_time) AS Month,
     YEAR(event_time) AS Year,
     COUNT(event_time) AS Total,
     user_host
   FROM $dbnya.count_success_log
-  WHERE Total > 400
+  WHERE Total > 400 AND
+  event_time BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
   GROUP BY user_host
+  ORDER BY event_time DESC
   ";
 $dbAccessStmt = $dbh->query($databaseAccessQuery);
 
@@ -36,17 +52,29 @@ $outlier = findOutlier($dbAccess);
 
 
 
-$outsideQuery = "
-SELECT        
+$outsideQuery = "SELECT        
     user_host, `event_time`, `Total`
-FROM `$dbnya`.`count_user_outside_operating_hour`
+FROM `$dbnya`.`count_user_outside_operating_hour` WHERE
+  event_time BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  GROUP BY user_host
+  ORDER BY event_time DESC
 ";
 $dbOutside = $dbh->query($outsideQuery);
 
 
 
-$notchangePassword ="
-SELECT `HOST`,
+$notchangePassword ="SELECT `HOST`,
   `USER`, 
   `password_expired`,
 (CASE 
@@ -54,15 +82,28 @@ WHEN `password_expired` = 'Y' THEN 'Expired'
 ELSE 'Not Expired'
 END) AS `Status`
     FROM `$dbnya`.`user_password_expired`
-    Where `password_expired` = 'Y'
-
+    Where `password_expired` = 'Y' 
 ";
 $dbChangePW = $dbh->query($notchangePassword);
 
 
 
-$NotActiveQuery = "
-SELECT user_host, last_access FROM `$dbnya`.`inactive_user`;   
+$NotActiveQuery = "SELECT user_host, last_access FROM `$dbnya`.`inactive_user`
+WHERE
+  last_access BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  GROUP BY user_host
+  ORDER BY last_access DESC;   
 ";
 $NA = $dbh->query($NotActiveQuery);
 
@@ -107,8 +148,7 @@ $dbOutside = $conn->query($outsideQuery);
 
 
 
-$notchangePassword ="
-SELECT [name]
+$notchangePassword ="SELECT [name]
       , [principal_id]
       , [type_desc]
       , [lastsettime] = 
@@ -126,7 +166,19 @@ SELECT [name]
 			else 'Not SQL Server login'
 		END
   FROM [$dbnya].[dbo].[database_user_password]
-  WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2
+  WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2 AND
+  lastsettime BETWEEN
+        (
+        SELECT period_start
+        FROM $dbnya.dbo.audit_period
+        WHERE period_id = $period
+        )
+        AND
+        (
+        SELECT period_end
+        FROM $dbnya.dbo.audit_period
+        WHERE period_id = $period
+        )
 ";
 $dbChangePW = $conn->query($notchangePassword);
 

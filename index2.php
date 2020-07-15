@@ -3,7 +3,7 @@
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
-<?php include $path.'/query/q-index.php';
+<?php 
 
 // if (isset($_SESSION['id'])) {
 //     $makerValue = $_GET['id'];
@@ -29,11 +29,12 @@ if (isset($_GET['usedb'])) {
 if (isset($_POST['period'])) {
 $period = $_POST['period'];
 $_SESSION['period']=$period;
- echo $period;
+//  echo $period;
+//  die;
 }
 
 ?>
-
+<?php include $path.'/query/q-index.php';?>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>

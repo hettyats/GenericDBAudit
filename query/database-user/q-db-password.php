@@ -12,6 +12,9 @@ if(isset($_SESSION["id"])){
 if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 } 
+
+if(isset($_SESSION["period"])){
+  $period = $_SESSION["period"];}
 // Database User Password List Query
 if ($makerValue == 1){
   $PassQuery = "

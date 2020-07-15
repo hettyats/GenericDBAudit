@@ -1,3 +1,6 @@
+<?php session_start();
+      //Put session start at the beginning of the file
+?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/query/report-query/q-report.php'; 
 if (isset($_GET['id'])) {
