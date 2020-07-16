@@ -12,11 +12,11 @@ include $path.'/connection/connection.php';
 // }
 if(isset($_SESSION["id"])){
   $makerValue = $_SESSION["id"];
-  echo $makerValue;
+  // echo $makerValue;
 }
 if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
-  echo $dbnya;
+  // echo $dbnya;
 }
 if (isset($_GET['db'])) {
   $db = $_GET['db'];
@@ -27,13 +27,14 @@ if (isset($_GET['db'])) {
 <!DOCTYPE html>
 <html>
 <style type="text/css">
-body{
-  background-image: url("./background.jpeg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
+  body {
+    background-image: url("./background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
 </style>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,6 +42,9 @@ body{
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php $path ?>./bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php $path ?>./bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -54,100 +58,112 @@ body{
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php $path ?>./bower_components/bootstrap-daterangepicker/daterangepicker.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
-           <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
-           <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 </head>
 
 <body>
-    <div class="login-box">
-      <!-- /.login-logo -->
-        <div class="login-box-body" >
-          <!-- <p class="login-box-msg">Sign in to start your session</p> -->
-          <!-- <form method="POST" action = "./index2.php"> -->
-          <form method="post" action="">
-              <div class="login-logo">
-                  <a href="./index.php"><b>Audit Period</b></a>
-              </div>
-                  <h6>
-                                <ol class="breadcrumb">
-                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
-                                        <li><a href="/TA2/DBAudit/index.php?id=<?php echo $makerValue?>">Choose Database Audit</a></li>
-                                        <li class="active"><u>Choose Period</u></li>
-                                    </ol>
-                                    </h6>
-              
-              <label><h4><b>Create new audit period:</b></h4></label>
-              <div class="form-group has-feedback">
-              <label>Period Name</label>
-                <input type="text" class="form-control" name="period_name" id="period_name" value="" placeholder="Period Name" />
-              </div>  
-              <div class="form-group has-feedback">
-                <!-- <div class="col-md-7">   -->
-                <label>Period start</label>
-                     <input type="text" name="period_start" id="period_start" class="form-control" placeholder="Period Start" />  
-                <!-- </div>  -->
-            </div> 
-            <div class="form-group has-feedback">
-                <!-- <div class="col-md-7">   -->
-                <label>Period end</label>
-                     <input type="text" name="period_end" id="period_end" class="form-control" placeholder="Period End" />  
-                <!-- </div>   -->
-              </div><br /> 
+  <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body" style="background-color:White; position:fixed;">
 
-              <div class="form-group has-feedback">
-                <div class="row">
-                  <div class="col-xs-4 pull-right">
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary btn-block btn-flat" >Create</button>  
-                  </div>  
-                <!-- <div style="clear:both"></div>                  -->
-                <!-- <br />   -->
-                </div>
-              </div>
-          </form>
-          <form method="post" action="./index2.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>">
-              <div class="login-logo">
-                  <h4><b>OR</b></h4>
-              </div>
-              <div class="form-group has-feedback">
-              <label><h4><b>Select an exists period:</b></h4></label> 
-                  <select id="cmbMake" class="form-control" name="period">>
-                      <option disabled selected>Select period</option>
-                      <?php if ($makerValue == 1){
+      <!-- <p class="login-box-msg">Sign in to start your session</p> -->
+      <!-- <form method="POST" action = "./index2.php"> -->
+      <div class="login-logo">
+        <a href="./index.php"><b>Audit Period</b></a>
+      </div>
+      <h6>
+        <ol class="breadcrumb">
+          <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
+          <li><a href="/TA2/DBAudit/index.php?id=<?php echo $makerValue?>">Choose Database Audit</a></li>
+          <li class="active"><u>Choose Period</u></li>
+        </ol>
+      </h6>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Select an exists period</a></li>
+        <li><a data-toggle="tab" href="#menu1">Create New audit</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+        <form method="post" action="./index2.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>">
+            <div class="form-group has-feedback">
+              <br/>
+              <label>Period:</label>
+              <select id="cmbMake" class="form-control" name="period">>
+                <option disabled selected>Select period</option>
+                <?php if ($makerValue == 1){
                           $smt = $dbh->prepare("SELECT * FROM `$dbnya`.`audit_period`");
                           $smt->execute();
                           $mysq = $smt->fetchAll(); ?>
-                      <?php foreach ($mysq as $row): ?>
-                        <optgroup label="<?= $row["period_name"]?>">
-                          <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?>  <b>End date : </b><?=$row["period_end"]?></option>
-                        </optgroup>
-                      <?php endforeach ?>
-                      <!-- </select> -->
-                      <?php }elseif ($makerValue == 2) {
+                <?php foreach ($mysq as $row): ?>
+                <optgroup label="<?= $row["period_name"]?>">
+                  <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?> <b>End date :
+                    </b><?=$row["period_end"]?></option>
+                </optgroup>
+                <?php endforeach ?>
+                <!-- </select> -->
+                <?php }elseif ($makerValue == 2) {
                           $stmt = $conn->prepare("SELECT * from $dbnya.dbo.audit_period");
                           $stmt->execute();
                           $sqls = $stmt->fetchAll(); }
                           ?>
-                      <?php foreach ($sqls as $row): ?>
-                        <optgroup label="<?= $row["period_name"]?>">
-                          <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?>  <b>End date : </b><?=$row["period_end"]?></option>
-                        </optgroup>
-                      <?php endforeach;?>
-                  </select>
-                  <br>
-                      </div>
+                <?php foreach ($sqls as $row): ?>
+                <optgroup label="<?= $row["period_name"]?>">
+                  <option value="<?= $row["period_id"]?>"><b>Start date :</b> <?=$row["period_start"]?> <b>End date :
+                    </b><?=$row["period_end"]?></option>
+                </optgroup>
+                <?php endforeach;?>
+              </select>
+              <br>
+            </div>
 
-              <div class="row">
-                  <div class="col-xs-4 pull-right">
-                      <button type="submit" class="btn btn-primary btn-block btn-flat">Audit</button>
-                  </div>
+            <div class="row">
+              <div class="col-xs-4 pull-right">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Audit</button>
               </div>
+            </div>
+          </form>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+          <form method="post" action="">
+            <div class="form-group has-feedback">
+              <br/>
+              <label>Period Name:</label>
+              <input type="text" class="form-control" name="period_name" id="period_name" value=""
+                placeholder="Period Name" />
+            </div>
+            <div class="form-group has-feedback">
+              <!-- <div class="col-md-7">   -->
+              <label>Period start:</label>
+              <input type="text" name="period_start" id="period_start" class="form-control"
+                placeholder="Period Start" />
+              <!-- </div>  -->
+            </div>
+            <div class="form-group has-feedback">
+              <!-- <div class="col-md-7">   -->
+              <label>Period end:</label>
+              <input type="text" name="period_end" id="period_end" class="form-control" placeholder="Period End" />
+              <!-- </div>   -->
+            </div><br />
+
+            <div class="form-group has-feedback">
+              <div class="row">
+                <div class="col-xs-4 pull-right">
+                  <button type="submit" name="submit" id="submit"
+                    class="btn btn-primary btn-block btn-flat">Create</button>
+                </div>
+                <div style="clear:both"></div>                 
+                <br />  
+              </div>
+            </div>
           </form>
         </div>
     <!-- /.login-box-body -->
-    </div>
+  </div>
 </body>
 <?php 
 if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))  
@@ -167,7 +183,8 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
       $posted = true;
       if ($posted == true) {
           echo "<script type='text/javascript'>
-          alert('Period created successfully with the name $name');
+            alert('Period created successfully with the name $name');
+            location.reload();
           </script>";
       } else if ($posted == false) {
           echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
@@ -186,42 +203,50 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
       $sql = "INSERT INTO [dbo].[audit_period] (period_name, period_start, period_end) VALUES (?,?,?)";
     $stmt= $conn->prepare($sql);
     $stmt->execute([$name, $start, $end]);
-      echo "done";
+    $posted = true;
+    if ($posted == true) {
+        echo "<script type='text/javascript'>
+          alert('Period created successfully with the name $name');
+          location.reload();
+        </script>";
+    } else if ($posted == false) {
+        echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
+    }
     } catch (PDOException $e) {
       echo $e->getMessage();}
     }
   }
 ?>
-<script>  
-      $(document).ready(function(){  
-           $.datepicker.setDefaults({  
-                dateFormat: 'yy-mm-dd'
-           });  
-           $(function(){  
-                $("#period_start").datepicker();  
-                $("#period_end").datepicker();  
-           });  
-      //      $('#submit').click(function(){  
-      //           var period_start = $('#period_start').val();  
-      //           var period_end = $('#period_end').val();  
-      //           var period_name = $('#period_name').val();
-      //     //       if(period_start = '' && period_end = '' && period_name = '' )  
-      //     //       {  
-      //     //         alert("Please Select Date");  }
+<script>
+  $(document).ready(function () {
+    $.datepicker.setDefaults({
+      dateFormat: 'yy-mm-dd'
+    });
+    $(function () {
+      $("#period_start").datepicker();
+      $("#period_end").datepicker();
+    });
+    //      $('#submit').click(function(){  
+    //           var period_start = $('#period_start').val();  
+    //           var period_end = $('#period_end').val();  
+    //           var period_name = $('#period_name').val();
+    //     //       if(period_start = '' && period_end = '' && period_name = '' )  
+    //     //       {  
+    //     //         alert("Please Select Date");  }
 
-      //     //       //   $.ajax({  
-      //     //       //           url:"q-period.php",  
-      //     //       //           method:"POST",  
-      //     //       //           data:{period_start:period_start, period_end:period_end, period_name:period_name},  
-      //     //       //      });  
-      //     //       // }  
-      //     //       // else  
-      //     //       // {  
-      //     //       //      alert("Please Select Date");  
-      //     //       // }  
-      //     //  });  
-      });  
- </script>
+    //     //       //   $.ajax({  
+    //     //       //           url:"q-period.php",  
+    //     //       //           method:"POST",  
+    //     //       //           data:{period_start:period_start, period_end:period_end, period_name:period_name},  
+    //     //       //      });  
+    //     //       // }  
+    //     //       // else  
+    //     //       // {  
+    //     //       //      alert("Please Select Date");  
+    //     //       // }  
+    //     //  });  
+  });  
+</script>
 
 
 </html>
