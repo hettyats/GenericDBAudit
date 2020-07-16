@@ -8,7 +8,6 @@ include $path.'/connection/connection.php';?>
 <html>
 <style type="text/css">
 body{
-  background-image: url("./background.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -33,18 +32,21 @@ body{
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body>
+<body class="hold-transition login-page" style=" background-size: cover;">
     <div class="login-box">
       <!-- /.login-logo -->
-        <div class="login-box-body" style="background-color:White; position:fixed;" >
+      
+        <div class="login-box-body" style=" position:fixed;" >
+        <!-- <h1 style="background-color:coral;font-family:courier;font-size: 25px;position: center; top: 0px;"><center><b>DATABASE AUDIT TOOL</b></center></h1> -->
           <!-- <p class="login-box-msg">Sign in to start your session</p> -->
           <!-- <form method="POST" action = "./index2.php"> -->
            <form method="get" action = "./choose_db.php">
            <div class="login-logo">
-          <a href="./index.php"><b>Choose your Database</b></a>
+          <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
         </div>
             <div class="form-group has-feedback">
               <!-- <div class="col-xs-12"> -->
+              <h3><center>Choose your Database</center></h3>
               <label>Select RDBMS </label>
                   <select id="cmbMake" class="form-control" name="id" >
                   

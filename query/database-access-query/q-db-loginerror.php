@@ -69,12 +69,10 @@ $total = array();
 
 } else {
   $ErrorQuery =
-  "select 
-    Text as [error_message],
-    count as [Total],
-    date as [Date]
-  from [$dbnya].[dbo].[failed_login]
-  WHERE date BETWEEN
+  "SELECT 
+    *
+  from [$dbnya].[dbo].[error_log]
+  WHERE error_date BETWEEN
 (
 SELECT period_start
 FROM $dbnya.dbo.audit_period

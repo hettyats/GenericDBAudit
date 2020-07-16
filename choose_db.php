@@ -27,7 +27,6 @@ if (isset($_GET['id'])) {
 <html>
 <style type="text/css">
 body{
-  background-image: url("./background.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -51,10 +50,10 @@ body{
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body>
+<body class="hold-transition login-page" style=" background-size: cover;">
     <div class="login-box">
         <!-- /.login-logo -->
-        <div class="login-box-body" style="background-color:White; position:fixed;">
+        <div class="login-box-body" style=" position:fixed;">
             <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
             <!-- <form method="POST" > -->
@@ -64,8 +63,9 @@ body{
                     <!-- <div class="col-xs-12"> -->
                     <form method="post" action="">
                         <div class="login-logo">
+                        <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
                             <a href="./index.php"><b>
-                                    <h3><b>Create Database Audit</b></h3>
+                                    <h3><center>Create Database Audit</center></h3>
                                 </b></a>
                         </div>
                                 <h6>
@@ -114,7 +114,8 @@ body{
                 <?php } else { ?>
                     <form method="get" action="./period.php?id=<?= $makerValue ?>">
                         <div class="login-logo">
-                            <a href="./index.php"><b>Use Database</b></a>
+                        <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
+                            <h3>Use Database</h3>
                         </div>
                             <h5>
                                 <ol class="breadcrumb">
@@ -602,10 +603,10 @@ body{
                 $stmt->execute();
 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[user_outside_operating_hour] AS
-                        SELECT        login_name, program_name, ip_address, access_time
-                        FROM            dbo.success_access_log
-                        WHERE        (CONVERT(time, access_time) < CONVERT(time, '08:00:00', 105)) OR
-                                                (CONVERT(time, access_time) > CONVERT(time, '19:00:00', 105))", $pdo_options);
+                                        SELECT login_name, program_name, ip_address, access_time
+                                        FROM dbo.success_access_log
+                                        WHERE (CONVERT(time, access_time) < CONVERT(time, '08:00:00', 105)) OR
+                                                                (CONVERT(time, access_time) > CONVERT(time, '19:00:00', 105))", $pdo_options);
                 $stmt->execute();
 
                 $stmt = $conn->prepare("CREATE VIEW [dbo].[count_outside_operating_hour] AS

@@ -28,7 +28,6 @@ if (isset($_GET['db'])) {
 <html>
 <style type="text/css">
   body {
-    background-image: url("./background.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -65,7 +64,7 @@ if (isset($_GET['db'])) {
 
 </head>
 
-<body>
+<body class="hold-transition login-page" style=" background-size: cover;">
   <div class="login-box">
     <!-- /.login-logo -->
     <div class="login-box-body" style="background-color:White; position:fixed;">
@@ -73,7 +72,8 @@ if (isset($_GET['db'])) {
       <!-- <p class="login-box-msg">Sign in to start your session</p> -->
       <!-- <form method="POST" action = "./index2.php"> -->
       <div class="login-logo">
-        <a href="./index.php"><b>Audit Period</b></a>
+      <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
+        <h3>Audit Period</h3>
       </div>
       <h6>
         <ol class="breadcrumb">
@@ -190,7 +190,7 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
           echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
       }
     } catch (PDOException $e) {
-      echo $e->getMessage();}
+      echo "Choose audit period";}
   } else if ($makerValue == 2) {
     try{
       $conn = new PDO("sqlsrv:server=$server", $pwd);
@@ -213,7 +213,7 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
         echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
     }
     } catch (PDOException $e) {
-      echo $e->getMessage();}
+      echo "Choose your audit period";}
     }
   }
 ?>
