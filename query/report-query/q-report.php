@@ -108,6 +108,26 @@ WHERE
 $NA = $dbh->query($NotActiveQuery);
 
 
+$ErrorQuery = "
+SELECT
+        *
+    FROM
+    `$dbnya`.`failed_login`
+    WHERE event_time BETWEEN
+(
+SELECT period_start
+FROM $dbnya.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.audit_period
+WHERE period_id= $period
+)
+    ";
+
+$Error = $dbh->query($ErrorQuery);
 
 
 } else {
@@ -190,6 +210,25 @@ SELECT *
   FROM [$dbnya].[dbo].[inactive_user]
 ";
 $NA = $conn->query($NotActiveQuery);
+
+$ErrorQuery ="SELECT 
+    Text as [error_message],
+    count as [Total],
+    date as [Date]
+  from [$dbnya].[dbo].[failed_login]
+  WHERE date BETWEEN
+(
+SELECT period_start
+FROM $dbnya.dbo.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.dbo.audit_period
+WHERE period_id= $period
+)";
+  $Error = $conn->query($ErrorQuery);
 
 }
 
