@@ -23,7 +23,14 @@ if (isset($_GET['usedb'])) {
 
 <!DOCTYPE html>
 <html>
-
+<style type="text/css">
+body{
+  background-image: url("./background.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,26 +58,30 @@ if (isset($_GET['usedb'])) {
 
 </head>
 
-<body class="hold-transition login-page">
+<body>
     <div class="login-box">
       <!-- /.login-logo -->
-        <div class="login-box-body">
+        <div class="login-box-body" >
           <!-- <p class="login-box-msg">Sign in to start your session</p> -->
           <!-- <form method="POST" action = "./index2.php"> -->
           <form method="post" action="">
               <div class="login-logo">
                   <a href="./index.php"><b>Audit Period</b></a>
               </div>
+              <label><h4><b>Create new audit period:</b></h4></label>
               <div class="form-group has-feedback">
+              <label>Period Name</label>
                 <input type="text" class="form-control" name="period_name" id="period_name" value="" placeholder="Period Name" />
               </div>  
               <div class="form-group has-feedback">
                 <!-- <div class="col-md-7">   -->
+                <label>Period start</label>
                      <input type="text" name="period_start" id="period_start" class="form-control" placeholder="Period Start" />  
                 <!-- </div>  -->
             </div> 
             <div class="form-group has-feedback">
                 <!-- <div class="col-md-7">   -->
+                <label>Period end</label>
                      <input type="text" name="period_end" id="period_end" class="form-control" placeholder="Period End" />  
                 <!-- </div>   -->
               </div><br /> 
@@ -90,8 +101,9 @@ if (isset($_GET['usedb'])) {
                   <h4><b>OR</b></h4>
               </div>
               <div class="form-group has-feedback">
+              <label><h4><b>Select an exists period:</b></h4></label> 
                   <select id="cmbMake" class="form-control" name="period">>
-                      <option disabled selected>Select an exists period</option>
+                      <option disabled selected>Select period</option>
                       <?php if ($makerValue == 1){
                           $smt = $dbh->prepare("SELECT * FROM `$dbnya`.`audit_period`");
                           $smt->execute();
@@ -141,6 +153,14 @@ if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"]))
       $query = $dbh->prepare("INSERT INTO `audit_period` (period_name, period_start, period_end)
                   VALUES ('$name', '$start', '$end')");
       $query->execute();
+      $posted = true;
+      if ($posted == true) {
+          echo "<script type='text/javascript'>
+          alert('Period created successfully with the name $name');
+          </script>";
+      } else if ($posted == false) {
+          echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
+      }
     } catch (PDOException $e) {
       echo $e->getMessage();}
   } else if ($makerValue == 2) {

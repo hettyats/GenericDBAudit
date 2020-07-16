@@ -6,7 +6,14 @@ include $path.'/connection/connection.php';?>
 
 <!DOCTYPE html>
 <html>
-
+<style type="text/css">
+body{
+  background-image: url("./background.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,10 +33,10 @@ include $path.'/connection/connection.php';?>
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
-<body class="hold-transition login-page">
+<body>
     <div class="login-box">
       <!-- /.login-logo -->
-        <div class="login-box-body">
+        <div class="login-box-body" style="background-color:White; position:fixed;" >
           <!-- <p class="login-box-msg">Sign in to start your session</p> -->
           <!-- <form method="POST" action = "./index2.php"> -->
            <form method="get" action = "./choose_db.php">
@@ -38,12 +45,14 @@ include $path.'/connection/connection.php';?>
         </div>
             <div class="form-group has-feedback">
               <!-- <div class="col-xs-12"> -->
+              <label>Select RDBMS </label>
                   <select id="cmbMake" class="form-control" name="id" >
-                    <option disabled selected>Select RDBMS </option>
+                  
                     <option value="1">MySQL</option>
                     <option value="2">Ms. SQL Server</option>
                   </select>
                   <br/>
+                  <label>Choose create or use database audit</label>
                   <select id="cmbMake" class="form-control" name="db" >
                       <!-- <option value="0">Select RDBMS</option> -->
                       <option value="create">Create a New Database Audit</option>
