@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
         <!-- Main content -->
         <section class="content container-fluid">
 
-        <div class="row">
+        <!-- <div class="row">
                 <div class="col-xs-12">
                     <div class="box ">
                         <div class="box-header">
@@ -55,7 +55,7 @@ if (isset($_GET['id'])) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
                 <div class="col-xs-12">
@@ -74,9 +74,9 @@ if (isset($_GET['id'])) {
                                         <th>More</th>
                                         <?php } else{ ?>
                                         <th>Error Message</th>
-                                        <th>Total of Error</th>
-                                        <th>Last Error Date</th>
-                                        <th>More</th>
+                                        <th>Error Date</th>
+                                        <!-- <th>Last Error Date</th>
+                                        <th>More</th> -->
                                         <?php }?>
                                     </tr>
                                 </thead>
@@ -97,14 +97,14 @@ if (isset($_GET['id'])) {
                                           </td>
                                     <?php } else{ ?>
                                     <td value=<?php echo $row['error_message']?> ><?php echo $row['error_message'] ?></td>
-                                    <td><?php echo $row['Total']?></td>
-                                    <td><?php echo $row['Date']?></td>
-                                    <td>
+                                    <td><?php echo $row['error_date']?></td>
+                                    <td><?php //echo $row['Date']?></td>
+                                    <!-- <td>
                                             <a method="get" href="/TA2/DBAudit/pages/database-access/failed-detail.php?error_message=<?php echo $row['error_message']?>&id=<?php echo $makerValue?>?id=<?php echo $makerValue ?>&usedb=<?php echo $dbnya?>"
                                                 class="text-muted">
                                                 <i class="fa fa-search"></i>
                                             </a>
-                                          </td>
+                                          </td> -->
                                         <?php } ?>
                                     </tr>
                                     <?php } ?>
