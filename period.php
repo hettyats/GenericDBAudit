@@ -18,6 +18,9 @@ if (isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
   echo $dbnya;
 }
+if (isset($_GET['db'])) {
+  $db = $_GET['db'];
+}
 ?>
 
 
@@ -68,6 +71,14 @@ body{
               <div class="login-logo">
                   <a href="./index.php"><b>Audit Period</b></a>
               </div>
+                  <h6>
+                                <ol class="breadcrumb">
+                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
+                                        <li><a href="/TA2/DBAudit/index.php?id=<?php echo $makerValue?>">Choose Database Audit</a></li>
+                                        <li class="active"><u>Choose Period</u></li>
+                                    </ol>
+                                    </h6>
+              
               <label><h4><b>Create new audit period:</b></h4></label>
               <div class="form-group has-feedback">
               <label>Period Name</label>

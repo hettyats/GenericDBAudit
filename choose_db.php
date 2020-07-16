@@ -68,6 +68,13 @@ body{
                                     <h3><b>Create Database Audit</b></h3>
                                 </b></a>
                         </div>
+                                <h6>
+                                <ol class="breadcrumb">
+                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
+                                        <li class="active"><u>Choose Database Target</u></li>
+                                        <li></i>Choose Period</a></li>
+                                    </ol>
+                                    </h6>
                         <!-- <div class="form-group has-feedback">
                                 <input type="text" class="form-control" name="db" placeholder="Database name">
                             </div> -->
@@ -109,6 +116,13 @@ body{
                         <div class="login-logo">
                             <a href="./index.php"><b>Use Database</b></a>
                         </div>
+                            <h5>
+                                <ol class="breadcrumb">
+                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
+                                        <li class="active"></i><u>Choose Database Audit</u></a></li>
+                                        <li></i>Choose Period</a></li>
+                                    </ol>
+                                    </h5>
                         <div class="form-group has-feedback">
                         <label>Database Audit:</label>
                             <select class="form-control" name="usedb" id="cmbMake">

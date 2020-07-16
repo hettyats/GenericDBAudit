@@ -139,6 +139,46 @@ if (isset($_GET['id'])) {
                         <dd>Make sure the access is indeed carried out by authorized 
                             users and check the activities carried out by these users.<dd>
                     </dl>
+                    <br/>
+                    <dl>
+                        <h4><b>Failed Login</b></h4>
+                        <dd>This user is found in failed login:</dd>
+                            <table id="AccessList" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                    <?php if ($makerValue == 1) {?>
+                                        <th>Host</th>
+                                        <th>Last Access Time</th>
+                                        <th>Total</th>
+                                        <?php } else{ ?>
+                                        <th>User</th>
+                                        <th>Total of Error</th>
+                                        <th>Last Error Date</th>
+                                        <?php }?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row = $Error->fetch(PDO::FETCH_ASSOC)) {?>
+                                      <tr>
+                                        <?php if ($makerValue == 1) {?>
+                                    <tr>
+                                    <td value=<?php echo $row['user_host'] ?> ><?php echo $row['user_host'] ?></td>
+                                    <!-- <td><?php //echo ($row['user_host']);?></td> -->
+                                    <td><?php echo $row['event_time']?></td>
+                                    <td><?php echo $row['Total']?></td>
+                                    <?php } else{ ?>
+                                    <td><?php echo substr ($row['error_message'],23,-143) ?></td>
+                                    <td><?php echo $row['Total']?></td>
+                                    <td><?php echo $row['Date']?></td>
+                                        <?php } ?>
+                                    </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                    </table>
+                        <h4><b>Recommendation</b></h4>
+                    <dl>
+                        <dt>Failed Login</dt>
+                        <dd>Make sure that the failed login is an unusual error and not a brule force login attempt by unauthorized user.</dd>
                     </section>
                     
                     <section class="invoice">
