@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
 <html>
 <style type="text/css">
 body{
-  background-image: url("./background.jpeg");
+  background-image: url("./background.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -54,7 +54,7 @@ body{
 <body>
     <div class="login-box">
         <!-- /.login-logo -->
-        <div class="login-box-body">
+        <div class="login-box-body" style="background-color:White; position:fixed;">
             <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
             <!-- <form method="POST" > -->
@@ -645,9 +645,8 @@ body{
             } catch (PDOException $e) {
             ?> 
                     <?php
-                    echo "<script type='text/javascript'>alert('Database $dba exists.')</script>";;
+                    echo "<script type='text/javascript'>alert('Database exists! Please choose another database target.')</script>";;
                         ?>
-                <a href="./period.php?id=<?= $makerValue ?>&usedb=<?= $dbaudit ?>&dbtarget=<?= $dbtarget ?>"> Audit Now <a>
             <?php } catch (PDOException $e) {
                 echo $e->getMessage();
             }

@@ -8,7 +8,7 @@ include $path.'/connection/connection.php';?>
 <html>
 <style type="text/css">
 body{
-  background-image: url("./background.jpeg");
+  background-image: url("./background.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
