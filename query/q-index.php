@@ -91,19 +91,18 @@ if ($makerValue == 1){
 
   $queryChart = "SELECT *
   FROM $dbnya.count_success_log
-  WHERE access_time BETWEEN
-(
-SELECT period_start
-FROM $dbnya.dbo.audit_period
-WHERE period_id = $period
-)
-AND
-(
-SELECT period_end
-FROM $dbnya.dbo.audit_period
-WHERE period_id = $period
-)
-order by Day desc
+  WHERE event_time BETWEEN
+  (
+  SELECT period_start
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
+  AND
+  (
+  SELECT period_end
+  FROM $dbnya.audit_period
+  WHERE period_id = $period
+  )
   ";
   $Chart= $dbh->query($queryChart);
 
