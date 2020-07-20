@@ -68,12 +68,6 @@ a {
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php $path ?>./bower_components/bootstrap-daterangepicker/daterangepicker.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
 </head>
 
 <body class="hold-transition login-page" style=" background-size: cover;">
@@ -92,6 +86,8 @@ a {
         <form method="post" action="">
           <div class="form-group has-feedback">
           <br/>
+          <h4 class="login-box-msg">Audit information ever conducted on database <?php echo substr($dbnya,0,-5)?></h4>
+          <h5 class="login-box-msg">Database Audit name: <b><?php echo $dbnya?></b></h5>
               <table id="period" class="table table-bordered table-hover">
                   <thead>
                       <tr>
@@ -106,8 +102,8 @@ a {
                   if ($makerValue == 1) {
                       $smt = $dbh->prepare("SELECT * FROM `$dbnya`.`audit_period`");
                       $smt->execute();
-                      $mysq = $smt->fetchAll();
-                    foreach ($mysq as $row):?>
+                      $sql = $smt->fetchAll();
+                    foreach ($sql as $row):?>
                     <tr>
                           <td><?php echo ($row['period_name'])?> </td>
                           <td><?php echo ($row['period_start'])?></td>
@@ -143,9 +139,12 @@ a {
               <a href="#" onclick="history.go(-1)" class="previous">&laquo; Previous</a>
             </div>
             <div class="col-xs-1"></div>
+            
+            <?php if ($sql){?>
             <div class="col-xs-5 pull-right">
                 <button name="usep" type="submit" class="btn btn-primary btn-block btn-flat">Use the last period</button>
             </div>
+            <?php } ?>
             <!-- <div class="col-xs-4 pull-right">
               <button class="btn btn-primary btn-block btn-flat">Create new period</button>
             </div> -->
@@ -162,8 +161,7 @@ a {
             <div class="form-group has-feedback">
               <!-- <div class="col-md-7">   -->
               <label>Period start:</label>
-              <input type="text" name="period_start" id="period_start" class="form-control"
-                placeholder="Period Start" />
+              <input type="text" name="period_start" id="period_start" class="form-control" placeholder="Period Start" />
               <!-- </div>  -->
             </div>
             <div class="form-group has-feedback">
@@ -187,12 +185,24 @@ a {
     <!-- /.login-box-body -->
   </div>
 </body>
+
+<?php
+    $posted = false;
+    ?>
 <?php 
+if(isset($_POST["failed"])){
+  echo "<script type='text/javascript'>
+  alert('Are you sure want to use this period?');
+  window.location = './period.php?id=$makerValue&usedb=$dbaudit&dbtarget=$dbtarget#menu1';
+  </script>";
+}
+
 if(isset($_POST["usep"])){
   $_SESSION["period"] = $max_id;
   echo "<script type='text/javascript'>
+  alert('Are you sure want to use this period?');
   window.location = './index2.php?id=$makerValue&usedb=$dbnya';
-  </script>";
+  </script>"; 
 }
 if(isset($_POST["period_start"], $_POST["period_end"], $_POST["period_name"])) {  
   $name = $_POST["period_name"];

@@ -1,7 +1,7 @@
 <?php session_start();
-if(!isset($_SESSION["user"])) header("Location: login.php");
+ $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';
+if(!isset($_SESSION["user"])) header("Location: $path.'/login.php'");
 ?>
-<?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
@@ -107,6 +107,22 @@ if (isset($_GET['id'])) {
 
 </div>
 <!-- ./wrapper -->
+
+<!-- DATA TABLES -->
+<script src="/TA2/DBAudit/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/TA2/DBAudit/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('#ViewList').DataTable({
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': false,
+        'info': true,
+        'autoWidth': true
+    })
+})
+</script>
 
 <?php include $path.'/pages/navbars/required-scripts.php'; ?>
 <?php include $path.'/pages/navbars/end.php'; ?>

@@ -323,11 +323,10 @@ a {
                             `period_end` DATE NOT NULL,
                             `created_by` VARCHAR(255) NOT NULL,
                             PRIMARY KEY (`period_id`),
-                            UNIQUE (`period_name`))";
+                            UNIQUE (`period_name`, `period_start`, `period_end`))";
                 $dbh->exec($sql);
                 $posted = true;
-    ?>
-                <?php
+
                 $dba = $dbtarget.'audit';
                 if ($posted == true) {
                     echo "<script type='text/javascript'>
@@ -341,13 +340,8 @@ a {
                 ?>
             <?php
             } catch (PDOException $e) {
-            ?> 
-                    <?php
                     $dba = $dbtarget.'audit';
                     echo "<script type='text/javascript'>alert('Database $dba exists.')</script>";;
-                        ?>
-
-            <?php
             }
             // $dbh = null;
         } else if ($makerValue == 2) {
@@ -467,9 +461,9 @@ a {
                 $query = "CREATE TABLE audit_period(
                     period_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
                     period_name VARCHAR(255) NOT NULL UNIQUE,
-                    period_start DATE NOT NULL,
-                    period_end DATE NOT NULL,
-                    period_name VARCHAR(255) NOT NULL
+                    period_start DATE NOT NULL UNIQUE,
+                    period_end DATE NOT NULL UNIQUE,
+                    created_by VARCHAR(255) NOT NULL
                     )
                     CREATE INDEX index_audit_period_date
                     ON dbo.audit_period(period_start, period_end)";
