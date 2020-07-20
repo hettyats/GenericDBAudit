@@ -150,7 +150,7 @@ $period = $_SESSION['period'];
     <!-- /.content-wrapper -->
 
     <?php include $path.'/pages/navbars/footer.php'; ?>
-    <?php include $path.'/pages/navbars/control-sidebar.php'; ?>
+    <?php //include $path.'/pages/navbars/control-sidebar.php'; ?>
 
 </div>
 <!-- ./wrapper -->

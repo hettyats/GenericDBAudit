@@ -1,7 +1,7 @@
 <?php session_start();
-if(!isset($_SESSION["user"])) header("Location: login.php");
+ $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';
+if(!isset($_SESSION["user"])) header("Location: $path.'/login.php'");
 ?>
-<?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/query/report-query/q-report.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];

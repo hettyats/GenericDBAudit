@@ -1,7 +1,7 @@
 <?php session_start();
-if(!isset($_SESSION["user"])) header("Location: login.php");
+ $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';
+if(!isset($_SESSION["user"])) header("Location: $path.'/login.php'");
 ?>
-<?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
@@ -48,7 +48,7 @@ if (isset($_GET['id'])) {
                             <h3 class="box-title">Database Privileges</h3>
                         </div>
                         <div class="box-body">
-                            <table id="ViewList" class="table table-bordered table-hover">
+                            <table id="Privilege" class="table table-bordered table-hover">
                                 <thead>
                                   <tr>
                                   <?php if ($makerValue == 1) {?>
@@ -106,7 +106,7 @@ if (isset($_GET['id'])) {
     <!-- /.content-wrapper -->
 
     <?php include $path.'/pages/navbars/footer.php'; ?>
-    <?php include $path.'/pages/navbars/control-sidebar.php'; ?>
+    <?php //include $path.'/pages/navbars/control-sidebar.php'; ?>
 
 </div>
 <!-- ./wrapper -->
