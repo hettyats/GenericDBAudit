@@ -12,7 +12,7 @@ if (isset($_GET['usedb'])) {
 
 if(isset($_SESSION["period"])){
   $period = $_SESSION["period"];
-  echo "period ".$period;
+  // echo "period ".$period;
 }
 
 if ($makerValue == 1){

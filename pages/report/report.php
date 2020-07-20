@@ -1,5 +1,5 @@
 <?php session_start();
-      //Put session start at the beginning of the file
+if(!isset($_SESSION["user"])) header("Location: login.php");
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; 

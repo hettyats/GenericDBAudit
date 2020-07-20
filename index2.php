@@ -1,40 +1,24 @@
 <?php session_start();
-      //Put session start at the beginning of the file
+ if(!isset($_SESSION["user"])) header("Location: login.php");
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; ?>
 <?php 
-
-// if (isset($_SESSION['id'])) {
-//     $makerValue = $_GET['id'];
-//   }
-//   if(isset($_SESSION["id"])){
-//     $makerValue = $_SESSION["id"];
-//     echo "session db ".$makerValue;
-// }
-//   if (isset($_GET['usedb'])) {
-//     $dbnya = $_GET['usedb'];
-//   }
-
-//   if (isset($_GET['id'])) {
-//     $makerValue = $_GET['id'];
-//     $_SESSION['id']=$makerValue;
-//     echo "masuk pak eko ".$makerValue;
-// }
 if (isset($_GET['usedb'])) {
         $dbnya = $_GET['usedb'];
-        // echo $dbtarget;
-        // die;
       }
-if (isset($_POST['period'])) {
-$period = $_POST['period'];
-$_SESSION['period']=$period;
-//  echo $period;
-//  die;
+if (isset($_SESSION['period'])) {
+$period = $_SESSION['period'];
 }
 
 ?>
 <?php include $path.'/query/q-index.php';?>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Database Audit Tool</title>
+</head>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>
@@ -64,7 +48,7 @@ $_SESSION['period']=$period;
                         <div class="box-header">
                             <h3 class="box-title">Database Access Today</h3>
                             <div class="box-tools pull-right">
-                                <a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>">View Detail</a>
+                                <a href="/TA2/DBAudit/pages/database-access/database-access.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>&period=<?php echo $period?>">View Detail</a>
                             </div>
                         </div>
                         <div class="box-body">

@@ -1,5 +1,5 @@
 <?php session_start();
-      //Put session start at the beginning of the file
+if(!isset($_SESSION["user"])) header("Location: login.php");
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; 
@@ -18,10 +18,12 @@ if (isset($_GET['id'])) {
 } 
 ?>
 
-<?php //$user_host = $_GET['user_host'];
-// $total = $_GET['Total'];?>
-
 <?php include $path.'/query/database-access-query/q-db-failed-detail.php'; ?>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Database Audit Tool</title>
+</head>
 <div class="wrapper">
 
     <?php include $path.'/pages/navbars/top-navbar.php'; ?>

@@ -8,7 +8,7 @@ include $path . "/connection/connection.php";
 // }
 if(isset($_SESSION["id"])){
     $makerValue = $_SESSION["id"];
-    echo "session db ".$makerValue;
+    // echo "session db ".$makerValue;
 }
 // if (isset($_GET['usedb'])) {
 //     $usedb = $_GET['usedb'];
@@ -16,12 +16,12 @@ if(isset($_SESSION["id"])){
 
   if (isset($_GET['usedb'])) {
     $dbnya = $_GET['usedb'];
-    echo "use db ".$dbnya;
+    // echo "use db ".$dbnya;
   } 
 
   if(isset($_SESSION["period"])){
     $period = $_SESSION["period"];
-    echo "period ".$period;
+    // echo "period ".$period;
 }
 
 if ($makerValue == 1){
