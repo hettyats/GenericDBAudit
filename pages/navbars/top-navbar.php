@@ -3,6 +3,9 @@
 <?php if (isset($_GET['id'])) {
     $makerValue = $_GET['id'];
   }
+  if(isset($_SESSION["user"])){
+      $user = $_SESSION["user"];
+    }
 ?>
     <!-- Logo -->
     <a href="/TA2/DBAudit/index2.php?id=<?php echo $makerValue?>&usedb=<?php echo $dbnya?>" class="logo">
@@ -14,8 +17,8 @@
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+         <!-- Sidebar toggle button-->
+         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
         <!-- Navbar Right Menu -->
@@ -25,6 +28,11 @@
                 <li>
                     <a href="/TA2/DBAudit/index.php?">Choose Database <i class="fa fa-database"></i></a>
                 </li>
+                <li>
+                    <!-- <a href="/TA2/DBAudit/index.php?">Choose Database <i class="fa fa-database"></i></a> -->
+                    <a href="/TA2/DBAudit/logout.php?">Logout(<?php echo $user['name']?>)</a>
+                </li>
+                
             </ul>
         </div>
     </nav>

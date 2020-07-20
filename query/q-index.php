@@ -4,16 +4,18 @@ include $path . "/connection/connection.php";
 // if (isset($_GET['id'])) {
 //     $makerValue = $_GET['id'];
 //   }
-  if(isset($_SESSION["id"])){
+if(isset($_SESSION["id"])){
     $makerValue = $_SESSION["id"];
     // echo "session db ".$makerValue;
 }
 
-if (isset($_GET['usedb'])) {
+if(isset($_GET['usedb'])) {
   $dbnya = $_GET['usedb'];
 } 
 if(isset($_SESSION["period"])){
-  $period = $_SESSION["period"];}
+  // $period = $_SESSION["period"];
+  $_SESSION['period']=$period;
+}
 
 // Database Access Query
 if ($makerValue == 1){

@@ -1,14 +1,14 @@
 <?php session_start();
-//Put session start at the beginning of the file
+ if(!isset($_SESSION["user"])) header("Location: login.php");
 ?>
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php
 // include $path.'/pages/navbars/head.php'; 
 include $path.'/connection/connection.php';
 // include $path.'/redirect.php';
-if (isset($_GET['id'])) {
-    $makerValue = $_GET['id'];
-}
+// if (isset($_GET['id'])) {
+//     $makerValue = $_GET['id'];
+// }
 if (isset($_GET['db'])) {
     $db = $_GET['db'];
 }
@@ -18,24 +18,33 @@ if (isset($_GET['id'])) {
     $_SESSION['id'] = $makerValue;
 }
 
-
-//   $GLOBALS['id'] = $_GET['id'];
 ?>
 
 
 <!DOCTYPE html>
-<html>
+<html style="height: auto;">
 <style type="text/css">
 body{
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
+
+a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 7px 16px;
+}
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
 </style>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Database Audit Tool | Database</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="<?php $path ?>./bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -45,15 +54,13 @@ body{
     <link rel="stylesheet" href="<?php $path ?>./bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?php $path ?>./dist/css/AdminLTE.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="<?php $path ?>./plugins/iCheck/square/blue.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
 <body class="hold-transition login-page" style=" background-size: cover;">
     <div class="login-box">
         <!-- /.login-logo -->
-        <div class="login-box-body" style=" position:fixed;">
+        <div class="login-box-body" style="width:400px">
             <!-- <p class="login-box-msg">Sign in to start your session</p> -->
 
             <!-- <form method="POST" > -->
@@ -61,24 +68,21 @@ body{
                 <!-- <div class="col-xs-12"> -->
                 <?php if ($db == 'create') { ?>
                     <!-- <div class="col-xs-12"> -->
+                    
                     <form method="post" action="">
-                        <div class="login-logo">
-                        <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
-                            <a href="./index.php"><b>
-                                    <h3><center>Create Database Audit</center></h3>
-                                </b></a>
+                        <div class="login-logo" style="margin-bottom: 10px;">
+                        <a href="./index.php"><b>Database Audit Tool</b></a><hr style=" margin-top: 10px; margin-bottom: 10px;">
                         </div>
-                                <h6>
-                                <ol class="breadcrumb">
-                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
-                                        <li class="active"><u>Choose Database Target</u></li>
-                                        <li></i>Choose Period</a></li>
-                                    </ol>
-                                    </h6>
+                            <b>
+                                <h3><center>Create Database Audit</center></h3>
+                            </b>
+                            <!-- </a> -->
                         <!-- <div class="form-group has-feedback">
                                 <input type="text" class="form-control" name="db" placeholder="Database name">
                             </div> -->
                         <div class="form-group has-feedback">
+                        
+                        <p class="login-box-msg">Select the database to be audited!</p>
                             <label>Database target:</label>
                             <select id="cmbMake" class="form-control" name="dbtarget">
                                 <option disabled selected>Select Database Target </option>
@@ -95,8 +99,7 @@ body{
                                     $stmt = $conn->prepare("select [name] from sys.databases where name NOT LIKE '%audit%'");
                                     $stmt->execute();
                                     $sqls = $stmt->fetchAll();
-                                }
-                                ?>
+                                }?>
                                 <?php foreach ($sqls as $row) : ?>
                                     <option value="<?= $row["name"] ?>"><?= $row["name"] ?></option>
                                 <?php endforeach; ?>
@@ -105,29 +108,25 @@ body{
                         </div>
 
                         <div class="row">
+                            <div class="col-xs-4 pull-left">
+                                <a href="#" onclick="history.go(-1)" class="previous">&laquo; Previous</a>
+                            </div>
                             <div class="col-xs-4 pull-right">
-                                <!-- <input type="hidden" name="selected_text" id="selected_text" /> -->
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Create</button>
+                                <button type="submit" class="btn btn-success btn-block btn-flat">Next &raquo;</button>
                             </div>
                         </div>
                     </form>
                 <?php } else { ?>
                     <form method="get" action="./period.php?id=<?= $makerValue ?>">
-                        <div class="login-logo">
-                        <a href="./index.php"><b>DATABASE AUDIT TOOL</b></a>
-                            <h3>Use Database</h3>
+                        <div class="login-logo" style="margin-bottom: 10px;">
+                        <a href="./index.php"><b>Database Audit Tool</b></a><hr style=" margin-top: 0; margin-bottom: 10px;">
                         </div>
-                            <h5>
-                                <ol class="breadcrumb">
-                                        <li><a href="/TA2/DBAudit/index.php"></i>Choose RDBMS</a></li>
-                                        <li class="active"></i><u>Choose Database Audit</u></a></li>
-                                        <li></i>Choose Period</a></li>
-                                    </ol>
-                                    </h5>
+                        <h3 style="margin-top: 5px;"><center>Use Database</center></h3>
+                                    <p class="login-box-msg">Select the database Audit</p>
                         <div class="form-group has-feedback">
                         <label>Database Audit:</label>
                             <select class="form-control" name="usedb" id="cmbMake">
-                                <option disabled selected> Select Database Audit </option>
+                                <!-- <option disabled selected> Select Database Audit </option> -->
                                 <?php
                                 if ($makerValue == 1) {
                                     $smt = $dbh->prepare("SHOW DATABASES LIKE '%audit'");
@@ -148,10 +147,14 @@ body{
                                 <?php endforeach; ?>
                                 <!-- </select> -->
                             </select>
+                            <br>
                         </div>
                         <div class="row">
+                        <div class="col-xs-4 pull-left">
+                        <a href="#" onclick="history.go(-1)" class="previous">&laquo; Previous</a>
+                                </div>
                             <div class="col-xs-4 pull-right">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Use</button>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Next &raquo;</button>
                             <?php } ?>
 
                             </div>
@@ -239,7 +242,7 @@ body{
                             LIMIT 0, 1000";
                 $dbh->exec($sql);
 
-                $sql = "CREATE TABLE `privileges` AS
+                $sql = "CREATE VIEW `privileges` AS
                               SELECT 	DISTINCT
                                 `PRIVILEGE_TYPE`,
                                 `IS_GRANTABLE`
@@ -315,9 +318,10 @@ body{
 
                 $sql = "CREATE TABLE `audit_period` (  
                             `period_id` INT NOT NULL AUTO_INCREMENT,
-                            `period_name` VARCHAR(75) NOT NULL,
+                            `period_name` VARCHAR(255) NOT NULL,
                             `period_start` DATE NOT NULL,
                             `period_end` DATE NOT NULL,
+                            `created_by` VARCHAR(255) NOT NULL,
                             PRIMARY KEY (`period_id`),
                             UNIQUE (`period_name`))";
                 $dbh->exec($sql);
@@ -329,7 +333,6 @@ body{
                     echo "<script type='text/javascript'>
                     alert('Database created successfully with the name $dba');
                     window.location = './period.php?id=$makerValue&usedb=$dbaudit&dbtarget=$dbtarget';
-                    text: 'Audit Now';
                     </script>";
                 } else if ($posted == false) {
                     echo "<script type='text/javascript'>alert('Failed!')</script>";
@@ -340,9 +343,9 @@ body{
             } catch (PDOException $e) {
             ?> 
                     <?php
+                    $dba = $dbtarget.'audit';
                     echo "<script type='text/javascript'>alert('Database $dba exists.')</script>";;
                         ?>
-                
 
             <?php
             }
@@ -463,9 +466,10 @@ body{
 
                 $query = "CREATE TABLE audit_period(
                     period_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-                    period_name VARCHAR(75) NOT NULL UNIQUE,
+                    period_name VARCHAR(255) NOT NULL UNIQUE,
                     period_start DATE NOT NULL,
-                    period_end DATE NOT NULL
+                    period_end DATE NOT NULL,
+                    period_name VARCHAR(255) NOT NULL
                     )
                     CREATE INDEX index_audit_period_date
                     ON dbo.audit_period(period_start, period_end)";
@@ -635,7 +639,6 @@ body{
                     echo "<script type='text/javascript'>
                     alert('Database created successfully with the name $dba');
                     window.location = './period.php?id=$makerValue&usedb=$dbaudit&dbtarget=$dbtarget';
-                    text: 'Audit Now';
                     </script>";
                 } else if ($posted == false) {
                     echo "<script type='text/javascript'>alert('Please choose database target!')</script>";
