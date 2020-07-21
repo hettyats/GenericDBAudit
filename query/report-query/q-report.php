@@ -203,8 +203,6 @@ $notchangePassword ="SELECT [name]
 $dbChangePW = $conn->query($notchangePassword);
 
 
-
-
 $NotActiveQuery = "
 SELECT *
   FROM [$dbnya].[dbo].[inactive_user]
@@ -229,8 +227,6 @@ FROM $dbnya.dbo.audit_period
 WHERE period_id= $period
 )";
   $Error = $conn->query($ErrorQuery);
-
 }
-
 
 ?>

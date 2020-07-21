@@ -1,6 +1,8 @@
 <?php session_start();
-if(!isset($_SESSION["user"])) header("Location: login.php");
+ $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit';
+if(!isset($_SESSION["user"])) header("Location: $path.'/login.php'");
 ?>
+
 <?php $path = $_SERVER['DOCUMENT_ROOT'].'/TA2/DBAudit'; ?>
 <?php include $path.'/pages/navbars/head.php'; 
 if (isset($_GET['id'])) {
@@ -46,11 +48,10 @@ if (isset($_GET['id'])) {
                                     <tr>
                                       <tr>
                                       <?php if ($makerValue == 1) {?>
-                                          <th>Role ID</th>
                                           <th>Username</th>
                                           <th>Host</th>
                                           <th>Type</th>
-                                          <th>Create Date</th>
+                                          <th>Admin Option</th>
 
                                         <?php } else{ ?>
                                           <th>Role ID</th>
@@ -64,11 +65,10 @@ if (isset($_GET['id'])) {
                                     <?php while ($row = $Role->fetch(PDO::FETCH_ASSOC)) {?>
                                       <tr>
                                       <?php if ($makerValue == 1) {?>
-                                          <td><?php echo $row['Role_id'] ?></td>
                                           <td><?php echo $row['User'] ?></td>
                                           <td><?php echo $row['HOST'] ?></td>
                                           <td><?php echo $row['Role'] ?></td>
-                                          <td><?php echo date('jS \of F Y h:i:s A',strtotime($row['Create_date'])); ?></td>
+                                          <td><?php echo $row['Admin_option'] ?></td>
                                           <?php } else{ ?>
                                           <td><?php echo $row['principal_id'] ?></td>
                                           <td><?php echo $row['name'] ?></td>
