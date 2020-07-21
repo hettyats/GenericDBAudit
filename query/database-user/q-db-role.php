@@ -20,11 +20,10 @@ if (isset($_GET['id'])) {
 // Database Login Name List Query
 if ($makerValue == 1){
      $RoleQuery = "
-     SELECT 	`Role_id`, 
+     SELECT
 	`User`, 
 	`HOST`, 
-	`Role`, 
-	`Create_date`, 
+	`Role`,
 	`Admin_option`
 	 
 	FROM 
