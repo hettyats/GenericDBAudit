@@ -157,11 +157,23 @@ $outlier = findOutlier($dbAccess);
 
 
 
-$outsideQuery ="
-SELECT
+$outsideQuery ="SELECT
     login_name, Count (distinct(access_time)) As [Total], MAX(access_time) as [last_access]
     FROM
     [$dbnya].[dbo].[user_outside_operating_hour]
+    WHERE
+    access_time BETWEEN
+        (
+        SELECT period_start
+        FROM $dbnya.dbo.audit_period
+        WHERE period_id = $period
+        )
+        AND
+        (
+        SELECT period_end
+        FROM $dbnya.dbo.audit_period
+        WHERE period_id = $period
+        )
     GROUP BY login_name
 ";
 $dbOutside = $conn->query($outsideQuery);
@@ -186,19 +198,19 @@ $notchangePassword ="SELECT [name]
 			else 'Not SQL Server login'
 		END
   FROM [$dbnya].[dbo].[database_user_password]
-  WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2 AND
-  lastsettime BETWEEN
-        (
-        SELECT period_start
-        FROM $dbnya.dbo.audit_period
-        WHERE period_id = $period
-        )
-        AND
-        (
-        SELECT period_end
-        FROM $dbnya.dbo.audit_period
-        WHERE period_id = $period
-        )
+  -- WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2 AND
+  -- lastsettime BETWEEN
+  --       (
+  --       SELECT period_start
+  --       FROM $dbnya.dbo.audit_period
+  --       WHERE period_id = $period
+  --       )
+  --       AND
+  --       (
+  --       SELECT period_end
+  --       FROM $dbnya.dbo.audit_period
+  --       WHERE period_id = $period
+  --       )
 ";
 $dbChangePW = $conn->query($notchangePassword);
 

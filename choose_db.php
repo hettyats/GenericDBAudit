@@ -112,7 +112,7 @@ a {
                                 <a href="#" onclick="history.go(-1)" class="previous">&laquo; Previous</a>
                             </div>
                             <div class="col-xs-4 pull-right">
-                                <button type="submit" class="btn btn-success btn-block btn-flat">Next &raquo;</button>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">Next &raquo;</button>
                             </div>
                         </div>
                     </form>
@@ -232,7 +232,7 @@ a {
                             WHERE `argument` LIKE '%$dbtarget%'";
                 $dbh->exec($sql);
 
-                $sql = "CREATE TABLE `privileges_list` AS
+                $sql = "CREATE VIEW `privileges_list` AS
                             SELECT 	`GRANTEE`,
                             `TABLE_CATALOG`,
                             `PRIVILEGE_TYPE`,
