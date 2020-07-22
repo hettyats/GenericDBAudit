@@ -184,10 +184,7 @@ if (isset($_GET['id'])) {
                                         <td><?php echo substr ($row['error_message'],23,-143) ?></td>
                                         <td><?php echo $row['Total']?></td>
                                         <td><?php echo $row['Date']?></td>
-                                        <h4><b>Recommendation</b></h4>
-                        <!-- <dl> -->
-                            <dt>Failed Login</dt>
-                            <dd>Make sure that the failed login is an unusual error and not a brule force login attempt by unauthorized user.</dd>
+                                        
                                             <?php }else if(!$row){ ?>
                                             <td>No result found</td>
                                             <td>No result found</td>
@@ -197,6 +194,10 @@ if (isset($_GET['id'])) {
                                         <?php } ?>
                                         </tbody>
                                         </table>
+                                        <h4><b>Recommendation</b></h4>
+                        <!-- <dl> -->
+                            <dt>Failed Login</dt>
+                            <dd>Make sure that the failed login is an unusual error and not a brule force login attempt by unauthorized user.</dd>
                             
                         </section>
                         

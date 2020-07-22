@@ -124,8 +124,7 @@ WHERE period_id= $period
 $AccessNotif = $conn->query($AccessNotifQuery);
 $accessnotif = $AccessNotif->fetch(PDO::FETCH_ASSOC);
 
-$PasswordNotifQuery = "
-select
+$PasswordNotifQuery = "SELECT
 	count(name) as [NotifPassword]
 from $dbnya.[dbo].[database_user_password]
 WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2

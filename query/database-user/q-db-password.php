@@ -17,8 +17,7 @@ if(isset($_SESSION["period"])){
   $period = $_SESSION["period"];}
 // Database User Password List Query
 if ($makerValue == 1){
-  $PassQuery = "
-  SELECT DISTINCT
+  $PassQuery = "SELECT DISTINCT
   `USER` as us, 
   `password_expired`,
 (CASE 
@@ -30,8 +29,7 @@ END) AS `Status`
   $Pass = $dbh->query($PassQuery);
 
 } else{
-$PassQuery = "
-SELECT [name]
+$PassQuery = "SELECT [name]
       , [principal_id]
       , [type_desc]
       , [lastsettime] = 
