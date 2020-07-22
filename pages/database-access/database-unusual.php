@@ -67,6 +67,7 @@ if (isset($_GET['id'])) {
                                         <?php } else{ ?>
                                         <th>Date</th>
                                         <th>Username</th>
+                                        <th>Program Name</th>
                                         <th>Total</th> 
                                         <!-- <th>More</th> -->
                                         <?php }?>
@@ -81,8 +82,9 @@ if (isset($_GET['id'])) {
                                         <td><?php echo $row['user_host']?></td>
                                         <td><?php echo $row['Total']?></td>
                                       <?php } else{ ?>
-                                        <td><?php echo $row['Month']?></td>
+                                        <td><?php echo ($row['Day'] . " " . date('F', mktime(0, 0, 0, $row['Month'], 10)) . " " . $row['Year'])?></td>
                                         <td><?php echo $row['login_name']?></td>
+                                        <td><?php echo $row['program_name']?></td>
                                         <td><?php echo $row['Total']?></td>
                                       <?php }?>
                                     </tr>

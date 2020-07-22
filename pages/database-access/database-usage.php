@@ -85,7 +85,7 @@ if (isset($_GET['id'])) {
                                     <tr>
                                     <?php while ($row = $DBUser->fetch(PDO::FETCH_ASSOC)) {
                                     if ($makerValue == 1) {?>
-                                    <?php if($row['Total'] > 430){ ?>
+                                    <?php if($row['Total'] > 400){ ?>
                                             <tr style="background-color: #f56954;">
                                                 <?php }else{ ?>
                                             <?php }?>
@@ -93,7 +93,7 @@ if (isset($_GET['id'])) {
                                         <td><?php echo $row['Total']?></td>
                                         <td><?php echo $row['LastAccess']?></td>
                                       <?php } else{ ?>
-                                        <?php if($row['Total'] > 1000){ ?>
+                                        <?php if($row['Total'] > 400){ ?>
                                             <tr style="background-color: #f56954;">
                                                 <?php }else{ ?>
                                             <?php }?>

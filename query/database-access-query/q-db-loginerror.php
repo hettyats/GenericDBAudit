@@ -22,7 +22,7 @@ $ErrorQuery = "
 SELECT
         *
     FROM
-    `$dbnya`.`failed_login`
+    `$dbnya`.`count_failed_login`
     WHERE event_time BETWEEN
 (
 SELECT period_start
@@ -43,7 +43,7 @@ $ErrorChartQuery = "
 SELECT
         *
     FROM
-    `$dbnya`.`failed_login`
+    `$dbnya`.`count_failed_login`
     WHERE event_time BETWEEN
 (
 SELECT period_start

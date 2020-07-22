@@ -176,10 +176,6 @@ if (isset($_GET['id'])) {
                                         <!-- <td><?php //echo ($row['user_host']);?></td> -->
                                         <td><?php echo $row['event_time']?></td>
                                         <td><?php echo $row['Total']?></td>
-                                        <h4><b>Recommendation</b></h4>
-                        <!-- <dl> -->
-                            <dt>Failed Login</dt>
-                            <dd>Make sure that the failed login is an unusual error and not a brule force login attempt by unauthorized user.</dd>
                                         <?php } else if ($makerValue == 2 && $row != 0){ ?>
                                         <td><?php echo substr ($row['error_message'],23,-143) ?></td>
                                         <td><?php echo $row['Total']?></td>

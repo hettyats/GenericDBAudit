@@ -47,7 +47,7 @@ if ($makerValue == 1){
   $userlistNotif = $UserListNotif->fetch(PDO::FETCH_ASSOC);
   
   $AccessNotifQuery = "SELECT
-    Total as NotifAccess
+    sum(Total) as NotifAccess
   from `$dbnya`.`count_user_outside_operating_hour`
   WHERE
   event_time BETWEEN
@@ -80,7 +80,7 @@ if ($makerValue == 1){
 $UsageNotifQuery = "SELECT
 	count(login_name) as [NotifUser]
 from $dbnya.[dbo].[database_access_per_day]
-WHERE Total > 1000 AND access_time BETWEEN
+WHERE Total > 400 AND access_time BETWEEN
 (
 SELECT period_start
 FROM $dbnya.dbo.audit_period

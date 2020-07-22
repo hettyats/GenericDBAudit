@@ -229,7 +229,7 @@ a {
                               `command_type`,
                               `argument`
                             FROM `mysql`.`general_log`
-                            WHERE `argument` LIKE '%$dbtarget%'";
+                            WHERE `argument` LIKE '%$dbtarget%'OR argument LIKE 'Access denied for user%'";
                 $dbh->exec($sql);
 
                 $sql = "CREATE VIEW `privileges_list` AS
@@ -273,7 +273,7 @@ a {
                 $sql = "CREATE VIEW failed_login AS SELECT
                             `general_log`.`event_time` AS `event_time`,
                             `general_log`.`user_host`  AS `user_host`,
-                            COUNT(`general_log`.`event_time`) AS `Total`
+                            `general_log`.`argument` AS `argument`
                             FROM `$dbaudit`.`general_log`
                             WHERE argument LIKE 'Access denied for user%'
                             GROUP BY `general_log`.`user_host`";

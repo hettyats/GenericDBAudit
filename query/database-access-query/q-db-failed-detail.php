@@ -25,7 +25,7 @@ SELECT
   `event_time`,
   `user_host`,
   `argument`
-FROM `$dbnya`.`failed_list` 
+FROM `$dbnya`.`failed_login` 
 WHERE `user_host` = '".$user_host."'
 AND
 event_time BETWEEN
