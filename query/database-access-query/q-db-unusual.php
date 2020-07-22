@@ -77,9 +77,10 @@ $accessChart = $dbh->query($querychart);
         ,[Year]
         ,[Total]
         ,[login_name]
-    from [$dbnya].[dbo].[database_access_per_day]
-    WHERE [Total] > 1000
-    AND access_time BETWEEN
+        ,[program_name]
+    from [$dbnya].[dbo].[count_success_log]
+    WHERE [Total] > 400
+    AND cast(CAST(year as char(4)) + RIGHT('00' + LTRIM(Month),2) + RIGHT('00' + LTRIM(Day),2) AS Datetime) BETWEEN
     (
     SELECT period_start
     FROM $dbnya.dbo.audit_period
@@ -96,25 +97,26 @@ $accessChart = $dbh->query($querychart);
     $stmt2 = $conn->query($query2);
 
     $querychart = "SELECT [Day]
-        ,[Month]
-        ,[Year]
-        ,[Total]
-        ,[login_name]
-    from [$dbnya].[dbo].[database_access_per_day]
-    WHERE [Total] > 1000
-    AND access_time BETWEEN
-    (
-    SELECT period_start
-    FROM $dbnya.dbo.audit_period
-    WHERE period_id = $period
-    )
-    AND
-    (
-    SELECT period_end
-    FROM $dbnya.dbo.audit_period
-    WHERE period_id = $period
-    )
-    order by Day desc";
+    ,[Month]
+    ,[Year]
+    ,[Total]
+    ,[login_name]
+    ,[program_name]
+from [$dbnya].[dbo].[count_success_log]
+WHERE [Total] > 400
+AND cast(CAST(year as char(4)) + RIGHT('00' + LTRIM(Month),2) + RIGHT('00' + LTRIM(Day),2) AS Datetime) BETWEEN
+(
+SELECT period_start
+FROM $dbnya.dbo.audit_period
+WHERE period_id = $period
+)
+AND
+(
+SELECT period_end
+FROM $dbnya.dbo.audit_period
+WHERE period_id = $period
+)
+order by Day desc";
     $accessChart = $conn->query($querychart);
 
     $name = array();

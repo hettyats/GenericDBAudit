@@ -112,7 +112,7 @@ $ErrorQuery = "
 SELECT
         *
     FROM
-    `$dbnya`.`failed_login`
+    `$dbnya`.`count_failed_login`
     WHERE event_time BETWEEN
 (
 SELECT period_start
@@ -198,7 +198,8 @@ $notchangePassword ="SELECT [name]
 			else 'Not SQL Server login'
 		END
   FROM [$dbnya].[dbo].[database_user_password]
-  -- WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2 AND
+  WHERE (datediff(MM,convert(datetime,lastsettime), getdate())) > 2 
+  -- AND
   -- lastsettime BETWEEN
   --       (
   --       SELECT period_start
